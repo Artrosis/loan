@@ -130,7 +130,6 @@ compose.desktop {
             linux {
                 iconFile.set(File("icon.png"))
             }
-             
         }
     }
 }
