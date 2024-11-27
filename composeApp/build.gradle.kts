@@ -113,7 +113,7 @@ compose.desktop {
         mainClass = "ru.predictor.loan.MainKt"
 
         nativeDistributions {
-            modules("all")
+            includeAllModules
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "ru.predictor.loan"
             packageVersion = "1.0.0"
