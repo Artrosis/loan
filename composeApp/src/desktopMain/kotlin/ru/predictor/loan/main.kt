@@ -7,6 +7,7 @@ import androidx.compose.ui.window.rememberWindowState
 import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.bank
 import org.jetbrains.compose.resources.painterResource
+import ru.predictor.loan.model.Model
 
 fun main() = application {
     Window(
