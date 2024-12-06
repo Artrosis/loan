@@ -29,4 +29,11 @@ class Market(
         Age.INDUSTRY -> shopIcon
         Age.FINISH -> shopIcon
     }
+
+    fun takeProducts(): Int {
+        val result = products
+        products = 0
+
+        return result
+    }
 }

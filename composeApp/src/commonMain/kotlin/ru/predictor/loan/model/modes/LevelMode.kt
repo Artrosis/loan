@@ -4,6 +4,8 @@ import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.Model
 
 abstract class LevelMode{
+    open val canMoveProductsFromManufactureToPeople = false
+    open val canMoveProductsFromManufactureToMarket = false
     abstract val maxLevelPopulation: Int
     abstract var age: Age
     

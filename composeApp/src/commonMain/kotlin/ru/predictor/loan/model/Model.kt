@@ -99,6 +99,19 @@ class Model {
         people.checkFood()
     }
 
+    fun takeProductsFromManufactureToMarket() {
+
+        if (!canInteract()) return
+        
+        market.products += manufacture.takeProducts()
+    }
+    
+    fun takeProductsFromMarketToPeople(){
+        if (!canInteract()) return
+        
+        people.food += market.takeProducts()
+    }
+
     fun populationProgress() = people.population / levelMode.maxLevelPopulation.toFloat()
     fun populationText() = "${people.population.format()} / ${levelMode.maxLevelPopulation}"
 }

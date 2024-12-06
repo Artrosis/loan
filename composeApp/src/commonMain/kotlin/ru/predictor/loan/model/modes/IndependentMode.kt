@@ -4,7 +4,8 @@ import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.Model
 import ru.predictor.loan.model.MutableStateDelegate
 
-class IndependentMode: LevelMode() {
+class IndependentMode() : LevelMode() {
+    override val canMoveProductsFromManufactureToPeople = true
     override val maxLevelPopulation = 30
     override var age by MutableStateDelegate(Age.INDEPENDENT)
 

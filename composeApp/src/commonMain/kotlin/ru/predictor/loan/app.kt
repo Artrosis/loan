@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -84,20 +85,63 @@ fun app(model: Model) {
                 verticalAlignment = Alignment.Bottom
             ) {
                 Column {
+                    moveProductsFromManufactureToMarket(
+                        modifier = Modifier.align(Alignment.End),
+                        model
+                    )
                     manufacture(
                         model.manufacture
                     )
                 }
-                AnimatedVisibility(model.manufacture.products > 0)
-                {
-                    moveProductsFromManufactureToPeople(model)
-                }
-            }            
-            market(
-                model.market,
-                Modifier.align(marketAlignment)
-            )
+                moveProductsFromManufactureToPeople(model)
+            }
+            Row(
+                modifier = Modifier.align(marketAlignment)
+            ) {
+                market(
+                    model.market
+                )
+                moveProductsFromMarketToPeople(
+                    Modifier.align(Alignment.Bottom),
+                    model
+                )
+            }
         }
+    }
+}
+
+@Composable
+fun moveProductsFromMarketToPeople(
+    modifier: Modifier = Modifier,
+    model: Model
+) {
+    AnimatedVisibility(
+        model.market.products > 0,
+        modifier = modifier
+    ){
+        move(
+            modifier = Modifier
+                .rotate(40f),
+            onMove = {model.takeProductsFromMarketToPeople()}
+        )
+    }
+}
+
+@Composable
+fun moveProductsFromManufactureToMarket(
+    modifier: Modifier = Modifier,
+    model: Model
+) {
+    AnimatedVisibility(
+        model.manufacture.products > 0
+                && model.levelMode.canMoveProductsFromManufactureToMarket,
+        modifier = modifier
+    ){
+        move(
+            modifier = Modifier
+                .rotate(-40f),
+            onMove = {model.takeProductsFromManufactureToMarket()}
+        )
     }
 }
 
@@ -105,8 +149,13 @@ fun app(model: Model) {
 fun moveProductsFromManufactureToPeople(
     model: Model
 ) {
-    move{
-        model.takeProductsFromManufactureToPeople()
+    AnimatedVisibility(
+        model.manufacture.products > 0
+                && model.levelMode.canMoveProductsFromManufactureToPeople
+    ){
+        move{
+            model.takeProductsFromManufactureToPeople()
+        }
     }
 }
 
