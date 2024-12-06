@@ -1,8 +1,8 @@
 package ru.predictor.loan.model
 
+import loaninterest.composeapp.generated.resources.*
 import loaninterest.composeapp.generated.resources.Res
-import loaninterest.composeapp.generated.resources.compose_multiplatform
-import loaninterest.composeapp.generated.resources.manuf
+import loaninterest.composeapp.generated.resources.market
 
 class Market(
     val getAge: () -> Age,
@@ -20,8 +20,8 @@ class Market(
         money += 10
     }
 
-    private val marketIcon = Res.drawable.manuf
-    private val shopIcon = Res.drawable.compose_multiplatform
+    private val marketIcon = Res.drawable.market
+    private val shopIcon = Res.drawable.shop
 
     fun getIcon() = when(getAge()) {
         Age.INDEPENDENT -> throw Exception("На этапе Самообеспечение нет рынка")

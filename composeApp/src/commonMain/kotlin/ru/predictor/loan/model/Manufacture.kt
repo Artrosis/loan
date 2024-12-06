@@ -1,7 +1,7 @@
 package ru.predictor.loan.model
 
 import loaninterest.composeapp.generated.resources.Res
-import loaninterest.composeapp.generated.resources.compose_multiplatform
+import loaninterest.composeapp.generated.resources.forge
 import loaninterest.composeapp.generated.resources.manuf
 
 class Manufacture(
@@ -18,7 +18,7 @@ class Manufacture(
     var salary by MutableStateDelegate(0)
 
     private val forestIcon = Res.drawable.manuf
-    private val forgeIcon = Res.drawable.compose_multiplatform
+    private val forgeIcon = Res.drawable.forge
     private val manufactureIcon = Res.drawable.manuf
     
     fun getIcon() = when(getAge()) {
