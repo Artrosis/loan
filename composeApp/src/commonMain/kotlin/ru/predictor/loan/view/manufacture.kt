@@ -34,7 +34,8 @@ fun manufacture(
         color = Color(0xA0FFFFFF),
     ){
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(8.dp)
         ) {
             Image(
                 painterResource(model.getIcon()),
