@@ -3,6 +3,8 @@ package ru.predictor.loan.model
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import kotlinx.datetime.Clock
+import ru.predictor.loan.model.modes.IndependentMode
+import ru.predictor.loan.model.modes.LevelMode
 import kotlin.reflect.KProperty
 import kotlin.time.Duration.Companion.days
 
@@ -18,28 +20,20 @@ class MutableStateDelegate<T>(value: T) {
     }
 }
 
-enum class Age(val caption: String, val maxLevelPopulation: Int){
-    INDEPENDENT("Самообеспечение", 30),
-    BARTER("Натуральный обмен", 300),
-    INDUSTRY("Индустриализация", 3000),
-    FINISH("Конец", 3000)
+enum class Age(val caption: String){
+    INDEPENDENT("Самообеспечение"),
+    BARTER("Натуральный обмен"),
+    INDUSTRY("Индустриализация"),
+    FINISH("Конец")
 }
 
 class Model {
     var time by MutableStateDelegate(Clock.System.now())
     
-    var age by MutableStateDelegate(Age.INDEPENDENT)
+    var levelMode by MutableStateDelegate<LevelMode>(IndependentMode())
 
     val people = People(
-        onLevelUp = 
-        {
-            messages.messages = listOf("Вы перешли на этап: ${getNextAge().caption}")
-            messages.buttonText = "Продолжить"
-            messages.onNext = {
-                messages.messages = listOf()
-                initNextAge()                
-            }                    
-        },
+        getMaxLevelPopulation = { levelMode.maxLevelPopulation.toFloat() },
         onDie = {
             messages.messages = listOf("Население вымерло")
             messages.buttonText = "Начать заново"
@@ -48,25 +42,15 @@ class Model {
     )
 
     private fun initNextAge() {
-        
-        val nextAge = getNextAge()
-
-        age = nextAge
-        people.maxLevelPopulation = age.maxLevelPopulation.toFloat()
-    }
-
-    private fun getNextAge(): Age = when (age) {
-        Age.INDEPENDENT -> Age.BARTER
-        Age.BARTER -> Age.INDUSTRY
-        Age.INDUSTRY -> Age.FINISH
-        Age.FINISH -> Age.FINISH
+        levelMode = levelMode.nextMode()
+        levelMode.initModel(this)
     }
 
     val market = Market()
     val manufacture = Manufacture(
         onClick = { if (canInteract()) work() },
         onGetPopulation = { return@Manufacture people.population.toInt() },
-        getAge = {return@Manufacture age},
+        getAge = {return@Manufacture levelMode.age},
     )
 
     private fun canInteract(): Boolean = messages.messages.isEmpty()
@@ -80,18 +64,9 @@ class Model {
         next()
     }
     
-    private fun start()
-    {
-        people.population = 3f
-        people.maxLevelPopulation = 30f
-        people.food = 6
-        
-        manufacture.products = 0
-    }
-    
     fun next(){
         messages.messages = listOf()
-        start()
+        levelMode.initModel(this)
     }
     
     fun tick() {
@@ -100,6 +75,19 @@ class Model {
         bank.tick()
         manufacture.tick()        
         people.tick()
+
+        if (checkLevelUp()) levelUp()
+    }
+
+    private fun checkLevelUp(): Boolean = people.population >= levelMode.maxLevelPopulation
+
+    private fun levelUp() {
+        initNextAge()
+        messages.messages = listOf("Вы перешли на этап: ${levelMode.age.caption}")
+        messages.buttonText = "Продолжить"
+        messages.onNext = {
+            messages.messages = listOf()
+        }
     }
 
     fun takeProductsFromManufactureToPeople() {  

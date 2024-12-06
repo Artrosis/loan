@@ -12,11 +12,10 @@ enum class PeopleState(val color: Color){
 
 class People(
     val onDie: () -> Unit,
-    val onLevelUp: () -> Unit,
+    val getMaxLevelPopulation: () -> Float,
 ){
     //Рост населения
     var population by MutableStateDelegate(0f)
-    var maxLevelPopulation by MutableStateDelegate(0f)
 
     //Еда
     var food by MutableStateDelegate(0)
@@ -48,10 +47,6 @@ class People(
             onDie()
             return
         }
-        
-        if (population >= maxLevelPopulation) {
-            onLevelUp()
-        }
     }
     
     private fun Float.format(): String{
@@ -72,6 +67,6 @@ class People(
         return (roundedValue / dotAt) + (roundedValue % dotAt).toFloat() / dotAt
     }
     
-    fun populationProgress() = population / maxLevelPopulation
-    fun populationText() = "${population.format()} / ${maxLevelPopulation.format()}"
+    fun populationProgress() = population / getMaxLevelPopulation()
+    fun populationText() = "${population.format()} / ${getMaxLevelPopulation().format()}"
 }
