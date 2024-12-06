@@ -29,8 +29,10 @@ class Manufacture(
     }
 
     fun tick() {
-        products += onGetPopulation() * 2
+        products += nextAddProduct()
     }
+
+    fun nextAddProduct() = onGetPopulation() * 2
 
     fun click() {
         onClick()

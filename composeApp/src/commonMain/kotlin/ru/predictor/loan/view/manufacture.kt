@@ -43,7 +43,7 @@ fun manufacture(
                 modifier = modifier
                     .size(150.dp),
             )
-            Text("Продукты: ${model.products}")
+            Text("Продукты: ${model.products} (+${model.nextAddProduct()})")
             if (model.showMoney) {
                 Text("Деньги: ${model.money}")
             }

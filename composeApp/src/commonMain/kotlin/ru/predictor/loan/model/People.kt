@@ -30,21 +30,27 @@ class People(
         if (food >= needFood) {
             food -= needFood
             population *= 1.1f
-            
-            state = PeopleState.GOOD
         }
         else if (food in 1..< needFood) {
             food = 0
-            state = PeopleState.HANGER
         }
         else {
             population *= 0.9f
-            state = PeopleState.DYING_OUT
         }
 
         if (population < 1) {
             onDie()
             return
+        }
+        checkFood()
+    }
+
+    fun checkFood() {
+        val needFood = ceil(population).toInt()
+        state = when {
+            food >= needFood -> PeopleState.GOOD
+            food in 1..<needFood -> PeopleState.HANGER
+            else -> PeopleState.DYING_OUT
         }
     }
 }
