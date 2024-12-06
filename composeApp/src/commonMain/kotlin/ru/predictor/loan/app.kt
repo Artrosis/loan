@@ -83,24 +83,14 @@ fun app(model: Model) {
                     .align(Alignment.BottomStart),
                 verticalAlignment = Alignment.Bottom
             ) {
-                manufacture(
-                    model.manufacture
-                )
+                Column {
+                    manufacture(
+                        model.manufacture
+                    )
+                }
                 AnimatedVisibility(model.manufacture.products > 0)
                 {
-                    Image(
-                        imageVector = Icons.Filled.PlayArrow,
-                        contentDescription = "Забрать товары",
-                        modifier = Modifier
-                            .size(96.dp)
-                            .padding(
-                                bottom = 16.dp
-                            )
-                            .clickable {
-                                model.takeProductsFromManufactureToPeople()
-                            },
-                        colorFilter = ColorFilter.tint(color = Color(0xFFF0E68C)),
-                    ) 
+                    moveProductsFromManufactureToPeople(model)
                 }
             }            
             market(
@@ -109,4 +99,33 @@ fun app(model: Model) {
             )
         }
     }
+}
+
+@Composable
+fun moveProductsFromManufactureToPeople(
+    model: Model
+) {
+    move{
+        model.takeProductsFromManufactureToPeople()
+    }
+}
+
+@Composable
+fun move(
+    modifier: Modifier = Modifier,
+    onMove: () -> Unit
+) {
+    Image(
+        imageVector = Icons.Filled.PlayArrow,
+        contentDescription = "Забрать товары",
+        modifier = modifier
+            .size(96.dp)
+            .padding(
+                bottom = 16.dp
+            )
+            .clickable(
+                onClick = onMove
+            ),
+        colorFilter = ColorFilter.tint(color = Color(0xFFF0E68C)),
+    )
 }
