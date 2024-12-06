@@ -33,7 +33,6 @@ class Model {
     var levelMode by MutableStateDelegate<LevelMode>(IndependentMode())
 
     val people = People(
-        getMaxLevelPopulation = { levelMode.maxLevelPopulation.toFloat() },
         onDie = {
             messages.messages = listOf("Население вымерло")
             messages.buttonText = "Начать заново"
@@ -46,11 +45,13 @@ class Model {
         levelMode.initModel(this)
     }
 
-    val market = Market()
+    val market = Market(
+        getAge = { levelMode.age },
+    )
     val manufacture = Manufacture(
         onClick = { if (canInteract()) work() },
         onGetPopulation = { return@Manufacture people.population.toInt() },
-        getAge = {return@Manufacture levelMode.age},
+        getAge = { levelMode.age },
     )
 
     private fun canInteract(): Boolean = messages.messages.isEmpty()
@@ -96,4 +97,7 @@ class Model {
         
         people.food += manufacture.takeProducts()
     }
+
+    fun populationProgress() = people.population / levelMode.maxLevelPopulation.toFloat()
+    fun populationText() = "${people.population.format()} / ${levelMode.maxLevelPopulation}"
 }

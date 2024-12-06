@@ -12,7 +12,6 @@ enum class PeopleState(val color: Color){
 
 class People(
     val onDie: () -> Unit,
-    val getMaxLevelPopulation: () -> Float,
 ){
     //Рост населения
     var population by MutableStateDelegate(0f)
@@ -48,25 +47,21 @@ class People(
             return
         }
     }
-    
-    private fun Float.format(): String{
-        
-        if (this == 0f) return "-"
-        
-        if (this.rem(1) == 0f) return "${this.toInt()}"
+}
 
-        if (this.rem(0.1f) == 0f) return "${this.roundToDecimals(1)}"      
-        
-        return "${this.roundToDecimals(2)}"
-    }
+fun Float.format(): String{
+    if (this == 0f) return "-"
 
-    private fun Float.roundToDecimals(decimals: Int): Float {
-        var dotAt = 1
-        repeat(decimals) { dotAt *= 10 }
-        val roundedValue = (this * dotAt).roundToInt()
-        return (roundedValue / dotAt) + (roundedValue % dotAt).toFloat() / dotAt
-    }
-    
-    fun populationProgress() = population / getMaxLevelPopulation()
-    fun populationText() = "${population.format()} / ${getMaxLevelPopulation().format()}"
+    if (this.rem(1) == 0f) return "${this.toInt()}"
+
+    if (this.rem(0.1f) == 0f) return "${this.roundToDecimals(1)}"
+
+    return "${this.roundToDecimals(2)}"
+}
+
+fun Float.roundToDecimals(decimals: Int): Float {
+    var dotAt = 1
+    repeat(decimals) { dotAt *= 10 }
+    val roundedValue = (this * dotAt).roundToInt()
+    return (roundedValue / dotAt) + (roundedValue % dotAt).toFloat() / dotAt
 }

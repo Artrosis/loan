@@ -1,12 +1,12 @@
 package ru.predictor.loan.view
 
-import androidx.annotation.FloatRange
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +18,7 @@ import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.people
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.People
+import ru.predictor.loan.model.format
 
 @Composable
 fun people(
@@ -34,11 +35,7 @@ fun people(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Население")
-            textProgressIndicator(
-                progress = model.populationProgress(),
-                text = model.populationText()
-            )
+            Text("Население: ${model.population.format()}")
             Image(
                 painterResource(Res.drawable.people),
                 null,
@@ -51,26 +48,4 @@ fun people(
             }
         }
     }    
-}
-
-@Composable
-fun textProgressIndicator(
-    modifier: Modifier = Modifier,
-    @FloatRange(from = 0.0, to = 1.0)
-    progress: Float,
-    text:String,
-){
-    Box(
-        modifier = modifier.width(250.dp)
-    ){
-        LinearProgressIndicator(
-            modifier = modifier.height(20.dp).align(Alignment.Center),
-            progress = progress,
-            color = Color.Green,
-        )
-        Text(
-            text = text,
-            modifier = Modifier.align(Alignment.Center)
-        )
-    }
 }
