@@ -13,7 +13,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -58,7 +58,9 @@ fun app(model: Model) {
             Button(
                 modifier = Modifier
                     .padding(16.dp),
-                onClick = { model.tick() }) {
+                onClick = {
+                    model.tick() 
+                }) {
                 Text("Следующий день")
             }
             Surface(

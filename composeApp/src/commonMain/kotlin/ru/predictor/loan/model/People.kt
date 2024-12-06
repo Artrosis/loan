@@ -4,7 +4,6 @@ import androidx.compose.ui.graphics.Color
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
-
 enum class PeopleState(val color: Color){
     GOOD(Color(0xA0FFFFFF)), 
     HANGER(Color(0xA0FFFF00)), 
@@ -19,8 +18,8 @@ class People(
     var population by MutableStateDelegate(0f)
     var maxLevelPopulation by MutableStateDelegate(0f)
 
-    //Товары
-    var products by MutableStateDelegate(0)
+    //Еда
+    var food by MutableStateDelegate(0)
     
     var state by MutableStateDelegate(PeopleState.GOOD)
     
@@ -28,22 +27,21 @@ class People(
     var money by MutableStateDelegate(0)
 
     fun tick() {
-        val needProducts = ceil(population).toInt()
+        val needFood = ceil(population).toInt()
         
-        if (products >= needProducts) {
-            products -= needProducts
+        if (food >= needFood) {
+            food -= needFood
             population *= 1.1f
             
             state = PeopleState.GOOD
         }
-        else if (products in 1..needProducts) {
-            products = 0
+        else if (food in 1..< needFood) {
+            food = 0
             state = PeopleState.HANGER
         }
         else {
             population *= 0.9f
             state = PeopleState.DYING_OUT
-            
         }
 
         if (population < 1) {

@@ -64,11 +64,13 @@ class Model {
 
     val market = Market()
     val manufacture = Manufacture(
-        onClick = { work() },
+        onClick = { if (canInteract()) work() },
         onGetPopulation = { return@Manufacture people.population.toInt() },
         getAge = {return@Manufacture age},
     )
-    
+
+    private fun canInteract(): Boolean = messages.messages.isEmpty()
+
     private fun work(){ 
         tick()
     }    
@@ -82,7 +84,7 @@ class Model {
     {
         people.population = 3f
         people.maxLevelPopulation = 30f
-        people.products = 6
+        people.food = 6
         
         manufacture.products = 0
     }
@@ -100,7 +102,10 @@ class Model {
         people.tick()
     }
 
-    fun takeProductsFromManufactureToPeople() {        
-        people.products += manufacture.takeProducts()
+    fun takeProductsFromManufactureToPeople() {  
+        
+        if (!canInteract()) return
+        
+        people.food += manufacture.takeProducts()
     }
 }
