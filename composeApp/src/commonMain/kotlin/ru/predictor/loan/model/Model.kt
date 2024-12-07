@@ -2,6 +2,7 @@ package ru.predictor.loan.model
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.BiasAlignment
 import kotlinx.datetime.Clock
 import ru.predictor.loan.model.modes.IndependentMode
 import ru.predictor.loan.model.modes.LevelMode
@@ -54,7 +55,7 @@ class Model {
         getAge = { levelMode.age },
     )
 
-    private fun canInteract(): Boolean = messages.messages.isEmpty()
+    private fun canInteract(): Boolean = hint.message.isEmpty()
 
     private fun work(){ 
         tick()
@@ -65,11 +66,30 @@ class Model {
         next()
     }
     
+    val hint = Hint{
+        clearHint()
+    }
+
+    private fun clearHint() {
+        hint.clear()
+    }
+
     fun next(){
         messages.messages = listOf()
         levelMode.initModel(this)
+        onStart()
     }
     
+    private val peopleHintAlignment = BiasAlignment(0.6f, 0.3f)
+
+    private fun onStart() {
+        hint.message = listOf(
+            "Это население",
+            "Ему нужна еда для жизни и роста"
+        )
+        hint.alignment = peopleHintAlignment
+    }
+
     fun tick() {
         time += 1.days        
         market.tick()
