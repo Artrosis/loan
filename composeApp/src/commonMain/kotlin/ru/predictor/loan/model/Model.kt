@@ -130,6 +130,7 @@ class Model {
         if (!canInteract()) return
         
         people.food += market.takeProducts()
+        people.checkFood()
     }
 
     fun populationProgress() = people.population / levelMode.maxLevelPopulation.toFloat()
