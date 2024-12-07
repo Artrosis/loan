@@ -116,7 +116,7 @@ compose.desktop {
             includeAllModules
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "ru.predictor.loan"
-            packageVersion = "1.0.0"
+            packageVersion = "1.0.1"
             description = "Model of loan interest"
             copyright = "© 2024 The Heritage of Russian culture."
             vendor = "peripheral predictor"
