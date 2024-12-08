@@ -1,5 +1,6 @@
 package ru.predictor.loan.view
 
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -12,6 +13,16 @@ import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.bank
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.Bank
+
+@Composable
+@Preview
+fun previewBank(){
+    val model = Bank().apply { 
+        has = true
+    }
+
+    bank(model)
+}
 
 @Composable
 fun bank(

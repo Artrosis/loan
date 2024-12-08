@@ -1,6 +1,7 @@
 package ru.predictor.loan
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -32,20 +33,24 @@ import kotlinx.datetime.format.char
 import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.grass
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import ru.predictor.loan.model.Hint
 import ru.predictor.loan.model.Model
+import ru.predictor.loan.model.modes.BarterMode
 import ru.predictor.loan.view.*
 
 val DATE_FORMAT: DateTimeFormat<DateTimeComponents> = Format {
     year(); char(' '); monthNumber(); char(' '); dayOfMonth()
 }
 
-@Suppress("unused")
 @Composable
 @Preview
 fun previewApp(){
-    app(Model())
+    val model = Model().apply {
+        messages.clear()
+        levelMode = BarterMode()
+    }
+    
+    app(model)
 }
 
 val marketAlignment: Alignment = BiasAlignment(0f, -0.5f)

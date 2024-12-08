@@ -1,5 +1,6 @@
 package ru.predictor.loan.view
 
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -14,7 +15,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
+import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.Market
+
+@Composable
+@Preview
+fun previewMarket(){
+    val model = Market(
+        getAge = { Age.BARTER },
+    )
+        .apply {
+            has = true
+            products = 70
+        }
+
+    market(model)
+}
 
 @Composable
 fun market(

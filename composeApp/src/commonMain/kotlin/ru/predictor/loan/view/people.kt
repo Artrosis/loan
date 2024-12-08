@@ -1,5 +1,6 @@
 package ru.predictor.loan.view
 
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,16 @@ import loaninterest.composeapp.generated.resources.people
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.People
 import ru.predictor.loan.model.format
+
+@Composable
+@Preview
+fun previewApp(){
+    val model = People{}.apply {
+        population = 315f
+    }
+
+    people(model)
+}
 
 @Composable
 fun people(
