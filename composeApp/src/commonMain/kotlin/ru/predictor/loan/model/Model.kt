@@ -51,7 +51,7 @@ class Model {
     )
     val manufacture = Manufacture(
         onClick = { if (canInteract()) work() },
-        onGetPopulation = { return@Manufacture people.population.toInt() },
+        onGetPopulation = { people.population.toInt() },
         getAge = { levelMode.age },
     )
 
@@ -61,7 +61,24 @@ class Model {
         tick()
     }    
     
-    val bank = Bank()    
+    val bank = Bank(
+        getMoneyCount = ::countMoney,
+        getProductsData = {
+            mutableMapOf(
+                "manufacture.products" to manufacture.products,
+                "people.food" to people.food,
+                "market.products" to market.products
+                )
+        }
+    )
+
+    private fun countMoney(): Int {
+        return bank.money + 
+                manufacture.money + 
+                people.money + 
+                market.money
+    }
+    
     val messages = Messages{
         next()
     }
@@ -93,9 +110,9 @@ class Model {
     fun tick() {
         time += 1.days        
         market.tick()
-        bank.tick()
         manufacture.tick()        
         people.tick()
+        bank.tick()
 
         if (checkLevelUp()) levelUp()
     }
@@ -115,22 +132,26 @@ class Model {
         
         if (!canInteract()) return
         
-        people.food += manufacture.takeProducts()
-        people.checkFood()
+        levelMode.takeProductsFromManufactureToPeople(this)
+    }
+    
+    fun takeMoveMoneyFromBankToPeople(){
+        if (!canInteract()) return
+
+        levelMode.takeMoveMoneyFromBankToPeople(this)
     }
 
     fun takeProductsFromManufactureToMarket() {
 
         if (!canInteract()) return
         
-        market.products += manufacture.takeProducts()
+        levelMode.takeProductsFromManufactureToMarket(this)
     }
     
     fun takeProductsFromMarketToPeople(){
         if (!canInteract()) return
         
-        people.food += market.takeProducts()
-        people.checkFood()
+        levelMode.takeProductsFromMarketToPeople(this)
     }
 
     fun populationProgress() = people.population / levelMode.maxLevelPopulation.toFloat()

@@ -49,11 +49,14 @@ fun previewApp(){
         messages.clear()
         levelMode = BarterMode()
     }
+
+    model.levelMode.initModel(model)
     
     app(model)
 }
 
 val marketAlignment: Alignment = BiasAlignment(0f, -0.5f)
+val bankAlignment: Alignment = BiasAlignment(0f, 0.45f)
 
 @Composable
 fun app(model: Model) {
@@ -86,10 +89,17 @@ fun app(model: Model) {
                 model.people,
                 Modifier.align(Alignment.BottomEnd)
             )
-            bank(
-                model.bank,
-                Modifier.align(Alignment.Center)
-            )
+            Row(
+                modifier = Modifier
+                    .align(bankAlignment),
+                verticalAlignment = Alignment.Bottom
+            ) {                
+                bank(
+                    model.bank                    
+                )                
+                moveMoneyFromBankToPeople(model)
+            }
+            
             Row(
                 modifier = Modifier
                     .padding(16.dp)
@@ -189,9 +199,11 @@ fun moveProductsFromMarketToPeople(
     ){
         move(
             modifier = Modifier
-                .rotate(40f),
-            onMove = {model.takeProductsFromMarketToPeople()}
-        )
+                .rotate(40f)
+        ){
+            model.takeProductsFromMarketToPeople()
+        }
+        
     }
 }
 
@@ -223,6 +235,23 @@ fun moveProductsFromManufactureToPeople(
     ){
         move{
             model.takeProductsFromManufactureToPeople()
+        }
+    }
+}
+
+@Composable
+fun moveMoneyFromBankToPeople(
+    model: Model 
+){
+    AnimatedVisibility(
+        model.bank.money > 0
+                && model.levelMode.canMoveMoneyFromBankToPeople
+    ){
+        move(
+            modifier = Modifier
+                .rotate(10f)
+        ){
+            model.takeMoveMoneyFromBankToPeople()
         }
     }
 }

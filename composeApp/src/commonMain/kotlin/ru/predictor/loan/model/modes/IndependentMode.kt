@@ -20,4 +20,15 @@ class IndependentMode() : LevelMode() {
     override fun nextMode(): LevelMode {
         return BarterMode()
     }
+
+    override fun takeProductsFromManufactureToMarket(gameModel: Model) {
+        gameModel.market.products += gameModel.manufacture.takeProducts()
+    }
+
+    override fun takeProductsFromMarketToPeople(gameModel: Model) {}
+
+    override fun takeProductsFromManufactureToPeople(gameModel: Model){
+        gameModel.people.food += gameModel.manufacture.takeProducts()
+        gameModel.people.checkFood()
+    }
 }

@@ -17,7 +17,6 @@ class Market(
 
     fun tick() {
         if (!has) return
-        money += 10
     }
 
     private val marketIcon = Res.drawable.market
