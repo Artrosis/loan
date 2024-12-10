@@ -25,7 +25,6 @@ import ru.predictor.loan.model.Manufacture
 fun previewManufacture(){
     val model = Manufacture(
         onClick = { },
-        onGetPopulation = { return@Manufacture 315 },
         getAge = { Age.INDEPENDENT },
     ).apply {
         products = 70
@@ -59,7 +58,7 @@ fun manufacture(
                 modifier = modifier
                     .size(150.dp),
             )
-            Text("Продукты: ${model.products} (+${model.nextAddProduct()})")
+            Text("Продукты: ${model.products}")
             if (model.showMoney) {
                 Text("Деньги: ${model.money}")
             }

@@ -31,4 +31,10 @@ class IndependentMode() : LevelMode() {
         gameModel.people.food += gameModel.manufacture.takeProducts()
         gameModel.people.checkFood()
     }
+
+    override fun workOnManufacture(gameModel: Model) {
+        gameModel.manufacture.apply {
+            products += nextAddProduct(gameModel.people.population.toInt())
+        }
+    }
 }

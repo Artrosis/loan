@@ -15,10 +15,6 @@ class Market(
     var showPrice by MutableStateDelegate(false)
     var price by MutableStateDelegate(0)
 
-    fun tick() {
-        if (!has) return
-    }
-
     private val marketIcon = Res.drawable.market
     private val shopIcon = Res.drawable.shop
 

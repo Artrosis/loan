@@ -7,7 +7,6 @@ import loaninterest.composeapp.generated.resources.manuf
 
 class Manufacture(
     val onClick: () -> Unit,
-    val onGetPopulation: () -> Int,
     val getAge: () -> Age,
 ){    
     var products by MutableStateDelegate(0)
@@ -29,11 +28,7 @@ class Manufacture(
         Age.FINISH -> manufactureIcon
     }
 
-    fun tick() {
-        products += nextAddProduct()
-    }
-
-    fun nextAddProduct() = onGetPopulation() * 2
+    fun nextAddProduct(workersCount: Int) = workersCount * 2
 
     fun click() {
         onClick()

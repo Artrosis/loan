@@ -51,7 +51,6 @@ class Model {
     )
     val manufacture = Manufacture(
         onClick = { if (canInteract()) work() },
-        onGetPopulation = { people.population.toInt() },
         getAge = { levelMode.age },
     )
 
@@ -108,11 +107,12 @@ class Model {
     }
 
     fun tick() {
-        time += 1.days        
-        market.tick()
-        manufacture.tick()        
+        time += 1.days 
+        levelMode.workOnManufacture(this)       
         people.tick()
-        bank.tick()
+        if (bank.has) {
+            bank.emmitMoney()
+        }
 
         if (checkLevelUp()) levelUp()
     }

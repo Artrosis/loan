@@ -14,4 +14,5 @@ class FinishMode: LevelMode() {
 
     override fun takeProductsFromManufactureToMarket(gameModel: Model) {}
     override fun takeProductsFromMarketToPeople(gameModel: Model) {}
+    override fun workOnManufacture(gameModel: Model) {}
 }

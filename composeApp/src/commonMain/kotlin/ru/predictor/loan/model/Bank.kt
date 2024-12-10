@@ -13,11 +13,6 @@ class Bank(
     
     var money by MutableStateDelegate(0)
 
-    fun tick() {
-        if (!has) return
-        emmitMoney()
-    }
-
     fun emmitMoney() {        
         val productCount = getProductsData().values.sum()
         

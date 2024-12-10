@@ -16,4 +16,5 @@ abstract class LevelMode{
     abstract fun takeProductsFromManufactureToMarket(gameModel: Model)
     abstract fun takeProductsFromMarketToPeople(gameModel: Model)
     open fun takeMoveMoneyFromBankToPeople(gameModel: Model){}
+    abstract fun workOnManufacture(gameModel: Model)
 }

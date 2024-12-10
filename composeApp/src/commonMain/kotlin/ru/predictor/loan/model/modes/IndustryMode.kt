@@ -25,8 +25,9 @@ class IndustryMode: LevelMode() {
         //Обнулили еду у населения       
         model.people.food = 0
         
-        //Добавили товаров предприятию, чтобы оно могло продать их в магазин и получить денег
+        //На заводе и в магазине товаров минимум 100 в начале уровня
         model.manufacture.products = maxOf(model.manufacture.products, 100)
+        model.market.products = maxOf(model.market.products, 100)
         
         //Банк напечатал денег под товары в магазине
         model.bank.emmitMoney()
@@ -37,6 +38,15 @@ class IndustryMode: LevelMode() {
     }
 
     override fun takeProductsFromManufactureToMarket(gameModel: Model) {
+        
+        if (gameModel.market.money == 0) {
+            gameModel.messages.apply {
+                messages = listOf("Нет денег в магазине")
+                buttonText = "Понял"
+                onNext = {clear()}
+            }
+        }
+        
         val maxCount = minOf(gameModel.manufacture.products, gameModel.market.money)
 
         gameModel.market.apply {
@@ -51,11 +61,20 @@ class IndustryMode: LevelMode() {
     }
 
     override fun takeProductsFromMarketToPeople(gameModel: Model) {
+        if (gameModel.people.money == 0) {
+            gameModel.messages.apply {
+                messages = listOf("Нет денег у населения")
+                buttonText = "Понял"
+                onNext = {clear()}
+            }
+        }
+        
         val maxCount = minOf(gameModel.people.money, gameModel.market.products)
 
         gameModel.people.apply { 
             money -= maxCount
             food += maxCount
+            checkFood()
         }
         
         gameModel.market.apply { 
@@ -67,5 +86,26 @@ class IndustryMode: LevelMode() {
     override fun takeMoveMoneyFromBankToPeople(gameModel: Model){
         gameModel.people.money += gameModel.bank.money
         gameModel.bank.money = 0
+    }
+
+    override fun workOnManufacture(gameModel: Model) {
+        if (gameModel.manufacture.money == 0) {
+            gameModel.messages.apply {
+                messages = listOf("Нет денег на предприятии для оплаты труда")
+                buttonText = "Понял"
+                onNext = {clear()}
+            }
+        }
+
+        val workersCount = minOf(gameModel.manufacture.money, gameModel.people.population.toInt())
+
+        gameModel.people.apply {
+            money += workersCount
+        }
+
+        gameModel.manufacture.apply {
+            money -= workersCount
+            products += nextAddProduct(workersCount)
+        }
     }
 }
