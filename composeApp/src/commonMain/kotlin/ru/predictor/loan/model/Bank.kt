@@ -1,5 +1,7 @@
 package ru.predictor.loan.model
 
+import ru.predictor.loan.utils.MutableStateDelegate
+
 class Bank(
     val onClick: () -> Unit,
     val getMoneyCount: () -> Int,

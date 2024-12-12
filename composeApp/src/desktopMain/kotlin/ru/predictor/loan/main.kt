@@ -9,6 +9,8 @@ import loaninterest.composeapp.generated.resources.bank
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.Model
 
+val model = Model()
+
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
@@ -19,6 +21,6 @@ fun main() = application {
         title = "Ссудный процент",
         icon = painterResource(Res.drawable.bank)
     ) {
-        app(Model())
+        app(model)
     }
 }

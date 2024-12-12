@@ -3,6 +3,9 @@ package ru.predictor.loan.model
 import loaninterest.composeapp.generated.resources.*
 import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.market
+import ru.predictor.loan.utils.Event
+import ru.predictor.loan.utils.MutableStateDelegate
+import ru.predictor.loan.utils.ObservableStateDelegate
 
 class Market(
     val getAge: () -> Age,
@@ -11,7 +14,17 @@ class Market(
     var has by MutableStateDelegate(false)
     var showMoney by MutableStateDelegate(false)
     var money by MutableStateDelegate(0)
-    var products by MutableStateDelegate(0)
+
+    private var isShowTakeProducts = false
+    var products by ObservableStateDelegate(0){ newValue ->
+        if (!isShowTakeProducts && newValue > 0) {
+            onFirstGetProducts(Unit)
+            isShowTakeProducts = true
+        }
+    }
+
+    val onFirstGetProducts = Event<Unit>()
+    
     var showPrice by MutableStateDelegate(false)
     var price by MutableStateDelegate(0)
 

@@ -1,6 +1,7 @@
 package ru.predictor.loan.model
 
 import androidx.compose.ui.graphics.Color
+import ru.predictor.loan.utils.MutableStateDelegate
 import kotlin.math.ceil
 
 enum class PeopleState(val color: Color){

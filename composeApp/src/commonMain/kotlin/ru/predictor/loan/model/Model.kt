@@ -1,25 +1,11 @@
 package ru.predictor.loan.model
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.BiasAlignment
 import kotlinx.datetime.Clock
 import ru.predictor.loan.model.modes.IndependentMode
 import ru.predictor.loan.model.modes.LevelMode
-import kotlin.reflect.KProperty
+import ru.predictor.loan.utils.MutableStateDelegate
 import kotlin.time.Duration.Companion.days
-
-class MutableStateDelegate<T>(value: T) {
-    
-    private val state: MutableState<T> = mutableStateOf(value)
-    
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        return state.value
-    }
-    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        state.value = value
-    }
-}
 
 enum class Age(val caption: String){
     INDEPENDENT("Самообеспечение"),
@@ -37,14 +23,12 @@ class Model {
         onDie = {
             messages.messages = listOf("Население вымерло")
             messages.buttonText = "Начать заново"
-            messages.onNext = {next()}
+            messages.onNext = {
+                levelMode = IndependentMode()
+                levelMode.initModel(this)
+            }
         }
     )
-
-    private fun initNextAge() {
-        levelMode = levelMode.nextMode()
-        levelMode.initModel(this)
-    }
 
     val market = Market(
         getAge = { levelMode.age },
@@ -61,8 +45,6 @@ class Model {
         getAge = { levelMode.age },
     )
 
-    private fun canInteract(): Boolean = hint.message.isEmpty()
-    
     val bank = Bank(
         onClick = {
             if (canInteract()) levelMode.clickBank(this)
@@ -73,9 +55,56 @@ class Model {
                 "manufacture.products" to manufacture.products,
                 "people.food" to people.food,
                 "market.products" to market.products
-                )
+            )
         }
     )
+
+    private val peopleHintAlignment = BiasAlignment(0.6f, 0.3f)
+    private val progressHintAlignment = BiasAlignment(0f, -0.6f)
+    private val manufactureHintAlignment = BiasAlignment(-0.8f, 0.3f)
+
+    val hintQueue = mutableListOf(
+        HintData(
+            listOf(
+                "У нас есть люди.",
+                "Для жизни им нужна еда.",
+                "Еда расходуется каждый день.",
+                "Если еды достаточно, то население увеличивается.",
+            ), peopleHintAlignment
+        ),
+        HintData(
+            listOf(
+                "Шкала показывает количество населения.",
+                "При росте населения меняются экономические взаимоотношения между людьми.",
+            ), progressHintAlignment
+        ),
+        HintData(
+            listOf(
+                "На начальном этапе всё необходимое для жизни люди берут из природы.",
+                "Нажмите на иконку с деревом, чтобы отправить людей трудиться.",
+            ), manufactureHintAlignment
+        ),
+    )
+
+    val messages = Messages{
+        startMessage()
+    }
+
+    val hint = Hint{
+        clearHint()
+        nextHint()
+    }
+    
+    init{
+        levelMode.initModel(this)
+    }
+
+    private fun initNextAge() {
+        levelMode = levelMode.nextMode()
+        levelMode.initModel(this)
+    }
+
+    private fun canInteract(): Boolean = hint.disable || hint.message.isEmpty()
 
     private fun countMoney(): Int {
         return bank.money + 
@@ -83,33 +112,26 @@ class Model {
                 people.money + 
                 market.money
     }
-    
-    val messages = Messages{
-        next()
-    }
-    
-    val hint = Hint{
-        clearHint()
-    }
 
     private fun clearHint() {
         hint.clear()
     }
 
-    fun next(){
+    private fun startMessage(){
         messages.messages = listOf()
-        levelMode.initModel(this)
-        onStart()
+        nextHint()
     }
-    
-    private val peopleHintAlignment = BiasAlignment(0.6f, 0.3f)
 
-    private fun onStart() {
-        hint.message = listOf(
-            "Это население",
-            "Ему нужна еда для жизни и роста"
-        )
-        hint.alignment = peopleHintAlignment
+    fun nextHint() {
+        
+        if (hintQueue.size == 0) return
+        
+        val nextHint = hintQueue.first()
+        
+        hint.message = nextHint.message
+        hint.alignment = nextHint.alignment
+
+        hintQueue.remove(nextHint)
     }
 
     fun tick() {
@@ -127,15 +149,20 @@ class Model {
 
     private fun levelUp() {
         initNextAge()
-        messages.messages = listOf("Вы перешли на этап: ${levelMode.age.caption}")
-        messages.buttonText = "Продолжить"
-        messages.onNext = {
-            messages.messages = listOf()
+        messages.apply {
+            val showMessage = mutableListOf("Вы перешли на этап: ${levelMode.age.caption}")
+            showMessage.addAll(levelMode.levelMessages)
+            
+            messages = showMessage            
+            buttonText = "Продолжить"
+            onNext = {
+                messages = listOf()
+                nextHint()
+            }
         }
     }
 
-    fun takeProductsFromManufactureToPeople() {  
-        
+    fun takeProductsFromManufactureToPeople() {
         if (!canInteract()) return
         
         levelMode.takeProductsFromManufactureToPeople(this)
@@ -156,4 +183,11 @@ class Model {
 
     fun populationProgress() = people.population / levelMode.maxLevelPopulation.toFloat()
     fun populationText() = "${people.population.format()} / ${levelMode.maxLevelPopulation}"
+
+    companion object {
+        val manufactureToPeopleHintAlignment = BiasAlignment(-0.4f, 0.6f)
+        val manufactureToMarketHintAlignment = BiasAlignment(-0.4f, 0.2f)
+        val marketToPeopleHintAlignment = BiasAlignment(0.6f, 0.2f)
+        val bankHintAlignment = BiasAlignment(0f, 0.8f)
+    }
 }

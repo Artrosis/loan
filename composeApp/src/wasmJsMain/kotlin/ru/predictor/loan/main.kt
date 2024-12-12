@@ -7,7 +7,8 @@ import ru.predictor.loan.model.Model
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
+    val model = Model()
     ComposeViewport(document.body!!) {
-        app(Model())
+        app(model)
     }
 }

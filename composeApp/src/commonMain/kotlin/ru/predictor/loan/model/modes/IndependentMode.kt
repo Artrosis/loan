@@ -1,8 +1,10 @@
 package ru.predictor.loan.model.modes
 
 import ru.predictor.loan.model.Age
+import ru.predictor.loan.model.HintData
 import ru.predictor.loan.model.Model
-import ru.predictor.loan.model.MutableStateDelegate
+import ru.predictor.loan.model.Model.Companion.manufactureToPeopleHintAlignment
+import ru.predictor.loan.utils.MutableStateDelegate
 
 class IndependentMode() : LevelMode() {
     override val canMoveProductsFromManufactureToPeople = true
@@ -10,11 +12,24 @@ class IndependentMode() : LevelMode() {
     override var age by MutableStateDelegate(Age.INDEPENDENT)
 
     override fun initModel(model: Model){
-        
-        model.people.population = 3f
-        model.people.food = 6
+        model.apply {
+            people.population = 3f
+            people.food = 6
 
-        model.manufacture.products = 0
+            manufacture.products = 0
+
+            manufacture.onFirstGetProducts += {
+                hintQueue.add(
+                    HintData(
+                        listOf(
+                            "Люди потрудились и проголодались.",
+                            "Нажми на стрелку, чтобы перенести к ним продукты.",
+                        ), manufactureToPeopleHintAlignment
+                    ),
+                )
+                nextHint()
+            }
+        }
     }
 
     override fun nextMode(): LevelMode {

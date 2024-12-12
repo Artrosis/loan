@@ -1,9 +1,13 @@
 package ru.predictor.loan.model
 
-class Messages(var onNext: () -> Unit) {
+import ru.predictor.loan.utils.MutableStateDelegate
+
+class Messages(
+    var onNext: () -> Unit
+) {
     var messages by MutableStateDelegate(listOf(
         "Привет!",
-        "Это игра про ссудный процент."
+        "Это игра про ссудный процент и его влияние на экономику."
     ))
     
     fun clear(){

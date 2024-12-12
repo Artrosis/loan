@@ -1,36 +1,46 @@
 package ru.predictor.loan.model.modes
 
 import ru.predictor.loan.model.Age
+import ru.predictor.loan.model.HintData
 import ru.predictor.loan.model.Model
-import ru.predictor.loan.model.MutableStateDelegate
+import ru.predictor.loan.utils.MutableStateDelegate
 
 class IndustryMode: LevelMode() {
     override val maxLevelPopulation = 3000
     override var age by MutableStateDelegate(Age.INDUSTRY)
     override val canMoveMoneyFromBankToPeople = true
     override val canMoveProductsFromManufactureToMarket = true
-
-    override fun initModel(model: Model) {
-        
+    override val levelMessages = listOf(
+        "Людей стало больше.",
+        "Для удобства обмена, люди придумали деньги.",
+        "Учёт денег выполняет банк.",
+        "Он же следит за тем, чтобы количество денег было равно количеству товаров.",
+    )
+    
+    override fun initModel(model: Model) {        
         BarterMode().initModel(model)
-        
-        //Появился банк
-        model.bank.has = true
 
-        //У всех появились деньги
-        model.people.showMoney = true
-        model.manufacture.showMoney = true
-        model.market.showMoney = true
-        
-        //Обнулили еду у населения       
-        model.people.food = 0
-        
-        //На заводе и в магазине товаров минимум 100 в начале уровня
-        model.manufacture.products = maxOf(model.manufacture.products, 100)
-        model.market.products = maxOf(model.market.products, 100)
-        
-        //Банк напечатал денег под товары в магазине
-        model.bank.emmitMoney()
+        model.apply {
+            //Появился банк
+            bank.has = true
+
+            //У всех появились деньги
+            people.showMoney = true
+            manufacture.showMoney = true
+            market.showMoney = true
+
+            //Банк напечатал денег под товары в магазине
+            bank.emmitMoney()
+
+            hintQueue.add(
+                HintData(
+                    listOf(
+                        "Клинки на Банк, чтобы раздать всем деньги для начала обмена.",
+                    ), Model.bankHintAlignment
+                ),
+            )
+            nextHint()
+        }
     }
     
     override fun nextMode(): LevelMode {

@@ -4,12 +4,24 @@ import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.forest
 import loaninterest.composeapp.generated.resources.forge
 import loaninterest.composeapp.generated.resources.manuf
+import ru.predictor.loan.utils.Event
+import ru.predictor.loan.utils.MutableStateDelegate
+import ru.predictor.loan.utils.ObservableStateDelegate
 
 class Manufacture(
     val onClick: () -> Unit,
     val getAge: () -> Age,
-){    
-    var products by MutableStateDelegate(0)
+){
+    var isShowTakeProducts = false
+    var products by ObservableStateDelegate(0){ newValue ->
+        if (!isShowTakeProducts && newValue > 0) {
+            onFirstGetProducts(Unit)
+            isShowTakeProducts = true
+        }
+    }
+
+    val onFirstGetProducts = Event<Unit>()
+    
     var showMoney by MutableStateDelegate(false)
     var money by MutableStateDelegate(0)
     var showPrice by MutableStateDelegate(false)

@@ -9,6 +9,7 @@ abstract class LevelMode{
     open val canMoveMoneyFromBankToPeople = false
     abstract val maxLevelPopulation: Int
     abstract var age: Age
+    open val levelMessages = listOf<String>()
     
     open fun initModel(model: Model){}
     abstract fun nextMode(): LevelMode
