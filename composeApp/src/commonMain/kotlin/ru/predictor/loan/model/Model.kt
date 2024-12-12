@@ -50,17 +50,23 @@ class Model {
         getAge = { levelMode.age },
     )
     val manufacture = Manufacture(
-        onClick = { if (canInteract()) work() },
+        onClick = 
+        {
+            if (!canInteract()) return@Manufacture
+            
+            levelMode.apply { 
+                clickManufacture()
+            }
+        },
         getAge = { levelMode.age },
     )
 
     private fun canInteract(): Boolean = hint.message.isEmpty()
-
-    private fun work(){ 
-        tick()
-    }    
     
     val bank = Bank(
+        onClick = {
+            if (canInteract()) levelMode.clickBank(this)
+        },
         getMoneyCount = ::countMoney,
         getProductsData = {
             mutableMapOf(
@@ -133,12 +139,6 @@ class Model {
         if (!canInteract()) return
         
         levelMode.takeProductsFromManufactureToPeople(this)
-    }
-    
-    fun takeMoveMoneyFromBankToPeople(){
-        if (!canInteract()) return
-
-        levelMode.takeMoveMoneyFromBankToPeople(this)
     }
 
     fun takeProductsFromManufactureToMarket() {

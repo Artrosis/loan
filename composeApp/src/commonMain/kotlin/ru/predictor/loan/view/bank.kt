@@ -3,6 +3,7 @@ package ru.predictor.loan.view
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,7 +23,7 @@ import ru.predictor.loan.model.Bank
 @Composable
 @Preview
 fun previewBank(){
-    val model = Bank({0},{ mapOf()}).apply { 
+    val model = Bank({}, {0}, { mapOf()}).apply { 
         has = true
         money = 100500
     }
@@ -38,7 +39,10 @@ fun bank(
     if (model.has) {
         Surface(
             modifier = modifier
-                .padding(16.dp),
+                .padding(16.dp)
+                .clickable {
+                    model.click()
+                },
             shape = RoundedCornerShape(corner = CornerSize(16.dp)),
             border = BorderStroke(width = 1.dp, color = Color.Gray),
             color = Color(0xA0FFFFFF),

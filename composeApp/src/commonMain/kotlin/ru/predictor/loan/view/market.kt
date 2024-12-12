@@ -55,10 +55,10 @@ fun market(
                     modifier = modifier
                         .size(150.dp),
                 )
+                Text("Продукты: ${model.products}")
                 if (model.showMoney) {
                     Text("Деньги: ${model.money}")
                 }
-                Text("Продукты: ${model.products}")
                 if (model.showPrice) {
                     Text("Цены: ${model.price}")
                 }

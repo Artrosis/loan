@@ -89,16 +89,12 @@ fun app(model: Model) {
                 model.people,
                 Modifier.align(Alignment.BottomEnd)
             )
-            Row(
+                           
+            bank(
+                model.bank,
                 modifier = Modifier
                     .align(bankAlignment),
-                verticalAlignment = Alignment.Bottom
-            ) {                
-                bank(
-                    model.bank                    
-                )                
-                moveMoneyFromBankToPeople(model)
-            }
+            )
             
             Row(
                 modifier = Modifier
@@ -235,23 +231,6 @@ fun moveProductsFromManufactureToPeople(
     ){
         move{
             model.takeProductsFromManufactureToPeople()
-        }
-    }
-}
-
-@Composable
-fun moveMoneyFromBankToPeople(
-    model: Model 
-){
-    AnimatedVisibility(
-        model.bank.money > 0
-                && model.levelMode.canMoveMoneyFromBankToPeople
-    ){
-        move(
-            modifier = Modifier
-                .rotate(10f)
-        ){
-            model.takeMoveMoneyFromBankToPeople()
         }
     }
 }

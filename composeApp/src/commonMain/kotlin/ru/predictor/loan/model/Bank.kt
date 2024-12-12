@@ -1,6 +1,7 @@
 package ru.predictor.loan.model
 
 class Bank(
+    val onClick: () -> Unit,
     val getMoneyCount: () -> Int,
     val getProductsData: () -> Map<String, Int>,
 ){
@@ -21,5 +22,9 @@ class Bank(
         if (needMoney < 0) throw Exception("На текущем этапе количество товаров, а следовательно и денег в экономике всегда увеличивается.")
         
         money += needMoney
+    }
+
+    fun click() {
+        onClick()
     }
 }

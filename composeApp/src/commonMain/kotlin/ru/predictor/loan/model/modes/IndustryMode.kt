@@ -83,29 +83,48 @@ class IndustryMode: LevelMode() {
         }
     }
 
-    override fun takeMoveMoneyFromBankToPeople(gameModel: Model){
-        gameModel.people.money += gameModel.bank.money
-        gameModel.bank.money = 0
-    }
-
     override fun workOnManufacture(gameModel: Model) {
-        if (gameModel.manufacture.money == 0) {
-            gameModel.messages.apply {
-                messages = listOf("Нет денег на предприятии для оплаты труда")
-                buttonText = "Понял"
-                onNext = {clear()}
+        gameModel.apply {
+            val workersCount = minOf(manufacture.money, people.population.toInt())
+
+            people.apply {
+                money += workersCount
+            }
+
+            manufacture.apply {
+                money -= workersCount
+                products += nextAddProduct(workersCount)
             }
         }
-
-        val workersCount = minOf(gameModel.manufacture.money, gameModel.people.population.toInt())
-
-        gameModel.people.apply {
-            money += workersCount
+    }
+    
+    override fun clickBank(gameModel: Model){
+        gameModel.apply {
+            val economicParticipantsCount = 3
+            
+            if (bank.money < economicParticipantsCount) return
+            
+            //Банк поровну раздаёт деньги населению, производству и предприятию            
+            val partMoney = bank.money / economicParticipantsCount
+            
+            people.money += partMoney
+            manufacture.money += partMoney
+            market.money += partMoney
+            
+            bank.money -= partMoney * economicParticipantsCount
         }
-
-        gameModel.manufacture.apply {
-            money -= workersCount
-            products += nextAddProduct(workersCount)
-        }
+    }
+    
+    override fun Model.clickManufacture(){
+            if (manufacture.money == 0) {
+                messages.apply {
+                    messages = listOf("Нет денег на предприятии для оплаты труда")
+                    buttonText = "Понял"
+                    onNext = {clear()}
+                }
+                return
+            }
+            
+            tick()        
     }
 }
