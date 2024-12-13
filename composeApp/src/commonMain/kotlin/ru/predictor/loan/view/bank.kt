@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -23,9 +24,9 @@ import ru.predictor.loan.model.Bank
 @Composable
 @Preview
 fun previewBank(){
-    val model = Bank({}, {0}, { mapOf()}).apply { 
+    val model = Bank({}, {0.0}, { mapOf()}).apply { 
         has = true
-        money = 100500
+        money = 100500.0
     }
 
     bank(model)
@@ -39,7 +40,6 @@ fun bank(
     if (model.has) {
         Surface(
             modifier = modifier
-                .padding(16.dp)
                 .clickable {
                     model.click()
                 },
@@ -49,7 +49,8 @@ fun bank(
         ) {
             Column(
                 modifier = modifier
-                    .padding(16.dp)
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
                     painterResource(Res.drawable.bank),
@@ -60,7 +61,7 @@ fun bank(
                 if (model.showLoanInterest) {
                     Text("Ссудный процент: ${model.loanInterest}")
                 }
-                Text("Деньги: ${model.money}")
+                Text("Деньги: ${model.money.toInt()}")
             }
         }
     }

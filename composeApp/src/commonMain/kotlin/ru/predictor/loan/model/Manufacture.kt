@@ -23,11 +23,15 @@ class Manufacture(
     val onFirstGetProducts = Event<Unit>()
     
     var showMoney by MutableStateDelegate(false)
-    var money by MutableStateDelegate(0)
+    var money by MutableStateDelegate(0.0)
     var showPrice by MutableStateDelegate(false)
     var price by MutableStateDelegate(0)
     var showSalary by MutableStateDelegate(false)
     var salary by MutableStateDelegate(0)
+
+    var showCredit by MutableStateDelegate(false)
+    var credit by MutableStateDelegate(0.0)
+    var payment by MutableStateDelegate(0.0)
 
     private val forestIcon = Res.drawable.forest
     private val forgeIcon = Res.drawable.forge
@@ -37,6 +41,7 @@ class Manufacture(
         Age.INDEPENDENT -> forestIcon
         Age.BARTER -> forgeIcon
         Age.INDUSTRY -> manufactureIcon
+        Age.CREDITING -> manufactureIcon
         Age.FINISH -> manufactureIcon
     }
 

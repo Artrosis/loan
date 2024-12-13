@@ -13,7 +13,11 @@ class Market(
     //Видимость
     var has by MutableStateDelegate(false)
     var showMoney by MutableStateDelegate(false)
-    var money by MutableStateDelegate(0)
+    var money by MutableStateDelegate(0.0)
+
+    var showCredit by MutableStateDelegate(false)
+    var credit by MutableStateDelegate(0.0)
+    var payment by MutableStateDelegate(0.0)
 
     private var isShowTakeProducts = false
     var products by ObservableStateDelegate(0){ newValue ->
@@ -35,6 +39,7 @@ class Market(
         Age.INDEPENDENT -> throw Exception("На этапе Самообеспечение нет рынка")
         Age.BARTER -> marketIcon
         Age.INDUSTRY -> shopIcon
+        Age.CREDITING -> shopIcon
         Age.FINISH -> shopIcon
     }
 

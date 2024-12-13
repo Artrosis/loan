@@ -25,38 +25,41 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.datetime.format
-import kotlinx.datetime.format.DateTimeComponents
-import kotlinx.datetime.format.DateTimeComponents.Companion.Format
-import kotlinx.datetime.format.DateTimeFormat
-import kotlinx.datetime.format.char
 import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.grass
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.Hint
 import ru.predictor.loan.model.Model
 import ru.predictor.loan.model.modes.BarterMode
+import ru.predictor.loan.model.modes.CreditingMode
+import ru.predictor.loan.model.modes.IndependentMode
+import ru.predictor.loan.model.modes.IndustryMode
 import ru.predictor.loan.view.*
-
-val DATE_FORMAT: DateTimeFormat<DateTimeComponents> = Format {
-    year(); char(' '); monthNumber(); char(' '); dayOfMonth()
-}
 
 @Composable
 @Preview
 fun previewApp(){
     val model = Model().apply {
         messages.clear()
+        levelMode = IndependentMode()
+        initialization()
+        manufacture.products = 13
         levelMode = BarterMode()
+        initialization()
+        levelMode = IndustryMode()
+        initialization()
+        messages.clear()
+        levelMode = CreditingMode()
+        initialization()
+        hint.clear()
+        hintQueue.clear()
     }
-
-    model.levelMode.initModel(model)
     
     app(model)
 }
 
 val marketAlignment: Alignment = BiasAlignment(0f, -0.5f)
-val bankAlignment: Alignment = BiasAlignment(0f, 0.45f)
+val bankAlignment: Alignment = BiasAlignment(0f, 0.7f)
 
 @Composable
 fun app(model: Model) {
@@ -82,51 +85,155 @@ fun app(model: Model) {
                 modifier = Modifier
                     .padding(16.dp)
                     .align(Alignment.TopEnd),
-                text = "Дата: ${model.time.format(DATE_FORMAT)}"
+                text = "Дата: ${model.date}"
             )
             
             people(
                 model.people,
-                Modifier.align(Alignment.BottomEnd)
+                Modifier.padding(16.dp).align(Alignment.BottomEnd)
             )
-                           
-            bank(
-                model.bank,
+            
+            bankWithActions(
+                model,
                 modifier = Modifier
                     .align(bankAlignment),
             )
-            
-            Row(
+
+            manufactureWithAction(
+                model,
                 modifier = Modifier
                     .padding(16.dp)
                     .align(Alignment.BottomStart),
-                verticalAlignment = Alignment.Bottom
-            ) {
-                Column {
-                    moveProductsFromManufactureToMarket(
-                        modifier = Modifier.align(Alignment.End),
-                        model
-                    )
-                    manufacture(
-                        model.manufacture
-                    )
-                }
-                moveProductsFromManufactureToPeople(model)
-            }
-            Row(
-                modifier = Modifier.align(marketAlignment)
-            ) {
-                market(
-                    model.market
-                )
-                moveProductsFromMarketToPeople(
-                    Modifier.align(Alignment.Bottom),
-                    model
-                )
-            }
+            )
+
+            marketWithAction(
+                model,
+                modifier = Modifier.align(marketAlignment),
+            )            
             
             hint(model.hint)
         }
+    }
+}
+
+@Composable
+fun bankWithActions(
+    model: Model, 
+    modifier: Modifier,
+) {
+    Column(
+        modifier = modifier
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        if (model.bank.has) {
+            AnimatedVisibility(model.levelMode.canTakeMoneyFromBank)
+            {
+                marketTakeMoney(
+                    Modifier.align(Alignment.CenterHorizontally),
+                    model
+                )
+            }
+            Row(
+                verticalAlignment = Alignment.Bottom
+            ) {
+                AnimatedVisibility(model.levelMode.canTakeMoneyFromBank)
+                {
+                    manufactureTakeMoney(
+                        Modifier.align(Alignment.Bottom),
+                        model
+                    )
+                }
+                bank(
+                    model.bank,
+                )
+                AnimatedVisibility(model.levelMode.canTakeMoneyFromBank)
+                {
+                    peopleTakeMoney(
+                        Modifier.align(Alignment.Bottom),
+                        model
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun marketTakeMoney(
+    modifier: Modifier = Modifier,
+    model: Model
+) {
+    move(
+        modifier = modifier
+            .rotate(-90f)
+    ){
+        model.marketTakeMoney()
+    }
+}
+
+@Composable
+fun manufactureTakeMoney(
+    modifier: Modifier = Modifier,
+    model: Model
+) {
+    move(
+        modifier = modifier
+            .rotate(180f)
+    ){
+        model.manufactureTakeMoney()
+    }
+}
+
+@Composable
+fun peopleTakeMoney(
+    modifier: Modifier = Modifier,
+    model: Model
+) {
+    move(
+        modifier = modifier
+    ){
+        model.peopleTakeMoney()
+    }
+}
+
+@Composable
+fun manufactureWithAction(
+    model: Model,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.Bottom
+    ) {
+        Column {
+            moveProductsFromManufactureToMarket(
+                modifier = Modifier.align(Alignment.End),
+                model
+            )
+            manufacture(
+                model.manufacture
+            )
+        }
+        moveProductsFromManufactureToPeople(model)
+    }
+}
+
+@Composable
+fun marketWithAction(
+    model: Model,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.padding(16.dp)
+    ) {
+        market(
+            model.market
+        )
+        moveProductsFromMarketToPeople(
+            Modifier.align(Alignment.Bottom),
+            model
+        )
     }
 }
 
@@ -197,7 +304,7 @@ fun moveProductsFromMarketToPeople(
             modifier = Modifier
                 .rotate(40f)
         ){
-            model.takeProductsFromMarketToPeople()
+            model.moveProductsFromMarketToPeople()
         }
         
     }
@@ -216,7 +323,7 @@ fun moveProductsFromManufactureToMarket(
         move(
             modifier = Modifier
                 .rotate(-40f),
-            onMove = {model.takeProductsFromManufactureToMarket()}
+            onMove = {model.moveProductsFromManufactureToMarket()}
         )
     }
 }
@@ -230,7 +337,7 @@ fun moveProductsFromManufactureToPeople(
                 && model.levelMode.canMoveProductsFromManufactureToPeople
     ){
         move{
-            model.takeProductsFromManufactureToPeople()
+            model.moveProductsFromManufactureToPeople()
         }
     }
 }
@@ -244,10 +351,7 @@ fun move(
         imageVector = Icons.Filled.PlayArrow,
         contentDescription = "Забрать товары",
         modifier = modifier
-            .size(96.dp)
-            .padding(
-                bottom = 16.dp
-            )
+            .size(60.dp)
             .clickable(
                 onClick = onMove
             ),

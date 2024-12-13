@@ -22,7 +22,11 @@ class People(
     var state by MutableStateDelegate(PeopleState.GOOD)
     
     var showMoney by MutableStateDelegate(false)
-    var money by MutableStateDelegate(0)
+    var money by MutableStateDelegate(0.0)
+    
+    var showCredit by MutableStateDelegate(false)
+    var credit by MutableStateDelegate(0.0)
+    var payment by MutableStateDelegate(0.0)
 
     fun tick() {
         val needFood = ceil(population).toInt()

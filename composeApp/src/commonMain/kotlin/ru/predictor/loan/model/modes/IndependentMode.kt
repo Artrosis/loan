@@ -11,24 +11,22 @@ class IndependentMode() : LevelMode() {
     override val maxLevelPopulation = 30
     override var age by MutableStateDelegate(Age.INDEPENDENT)
 
-    override fun initModel(model: Model){
-        model.apply {
-            people.population = 3f
-            people.food = 6
+    override fun Model.initModel(){
+        people.population = 3f
+        people.food = 6
 
-            manufacture.products = 0
+        manufacture.products = 0
 
-            manufacture.onFirstGetProducts += {
-                hintQueue.add(
-                    HintData(
-                        listOf(
-                            "Люди потрудились и проголодались.",
-                            "Нажми на стрелку, чтобы перенести к ним продукты.",
-                        ), manufactureToPeopleHintAlignment
-                    ),
-                )
-                nextHint()
-            }
+        manufacture.onFirstGetProducts += {
+            hintQueue.add(
+                HintData(
+                    listOf(
+                        "Люди потрудились и проголодались.",
+                        "Нажми на стрелку, чтобы перенести к ним продукты.",
+                    ), manufactureToPeopleHintAlignment
+                ),
+            )
+            nextHint()
         }
     }
 
@@ -36,20 +34,20 @@ class IndependentMode() : LevelMode() {
         return BarterMode()
     }
 
-    override fun takeProductsFromManufactureToMarket(gameModel: Model) {
-        gameModel.market.products += gameModel.manufacture.takeProducts()
+    override fun Model.takeProductsFromManufactureToMarket() {
+        market.products += manufacture.takeProducts()
     }
 
-    override fun takeProductsFromMarketToPeople(gameModel: Model) {}
+    override fun Model.takeProductsFromMarketToPeople() {}
 
-    override fun takeProductsFromManufactureToPeople(gameModel: Model){
-        gameModel.people.food += gameModel.manufacture.takeProducts()
-        gameModel.people.checkFood()
+    override fun Model.takeProductsFromManufactureToPeople(){
+        people.food += manufacture.takeProducts()
+        people.checkFood()
     }
 
-    override fun workOnManufacture(gameModel: Model) {
-        gameModel.manufacture.apply {
-            products += nextAddProduct(gameModel.people.population.toInt())
+    override fun Model.workOnManufacture() {
+        manufacture.apply {
+            products += nextAddProduct(people.population.toInt())
         }
     }
 }

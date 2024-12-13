@@ -12,7 +12,7 @@ class FinishMode: LevelMode() {
         return this
     }
 
-    override fun takeProductsFromManufactureToMarket(gameModel: Model) {}
-    override fun takeProductsFromMarketToPeople(gameModel: Model) {}
-    override fun workOnManufacture(gameModel: Model) {}
+    override fun Model.takeProductsFromManufactureToMarket() {}
+    override fun Model.takeProductsFromMarketToPeople() {}
+    override fun Model.workOnManufacture() {}
 }

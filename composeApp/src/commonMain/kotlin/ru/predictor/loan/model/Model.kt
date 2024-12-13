@@ -1,21 +1,20 @@
 package ru.predictor.loan.model
 
 import androidx.compose.ui.BiasAlignment
-import kotlinx.datetime.Clock
-import ru.predictor.loan.model.modes.IndependentMode
-import ru.predictor.loan.model.modes.LevelMode
+import kotlinx.datetime.LocalDate
+import ru.predictor.loan.model.modes.*
 import ru.predictor.loan.utils.MutableStateDelegate
-import kotlin.time.Duration.Companion.days
 
 enum class Age(val caption: String){
     INDEPENDENT("Самообеспечение"),
     BARTER("Натуральный обмен"),
     INDUSTRY("Индустриализация"),
+    CREDITING("Кредитование"),
     FINISH("Конец")
 }
 
 class Model {
-    var time by MutableStateDelegate(Clock.System.now())
+    var date by MutableStateDelegate(LocalDate(2000, 1, 1))
     
     var levelMode by MutableStateDelegate<LevelMode>(IndependentMode())
 
@@ -25,7 +24,7 @@ class Model {
             messages.buttonText = "Начать заново"
             messages.onNext = {
                 levelMode = IndependentMode()
-                levelMode.initModel(this)
+                initialization()
             }
         }
     )
@@ -34,11 +33,8 @@ class Model {
         getAge = { levelMode.age },
     )
     val manufacture = Manufacture(
-        onClick = 
-        {
-            if (!canInteract()) return@Manufacture
-            
-            levelMode.apply { 
+        onClick = {
+            canInteractLevelMode {
                 clickManufacture()
             }
         },
@@ -47,7 +43,9 @@ class Model {
 
     val bank = Bank(
         onClick = {
-            if (canInteract()) levelMode.clickBank(this)
+            canInteractLevelMode {
+                clickBank()
+            }
         },
         getMoneyCount = ::countMoney,
         getProductsData = {
@@ -96,17 +94,35 @@ class Model {
     }
     
     init{
-        levelMode.initModel(this)
+        initialization()
+
+        /*messages.clear()
+        levelMode = IndependentMode()
+        initialization()
+        manufacture.products = 13
+        levelMode = BarterMode()
+        initialization()
+        levelMode = IndustryMode()
+        initialization()
+        messages.clear()
+        levelMode = CreditingMode()
+        initialization()
+        hint.clear()
+        hintQueue.clear()*/
     }
 
+    inline fun initialization(){
+        levelMode.apply { initModel() }
+    }
+    
     private fun initNextAge() {
         levelMode = levelMode.nextMode()
-        levelMode.initModel(this)
+        initialization()
     }
 
     private fun canInteract(): Boolean = hint.disable || hint.message.isEmpty()
 
-    private fun countMoney(): Int {
+    private fun countMoney(): Double {
         return bank.money + 
                 manufacture.money + 
                 people.money + 
@@ -135,14 +151,31 @@ class Model {
     }
 
     fun tick() {
-        time += 1.days 
-        levelMode.workOnManufacture(this)       
-        people.tick()
-        if (bank.has) {
-            bank.emmitMoney()
+        date = date.incrementMonth()
+        levelMode.apply { workOnManufacture() }
+
+        levelMode.apply {
+            bankTick()
+            peopleTick()
+            manufactureTick()
+            marketTick()
         }
 
         if (checkLevelUp()) levelUp()
+    }
+    
+    private fun LocalDate.incrementMonth(): LocalDate{
+        var year = this.year
+        var monthNumber = this.monthNumber
+        
+        if (monthNumber == 12) {
+            monthNumber = 1
+            year++
+        } else {
+            monthNumber++
+        }
+        
+        return LocalDate(year, monthNumber, this.dayOfMonth)
     }
 
     private fun checkLevelUp(): Boolean = people.population >= levelMode.maxLevelPopulation
@@ -162,27 +195,38 @@ class Model {
         }
     }
 
-    fun takeProductsFromManufactureToPeople() {
-        if (!canInteract()) return
-        
-        levelMode.takeProductsFromManufactureToPeople(this)
+    fun moveProductsFromManufactureToPeople() = canInteractLevelMode {
+        takeProductsFromManufactureToPeople()
     }
 
-    fun takeProductsFromManufactureToMarket() {
-
-        if (!canInteract()) return
-        
-        levelMode.takeProductsFromManufactureToMarket(this)
+    fun moveProductsFromManufactureToMarket() = canInteractLevelMode {
+        takeProductsFromManufactureToMarket()
     }
     
-    fun takeProductsFromMarketToPeople(){
+    fun moveProductsFromMarketToPeople()= canInteractLevelMode {
+        takeProductsFromMarketToPeople()
+    }
+
+    private fun canInteractLevelMode(levelModeAction: LevelMode.() -> Unit) {
         if (!canInteract()) return
-        
-        levelMode.takeProductsFromMarketToPeople(this)
+
+        levelMode.apply(levelModeAction)
+    }
+
+    fun marketTakeMoney() = canInteractLevelMode {
+        marketGiveMoney()
+    }
+
+    fun manufactureTakeMoney() = canInteractLevelMode {
+        manufactureGiveMoney()
+    }    
+
+    fun peopleTakeMoney() = canInteractLevelMode{
+        peopleGiveMoney()
     }
 
     fun populationProgress() = people.population / levelMode.maxLevelPopulation.toFloat()
-    fun populationText() = "${people.population.format()} / ${levelMode.maxLevelPopulation}"
+    fun populationText() = "${people.population.format()} / ${levelMode.maxLevelPopulation}"    
 
     companion object {
         val manufactureToPeopleHintAlignment = BiasAlignment(-0.4f, 0.6f)

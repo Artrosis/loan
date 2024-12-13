@@ -4,7 +4,7 @@ import ru.predictor.loan.utils.MutableStateDelegate
 
 class Bank(
     val onClick: () -> Unit,
-    val getMoneyCount: () -> Int,
+    val getMoneyCount: () -> Double,
     val getProductsData: () -> Map<String, Int>,
 ){
     //Видимость
@@ -12,9 +12,9 @@ class Bank(
     
     //Ссудный процент
     var showLoanInterest by MutableStateDelegate(false)
-    var loanInterest by MutableStateDelegate(1.0)
+    var loanInterest by MutableStateDelegate(8.0)
     
-    var money by MutableStateDelegate(0)
+    var money by MutableStateDelegate(0.0)
 
     fun emmitMoney() {        
         val productCount = getProductsData().values.sum()

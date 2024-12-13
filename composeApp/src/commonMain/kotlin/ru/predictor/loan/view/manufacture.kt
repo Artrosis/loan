@@ -40,7 +40,6 @@ fun manufacture(
 ) {
     Surface(
         modifier = modifier
-            .padding(16.dp)
             .clickable { 
                 model.click()
             },
@@ -50,7 +49,7 @@ fun manufacture(
     ){
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(2.dp)
         ) {
             Image(
                 painterResource(model.getIcon()),
@@ -60,13 +59,16 @@ fun manufacture(
             )
             Text("Продукты: ${model.products}")
             if (model.showMoney) {
-                Text("Деньги: ${model.money}")
+                Text("Деньги: ${model.money.toInt()}")
             }
             if (model.showPrice) {
                 Text("Цены: ${model.price}")
             }
             if (model.showSalary) {
                 Text("Зарплаты: ${model.salary}")
+            }
+            if (model.showCredit) {
+                Text("${model.credit} (-${model.payment})")
             }
         }
     }

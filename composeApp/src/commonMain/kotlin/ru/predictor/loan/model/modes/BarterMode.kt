@@ -19,35 +19,33 @@ class BarterMode: LevelMode() {
         ), manufactureToMarketHintAlignment
     )
     
-    override fun initModel(model: Model) {
-        model.apply {
-            market.has = true
-            
-            if (manufacture.products > 0) {
+    override fun Model.initModel() {
+        market.has = true
+        
+        if (manufacture.products > 0) {
+            hintQueue.add(manufactureToMarketHint)
+            nextHint()
+        }
+        else {
+            manufacture.isShowTakeProducts = false
+
+            manufacture.onFirstGetProducts.clear()
+            manufacture.onFirstGetProducts += {
                 hintQueue.add(manufactureToMarketHint)
                 nextHint()
             }
-            else {
-                manufacture.isShowTakeProducts = false
+        }
 
-                manufacture.onFirstGetProducts.clear()
-                manufacture.onFirstGetProducts += {
-                    hintQueue.add(manufactureToMarketHint)
-                    nextHint()
-                }
-            }
-
-            market.onFirstGetProducts.clear()
-            market.onFirstGetProducts += {
-                hintQueue.add(
-                    HintData(
-                        listOf(
-                            "Нажми стрелочку, чтобы люди обменялись товарами.",
-                        ), marketToPeopleHintAlignment
-                    ),
-                )
-                nextHint()
-            }
+        market.onFirstGetProducts.clear()
+        market.onFirstGetProducts += {
+            hintQueue.add(
+                HintData(
+                    listOf(
+                        "Нажми стрелочку, чтобы люди обменялись товарами.",
+                    ), marketToPeopleHintAlignment
+                ),
+            )
+            nextHint()
         }
     }
 
@@ -55,18 +53,18 @@ class BarterMode: LevelMode() {
         return IndustryMode()
     }
 
-    override fun takeProductsFromManufactureToMarket(gameModel: Model) {
-        IndependentMode().takeProductsFromManufactureToMarket(gameModel)
+    override fun Model.takeProductsFromManufactureToMarket() {
+        IndependentMode().apply { takeProductsFromManufactureToMarket()} 
     }
 
-    override fun takeProductsFromMarketToPeople(gameModel: Model) {
-        gameModel.people.food += gameModel.market.takeProducts()
-        gameModel.people.checkFood()
+    override fun Model.takeProductsFromMarketToPeople() {
+        people.food += market.takeProducts()
+        people.checkFood()
     }
 
-    override fun workOnManufacture(gameModel: Model) {
-        gameModel.manufacture.apply {
-            products += nextAddProduct(gameModel.people.population.toInt())
+    override fun Model.workOnManufacture() {
+        manufacture.apply {
+            products += nextAddProduct(people.population.toInt())
         }
     }
 }

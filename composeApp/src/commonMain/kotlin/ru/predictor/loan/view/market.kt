@@ -39,8 +39,7 @@ fun market(
 ) {
     if (model.has) {
         Surface(
-            modifier = modifier
-                .padding(16.dp),
+            modifier = modifier,
             shape = RoundedCornerShape(corner = CornerSize(16.dp)),
             border = BorderStroke(width = 1.dp, color = Color.Gray),
             color = Color(0xA0FFFFFF),
@@ -57,10 +56,13 @@ fun market(
                 )
                 Text("Продукты: ${model.products}")
                 if (model.showMoney) {
-                    Text("Деньги: ${model.money}")
+                    Text("Деньги: ${model.money.toInt()}")
                 }
                 if (model.showPrice) {
                     Text("Цены: ${model.price}")
+                }
+                if (model.showCredit) {
+                    Text("${model.credit} (-${model.payment})")
                 }
             }
         }

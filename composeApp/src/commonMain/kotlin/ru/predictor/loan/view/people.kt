@@ -4,7 +4,6 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,8 +36,7 @@ fun people(
     modifier: Modifier = Modifier,
 ) {
      Surface(
-         modifier = modifier
-             .padding(16.dp),
+         modifier = modifier,
          shape = RoundedCornerShape(corner = CornerSize(16.dp)),
          border = BorderStroke(width = 1.dp, color = Color.Gray),
          color = model.state.color,
@@ -55,7 +53,10 @@ fun people(
             )
             Text("Еда: ${model.food}")
             if (model.showMoney) {
-                Text("Деньги: ${model.money}")
+                Text("Деньги: ${model.money.toInt()}")
+            }
+            if (model.showCredit) {
+                Text("${model.credit} (-${model.payment})")
             }
         }
     }    
