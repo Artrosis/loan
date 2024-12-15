@@ -16,7 +16,7 @@ class CreditingMode: IndustryMode() {
         //У банка появился ссудный процент
         bank.showLoanInterest = true
         
-        //У всех появились кредиты и платежи поп ним
+        //У всех появились кредиты и платежи по ним
         people.showCredit = true
         manufacture.showCredit = true
         market.showCredit = true
