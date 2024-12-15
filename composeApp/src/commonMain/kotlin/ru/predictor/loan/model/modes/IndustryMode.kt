@@ -125,7 +125,7 @@ open class IndustryMode: LevelMode() {
     }
     
     override fun Model.clickManufacture(){
-        if (manufacture.money == 0.0) {
+        if (manufacture.money < people.population) {
             messages.apply {
                 messages = listOf("Нет денег на предприятии для оплаты труда")
                 buttonText = "Понял"
