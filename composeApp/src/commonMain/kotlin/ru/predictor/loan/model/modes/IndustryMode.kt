@@ -92,13 +92,15 @@ open class IndustryMode: LevelMode() {
 
     override fun Model.workOnManufacture() {
         val workersCount = minOf(manufacture.money.toInt(), people.population.toInt())
+        val salary = 1
+        val workMoney = workersCount * salary
 
         people.apply {
-            money += workersCount
+            money += workMoney
         }
 
         manufacture.apply {
-            money -= workersCount
+            money -= workMoney
             products += nextAddProduct(workersCount)
         }
     }
