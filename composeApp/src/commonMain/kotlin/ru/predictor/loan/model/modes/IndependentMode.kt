@@ -12,7 +12,7 @@ class IndependentMode() : LevelMode() {
     override var age by MutableStateDelegate(Age.INDEPENDENT)
 
     override fun Model.initModel(){
-        people.population = 3f
+        people.population = 10f
         people.food = 6
 
         manufacture.products = 0
