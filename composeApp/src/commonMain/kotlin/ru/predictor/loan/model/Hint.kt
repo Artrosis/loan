@@ -9,7 +9,7 @@ class Hint(
     var disable by MutableStateDelegate(false)
     var message by MutableStateDelegate(listOf<String>())
     var alignment by MutableStateDelegate(Alignment.Center)
-    var buttonText by MutableStateDelegate("Понял")
+    var buttonText by MutableStateDelegate("Понятно")
 
     fun confirm() {
         onConfirm()

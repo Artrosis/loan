@@ -49,7 +49,7 @@ open class IndustryMode: LevelMode() {
         if (market.money == 0.0) {
             messages.apply {
                 messages = listOf("Нет денег в магазине")
-                buttonText = "Понял"
+                buttonText = "Понятно"
                 onNext = {clear()}
             }
         }
@@ -71,7 +71,7 @@ open class IndustryMode: LevelMode() {
         if (people.money == 0.0) {
             messages.apply {
                 messages = listOf("Нет денег у населения")
-                buttonText = "Понял"
+                buttonText = "Понятно"
                 onNext = {clear()}
             }
         }
@@ -92,8 +92,9 @@ open class IndustryMode: LevelMode() {
 
     override fun Model.workOnManufacture() {
         val workersCount = minOf(manufacture.money.toInt(), people.population.toInt())
-        val salary = 1
+        val salary = 1.5
         val workMoney = workersCount * salary
+
 
         people.apply {
             money += workMoney
@@ -128,7 +129,7 @@ open class IndustryMode: LevelMode() {
         if (manufacture.money < people.population) {
             messages.apply {
                 messages = listOf("Нет денег на предприятии для оплаты труда")
-                buttonText = "Понял"
+                buttonText = "Понятно"
                 onNext = {clear()}
             }
             return

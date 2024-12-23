@@ -51,7 +51,7 @@ fun people(
                 modifier = Modifier
                     .size(150.dp)
             )
-            Text("Еда: ${model.food}")
+            Text("Продукты: ${model.food}")
             if (model.showMoney) {
                 Text("Деньги: ${model.money.toInt()}")
             }
