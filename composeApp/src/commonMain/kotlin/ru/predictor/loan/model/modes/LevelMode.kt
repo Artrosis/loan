@@ -19,8 +19,8 @@ abstract class LevelMode{
     abstract fun Model.workOnManufacture()
     open fun Model.bankTick(){}
     open fun Model.peopleTick(){people.tick()}
-    open fun Model.manufactureTick(){}
-    open fun Model.marketTick(){}
+    open fun Model.manufactureTick(){manufacture.tick()}
+    open fun Model.marketTick(){market.tick()}
     open fun Model.clickBank(){}
     open fun Model.clickManufacture(){
         tick()

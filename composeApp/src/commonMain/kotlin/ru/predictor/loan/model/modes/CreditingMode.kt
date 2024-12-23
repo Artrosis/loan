@@ -1,6 +1,7 @@
 package ru.predictor.loan.model.modes
 
 import ru.predictor.loan.model.Age
+import ru.predictor.loan.model.Credit
 import ru.predictor.loan.model.Model
 import ru.predictor.loan.utils.MutableStateDelegate
 
@@ -27,43 +28,22 @@ class CreditingMode: IndustryMode() {
     }
 
     override fun Model.clickBank(){}
+    
+    private fun Model.makeCredit():Credit {
+        return Credit(bank.loanSize.toDouble(), bank.loanInterest)
+    }
 
-    private val giveMoneyCount = 1000f
     override fun Model.peopleGiveMoney(){
-        people.apply {
-            money += giveMoneyCount
-            credit += giveMoneyCount * (1 + bank.loanInterest.toFloat() / 100f)
-            payment += 90
-        }
+        people.addCredit(makeCredit())
     }
     
     override fun Model.manufactureGiveMoney(){
-        manufacture.apply {
-            money += giveMoneyCount
-            credit += giveMoneyCount * (1 + bank.loanInterest.toFloat() / 100f)
-            payment += 90
-        }
+        manufacture.addCredit(makeCredit())
     }
     
     override fun Model.marketGiveMoney(){
-        market.apply {
-            money += giveMoneyCount
-            credit += giveMoneyCount * (1 + bank.loanInterest.toFloat() / 100f)
-            payment += 90
-        }  
+        market.addCredit(makeCredit()) 
     }
-
-    override fun Model.peopleTick(){
-        people.apply { 
-            tick()
-            money -= payment            
-        }        
-    }
-    override fun Model.manufactureTick(){
-        manufacture.money -= manufacture.payment
-    }
-    override fun Model.marketTick(){
-        market.money -= market.payment
-    }
+  
     override fun Model.bankTick() {}
 }

@@ -15,7 +15,7 @@ class Bank(
     
     //Ссудный процент
     var showLoanInterest by MutableStateDelegate(false)
-    var loanInterest by MutableStateDelegate(8.0)
+    var loanInterest by MutableStateDelegate(8)
     
     var money by MutableStateDelegate(0.0)
 
