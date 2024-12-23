@@ -4,6 +4,7 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,6 +12,8 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,6 +41,7 @@ fun manufacture(
     model: Manufacture,
     modifier: Modifier = Modifier,
 ) {
+    editManufactureSettings(model)
     Surface(
         modifier = modifier
             .clickable { 
@@ -51,12 +55,22 @@ fun manufacture(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(2.dp)
         ) {
-            Image(
-                painterResource(model.getIcon()),
-                null,
-                modifier = modifier
-                    .size(150.dp),
-            )
+            Box(
+                modifier = Modifier
+                    .size(150.dp)
+            ){
+                manufactureSettings(
+                    model,
+                    modifier = Modifier.align(Alignment.TopEnd)
+                )
+                Image(
+                    painterResource(model.getIcon()),
+                    null,
+                    modifier = Modifier
+                        .size(150.dp),
+                )
+            }
+            
             Text("Продукты: ${model.products}")
             if (model.showMoney) {
                 Text("Деньги: ${model.money.toInt()}")
@@ -70,4 +84,21 @@ fun manufacture(
             model.creditText()
         }
     }
+}
+
+@Composable
+fun manufactureSettings(
+    model: Manufacture,
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        imageVector = Icons.Filled.Settings,
+        contentDescription = "Настройки",
+        modifier = modifier
+            .clickable(
+                onClick = {
+                    model.editSettings = true
+                }
+            ),
+    )
 }

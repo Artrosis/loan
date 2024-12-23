@@ -25,8 +25,10 @@ class Manufacture(
     var showPrice by MutableStateDelegate(false)
     var price by MutableStateDelegate(0)
     var showSalary by MutableStateDelegate(false)
-    var salary by MutableStateDelegate(0)
-
+    var salary by MutableStateDelegate(1.0)
+    
+    var editSettings by MutableStateDelegate(false)
+    
     private val forestIcon = Res.drawable.forest
     private val forgeIcon = Res.drawable.forge
     private val manufactureIcon = Res.drawable.manuf

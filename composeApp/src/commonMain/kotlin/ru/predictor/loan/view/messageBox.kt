@@ -18,7 +18,7 @@ fun messageBox(
     if (model.messages.isEmpty()) return
 
     AlertDialog(
-        onDismissRequest = {},
+        onDismissRequest = {model.clear()},
         text = 
         {
             Column(
