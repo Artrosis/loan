@@ -4,6 +4,7 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,6 +12,8 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,6 +41,7 @@ fun bank(
     modifier: Modifier = Modifier,
 ) {
     if (model.has) {
+        model.editSettings()
         Surface(
             modifier = modifier
                 .clickable {
@@ -52,12 +56,21 @@ fun bank(
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
-                    painterResource(Res.drawable.bank),
-                    null,
-                    modifier = modifier
-                        .size(150.dp),
-                )
+                Box(
+                    modifier = Modifier
+                        .size(150.dp)
+                ){
+                    model.settings(
+                        modifier = Modifier.align(Alignment.TopEnd)
+                    )
+                    Image(
+                        painterResource(Res.drawable.bank),
+                        null,
+                        modifier = modifier
+                            .size(150.dp),
+                    )
+                }
+                
                 if (model.showLoanInterest) {
                     Text("Ссудный процент: ${model.loanInterest}")
                 }
@@ -65,4 +78,20 @@ fun bank(
             }
         }
     }
+}
+
+@Composable
+fun Bank.settings(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        imageVector = Icons.Filled.Settings,
+        contentDescription = "Настройки",
+        modifier = modifier
+            .clickable(
+                onClick = {
+                    editSettings = true
+                }
+            ),
+    )
 }

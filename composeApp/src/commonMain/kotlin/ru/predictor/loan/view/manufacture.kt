@@ -41,7 +41,7 @@ fun manufacture(
     model: Manufacture,
     modifier: Modifier = Modifier,
 ) {
-    editManufactureSettings(model)
+    model.editSettings()
     Surface(
         modifier = modifier
             .clickable { 
@@ -59,8 +59,7 @@ fun manufacture(
                 modifier = Modifier
                     .size(150.dp)
             ){
-                manufactureSettings(
-                    model,
+                model.settings(
                     modifier = Modifier.align(Alignment.TopEnd)
                 )
                 Image(
@@ -87,8 +86,7 @@ fun manufacture(
 }
 
 @Composable
-fun manufactureSettings(
-    model: Manufacture,
+fun Manufacture.settings(
     modifier: Modifier = Modifier,
 ) {
     Image(
@@ -97,7 +95,7 @@ fun manufactureSettings(
         modifier = modifier
             .clickable(
                 onClick = {
-                    model.editSettings = true
+                    editSettings = true
                 }
             ),
     )

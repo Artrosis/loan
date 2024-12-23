@@ -11,20 +11,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
-import ru.predictor.loan.model.Manufacture
+import ru.predictor.loan.model.Bank
 
 @Composable
-fun editManufactureSettings(
-    model: Manufacture
-) {
-    if (!model.editSettings) return
+fun Bank.editSettings() {
+    if (!editSettings) return
 
-    val salary = remember{ mutableStateOf(model.salary) }
+    val tempLoanSize = remember{ mutableStateOf(loanSize) }
     AlertDialog(
-        onDismissRequest = {model.editSettings = false},
+        onDismissRequest = {editSettings = false},
         title = {
             Text(
-                "Настройки производства",
+                "Настройки банка",
                 fontSize = 30.sp,
             )
         },
@@ -32,13 +30,13 @@ fun editManufactureSettings(
         {
             Column {
                 OutlinedTextField(
-                    value = salary.value.toString(),
+                    value = tempLoanSize.value.toString(),
                     onValueChange = {strValue: String ->
-                        val value = strValue.toDoubleOrNull() ?: return@OutlinedTextField
+                        val value = strValue.toIntOrNull() ?: return@OutlinedTextField
 
-                        salary.value = value
+                        tempLoanSize.value = value
                     },
-                    label = { Text("Зарплатный коэффициент") },
+                    label = { Text("Величина кредита") },
 
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
@@ -47,8 +45,8 @@ fun editManufactureSettings(
         confirmButton = {
             Button(
                 {
-                    model.salary = salary.value
-                    model.editSettings = false
+                    loanSize = tempLoanSize.value
+                    editSettings = false
                 }
             ) {
                 Text(
