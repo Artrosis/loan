@@ -67,9 +67,7 @@ fun manufacture(
             if (model.showSalary) {
                 Text("Зарплаты: ${model.salary}")
             }
-            if (model.showCredit) {
-                Text("${model.credit} (-${model.payment})")
-            }
+            model.creditText()
         }
     }
 }

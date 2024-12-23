@@ -61,9 +61,7 @@ fun market(
                 if (model.showPrice) {
                     Text("Цены: ${model.price}")
                 }
-                if (model.showCredit) {
-                    Text("${model.credit} (-${model.payment})")
-                }
+                model.creditText()
             }
         }
     }

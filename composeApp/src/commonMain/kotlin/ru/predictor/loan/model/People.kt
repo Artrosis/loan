@@ -12,7 +12,7 @@ enum class PeopleState(val color: Color){
 
 class People(
     val onDie: () -> Unit,
-){
+): Creditor(){
     //Рост населения
     var population by MutableStateDelegate(0f)
 
@@ -20,13 +20,6 @@ class People(
     var food by MutableStateDelegate(0)
     
     var state by MutableStateDelegate(PeopleState.GOOD)
-    
-    var showMoney by MutableStateDelegate(false)
-    var money by MutableStateDelegate(0.0)
-    
-    var showCredit by MutableStateDelegate(false)
-    var credit by MutableStateDelegate(0.0)
-    var payment by MutableStateDelegate(0.0)
 
     fun tick() {
         val needFood = ceil(population).toInt()

@@ -9,15 +9,9 @@ import ru.predictor.loan.utils.ObservableStateDelegate
 
 class Market(
     val getAge: () -> Age,
-){
+): Creditor() {
     //Видимость
     var has by MutableStateDelegate(false)
-    var showMoney by MutableStateDelegate(false)
-    var money by MutableStateDelegate(0.0)
-
-    var showCredit by MutableStateDelegate(false)
-    var credit by MutableStateDelegate(0.0)
-    var payment by MutableStateDelegate(0.0)
 
     private var isShowTakeProducts = false
     var products by ObservableStateDelegate(0){ newValue ->

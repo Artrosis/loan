@@ -55,9 +55,8 @@ fun people(
             if (model.showMoney) {
                 Text("Деньги: ${model.money.toInt()}")
             }
-            if (model.showCredit) {
-                Text("${model.credit} (-${model.payment})")
-            }
+
+            model.creditText()
         }
     }    
 }
