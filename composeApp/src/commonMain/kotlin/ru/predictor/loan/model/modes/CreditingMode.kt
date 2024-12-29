@@ -16,6 +16,7 @@ class CreditingMode: IndustryMode() {
     override fun Model.initModel() {
         //У банка появился ссудный процент
         bank.showLoanInterest = true
+        bank.showMoney = false
         
         //У всех появились кредиты и платежи по ним
         people.showCredit = true

@@ -18,6 +18,7 @@ class Bank(
     var loanInterest by MutableStateDelegate(8)
     
     var money by MutableStateDelegate(0.0)
+    var showMoney by MutableStateDelegate(true)
 
     fun emmitMoney() {        
         val productCount = getProductsData().values.sum()
