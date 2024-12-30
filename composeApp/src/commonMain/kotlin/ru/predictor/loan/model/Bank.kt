@@ -11,7 +11,7 @@ class Bank(
     var has by MutableStateDelegate(false)
 
     var editSettings by MutableStateDelegate(false)
-    var loanSize by MutableStateDelegate(1000)
+    var loanSize by MutableStateDelegate(10000)
     
     //Ссудный процент
     var showLoanInterest by MutableStateDelegate(false)
