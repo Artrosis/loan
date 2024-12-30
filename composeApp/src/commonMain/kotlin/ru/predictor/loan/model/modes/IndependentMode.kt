@@ -13,7 +13,7 @@ class IndependentMode() : LevelMode() {
 
     override fun Model.initModel(){
         people.population = 10f
-        people.food = 6
+        people.food = 20
 
         manufacture.products = 0
 
