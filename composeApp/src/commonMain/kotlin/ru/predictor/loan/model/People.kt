@@ -21,13 +21,17 @@ class People(
     
     var state by MutableStateDelegate(PeopleState.GOOD)
 
+    var editSettings by MutableStateDelegate(false)
+
+    var populationRate by MutableStateDelegate(1.1f)
+
     override fun tick() {
         super.tick()
         val needFood = ceil(population).toInt()
         
         if (food >= needFood) {
             food -= needFood
-            population *= 1.1f
+            population *= populationRate
         }
         else if (food in 1..< needFood) {
             food = 0

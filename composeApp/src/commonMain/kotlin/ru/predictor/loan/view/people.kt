@@ -3,12 +3,16 @@ package ru.predictor.loan.view
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +39,8 @@ fun people(
     model: People,
     modifier: Modifier = Modifier,
 ) {
-     Surface(
+    model.editSettings()
+    Surface(
          modifier = modifier,
          shape = RoundedCornerShape(corner = CornerSize(16.dp)),
          border = BorderStroke(width = 1.dp, color = Color.Gray),
@@ -45,12 +50,20 @@ fun people(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text("Население: ${model.population.format()}")
-            Image(
-                painterResource(Res.drawable.people),
-                null,
+            Box(
                 modifier = Modifier
                     .size(150.dp)
-            )
+            ) {
+                model.settings(
+                    modifier = Modifier.align(Alignment.TopEnd)
+                )
+                Image(
+                    painterResource(Res.drawable.people),
+                    null,
+                    modifier = Modifier
+                        .size(150.dp)
+                )
+            }
             Text("Продукты: ${model.food}")
             if (model.showMoney) {
                 Text("Деньги: ${model.money.toInt()}")
@@ -59,4 +72,20 @@ fun people(
             model.creditText()
         }
     }    
+}
+
+@Composable
+fun People.settings(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        imageVector = Icons.Filled.Settings,
+        contentDescription = "Настройки",
+        modifier = modifier
+            .clickable(
+                onClick = {
+                    editSettings = true
+                }
+            ),
+    )
 }
