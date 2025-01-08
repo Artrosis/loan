@@ -18,6 +18,7 @@ fun Bank.editSettings() {
     if (!editSettings) return
 
     val tempLoanSize = remember{ mutableStateOf(loanSize) }
+    val tempLoanInterest = remember{ mutableStateOf(loanInterest) }
     AlertDialog(
         onDismissRequest = {editSettings = false},
         title = {
@@ -40,12 +41,26 @@ fun Bank.editSettings() {
 
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
+                if (showLoanInterest) {
+                    OutlinedTextField(
+                        value = tempLoanInterest.value.toString(),
+                        onValueChange = { strValue: String ->
+                            val value = strValue.toIntOrNull() ?: return@OutlinedTextField
+
+                            tempLoanInterest.value = value
+                        },
+                        label = { Text("Ссудный процент") },
+
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                    )
+                }
             }
         },
         confirmButton = {
             Button(
                 {
                     loanSize = tempLoanSize.value
+                    loanInterest = tempLoanInterest.value
                     editSettings = false
                 }
             ) {
