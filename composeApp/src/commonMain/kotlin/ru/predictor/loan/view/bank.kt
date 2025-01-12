@@ -23,6 +23,7 @@ import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.bank
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.Bank
+import ru.predictor.loan.utils.toCaption
 
 @Composable
 @Preview
@@ -76,10 +77,8 @@ fun bank(
                 }
 
                 if (model.showMoney) {
-                    Text("Деньги: ${model.money.toInt()}")
+                    Text("Деньги: ${model.money.toCaption()}")
                 }
-
-
             }
         }
     }

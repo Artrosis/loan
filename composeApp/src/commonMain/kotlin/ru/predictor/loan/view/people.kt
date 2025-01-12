@@ -23,6 +23,7 @@ import loaninterest.composeapp.generated.resources.people
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.People
 import ru.predictor.loan.model.format
+import ru.predictor.loan.utils.toCaption
 
 @Composable
 @Preview
@@ -64,9 +65,9 @@ fun people(
                         .size(150.dp)
                 )
             }
-            Text("Продукты: ${model.food}")
+            Text("Продукты: ${model.food.toCaption()}")
             if (model.showMoney) {
-                Text("Деньги: ${model.money.toInt()}")
+                Text("Деньги: ${model.money.toCaption()}")
             }
 
             model.creditText()

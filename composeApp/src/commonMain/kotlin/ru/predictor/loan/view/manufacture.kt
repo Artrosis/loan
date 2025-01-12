@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.Manufacture
+import ru.predictor.loan.utils.toCaption
 
 @Composable
 @Preview
@@ -70,9 +71,9 @@ fun manufacture(
                 )
             }
             
-            Text("Продукты: ${model.products}")
+            Text("Продукты: ${model.products.toCaption()}")
             if (model.showMoney) {
-                Text("Деньги: ${model.money.toInt()}")
+                Text("Деньги: ${model.money.toCaption()}")
             }
             if (model.showPrice) {
                 Text("Цены: ${model.price}")
