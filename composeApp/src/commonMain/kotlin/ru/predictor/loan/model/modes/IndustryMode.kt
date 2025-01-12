@@ -95,7 +95,7 @@ open class IndustryMode: LevelMode() {
     override fun Model.workOnManufacture() {
         val workersCount = minOf(manufacture.money.toInt(), people.population.toInt())
         
-        val workMoney = (workersCount * manufacture.salary).toInt()
+        val workMoney = calcSalary().toInt()
 
         people.apply {
             money += workMoney
@@ -127,7 +127,7 @@ open class IndustryMode: LevelMode() {
     }
     
     override fun Model.clickManufacture(){
-        if (manufacture.money < people.population) {
+        if (manufacture.money < calcSalary()) {
             messages.apply {
                 lines = listOf("Нет денег на предприятии для оплаты труда")
                 buttonText = "Понял"
@@ -139,4 +139,6 @@ open class IndustryMode: LevelMode() {
         
         tick()        
     }
+    
+    private fun Model.calcSalary() = people.population * manufacture.salary
 }
