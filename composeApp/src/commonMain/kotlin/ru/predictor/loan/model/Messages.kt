@@ -5,13 +5,16 @@ import ru.predictor.loan.utils.MutableStateDelegate
 class Messages(
     var onNext: () -> Unit
 ) {
-    var messages by MutableStateDelegate(listOf(
+    var lines by MutableStateDelegate(listOf(
         "Привет!",
         "Это игра про ссудный процент и его влияние на экономику."
     ))
+
+    var closeDismiss by MutableStateDelegate(false)
     
     fun clear(){
-        messages = listOf()
+        closeDismiss = false
+        lines = listOf()
     }
     
     var buttonText by MutableStateDelegate("Начать")
@@ -19,4 +22,6 @@ class Messages(
     fun next() {
         onNext()
     }
+
+
 }

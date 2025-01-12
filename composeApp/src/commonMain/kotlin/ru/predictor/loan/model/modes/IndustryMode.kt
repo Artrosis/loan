@@ -48,9 +48,10 @@ open class IndustryMode: LevelMode() {
         
         if (market.money == 0.0) {
             messages.apply {
-                messages = listOf("Нет денег в магазине")
+                lines = listOf("Нет денег в магазине")
                 buttonText = "Понял"
                 onNext = {clear()}
+                closeDismiss = true
             }
         }
         
@@ -70,9 +71,10 @@ open class IndustryMode: LevelMode() {
     override fun Model.takeProductsFromMarketToPeople() {
         if (people.money == 0.0) {
             messages.apply {
-                messages = listOf("Нет денег у населения")
+                lines = listOf("Нет денег у населения")
                 buttonText = "Понял"
                 onNext = {clear()}
+                closeDismiss = true
             }
         }
         
@@ -127,9 +129,10 @@ open class IndustryMode: LevelMode() {
     override fun Model.clickManufacture(){
         if (manufacture.money < people.population) {
             messages.apply {
-                messages = listOf("Нет денег на предприятии для оплаты труда")
+                lines = listOf("Нет денег на предприятии для оплаты труда")
                 buttonText = "Понял"
                 onNext = {clear()}
+                closeDismiss = true
             }
             return
         }

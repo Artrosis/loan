@@ -15,32 +15,36 @@ import ru.predictor.loan.model.Messages
 fun messageBox(
     model: Messages
 ) {
-    if (model.messages.isEmpty()) return
+    if (model.lines.isEmpty()) return
 
     AlertDialog(
-        onDismissRequest = {model.clear()},
-        text = 
-        {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                model.messages.forEach {
-                    Text(
-                        modifier = Modifier.padding(2.dp),
-                        text = it,
-                    )
-                }
+        onDismissRequest = {
+            if (model.closeDismiss) {
+                model.clear()
             }
         },
+        text =
+            {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    model.lines.forEach {
+                        Text(
+                            modifier = Modifier.padding(2.dp),
+                            text = it,
+                        )
+                    }
+                }
+            },
         confirmButton = {
             Button(
-                { 
+                {
                     model.clear()
                     model.next()
                 }
             ) {
                 Text(
-                    model.buttonText, 
+                    model.buttonText,
                     fontSize = 22.sp
                 )
             }

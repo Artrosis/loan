@@ -20,7 +20,7 @@ class Model {
 
     val people = People(
         onDie = {
-            messages.messages = listOf("Население вымерло")
+            messages.lines = listOf("Население вымерло")
             messages.buttonText = "Начать заново"
             messages.onNext = {
                 levelMode = IndependentMode()
@@ -134,7 +134,7 @@ class Model {
     }
 
     private fun startMessage(){
-        messages.messages = listOf()
+        messages.lines = listOf()
         nextHint()
     }
 
@@ -186,10 +186,10 @@ class Model {
             val showMessage = mutableListOf("Вы перешли на этап: ${levelMode.age.caption}")
             showMessage.addAll(levelMode.levelMessages)
             
-            messages = showMessage            
+            lines = showMessage
             buttonText = "Продолжить"
             onNext = {
-                messages = listOf()
+                lines = listOf()
                 nextHint()
             }
         }
