@@ -58,7 +58,7 @@ class BarterMode: LevelMode() {
     }
 
     override fun Model.takeProductsFromMarketToPeople() {
-        people.food += market.takeProducts()
+        people.products += market.takeProducts()
         people.checkFood()
     }
 

@@ -17,7 +17,7 @@ class People(
     var population by MutableStateDelegate(0f)
 
     //Еда
-    var food by MutableStateDelegate(0)
+    var products by MutableStateDelegate(0)
     
     var state by MutableStateDelegate(PeopleState.GOOD)
 
@@ -29,12 +29,12 @@ class People(
         super.tick()
         val needFood = ceil(population).toInt()
         
-        if (food >= needFood) {
-            food -= needFood
+        if (products >= needFood) {
+            products -= needFood
             population *= populationRate
         }
-        else if (food in 1..< needFood) {
-            food = 0
+        else if (products in 1..< needFood) {
+            products = 0
         }
         else {
             population *= 0.9f
@@ -50,8 +50,8 @@ class People(
     fun checkFood() {
         val needFood = ceil(population).toInt()
         state = when {
-            food >= needFood -> PeopleState.GOOD
-            food in 1..<needFood -> PeopleState.HANGER
+            products >= needFood -> PeopleState.GOOD
+            products in 1..<needFood -> PeopleState.HANGER
             else -> PeopleState.DYING_OUT
         }
     }

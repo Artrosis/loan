@@ -65,7 +65,7 @@ fun people(
                         .size(150.dp)
                 )
             }
-            Text("Продукты: ${model.food.toCaption()}")
+            Text("Продукты: ${model.products.toCaption()}")
             if (model.showMoney) {
                 Text("Деньги: ${model.money.toCaption()}")
             }

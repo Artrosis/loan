@@ -13,7 +13,7 @@ class IndependentMode() : LevelMode() {
 
     override fun Model.initModel(){
         people.population = 10f
-        people.food = 20
+        people.products = 20
 
         manufacture.products = 0
 
@@ -41,7 +41,7 @@ class IndependentMode() : LevelMode() {
     override fun Model.takeProductsFromMarketToPeople() {}
 
     override fun Model.takeProductsFromManufactureToPeople(){
-        people.food += manufacture.takeProducts()
+        people.products += manufacture.takeProducts()
         people.checkFood()
     }
 

@@ -84,7 +84,7 @@ open class IndustryMode: LevelMode() {
 
         people.apply { 
             money -= maxCount
-            food += maxCount
+            products += maxCount
             checkFood()
         }
         

@@ -51,7 +51,7 @@ class Model {
         getProductsData = {
             mutableMapOf(
                 "manufacture.products" to manufacture.products,
-                "people.food" to people.food,
+                "people.food" to people.products,
                 "market.products" to market.products
             )
         }

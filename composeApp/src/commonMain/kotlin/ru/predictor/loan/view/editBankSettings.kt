@@ -17,6 +17,7 @@ import ru.predictor.loan.model.Bank
 fun Bank.editSettings() {
     if (!editSettings) return
 
+    val tempMoney = remember { mutableStateOf(money) }
     val tempLoanSize = remember{ mutableStateOf(loanSize) }
     val tempLoanInterest = remember{ mutableStateOf(loanInterest) }
     AlertDialog(
@@ -30,6 +31,17 @@ fun Bank.editSettings() {
         text =
         {
             Column {
+                OutlinedTextField(
+                    value = tempMoney.value.toString(),
+                    onValueChange = {strValue: String ->
+                        val value = strValue.toDoubleOrNull() ?: return@OutlinedTextField
+
+                        tempMoney.value = value
+                    },
+                    label = { Text("Деньги") },
+
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                )
                 OutlinedTextField(
                     value = tempLoanSize.value.toString(),
                     onValueChange = {strValue: String ->
@@ -59,6 +71,7 @@ fun Bank.editSettings() {
         confirmButton = {
             Button(
                 {
+                    money = tempMoney.value
                     loanSize = tempLoanSize.value
                     loanInterest = tempLoanInterest.value
                     editSettings = false
