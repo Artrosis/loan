@@ -18,6 +18,7 @@ fun Manufacture.editSettings() {
     if (!editSettings) return
 
     val tempSalary = remember{ mutableStateOf(salary) }
+    val tempEfficiency = remember{ mutableStateOf(efficiency) }
     AlertDialog(
         onDismissRequest = {editSettings = false},
         title = {
@@ -40,12 +41,24 @@ fun Manufacture.editSettings() {
 
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
                 )
+                OutlinedTextField(
+                    value = tempEfficiency.value.toString(),
+                    onValueChange = {strValue: String ->
+                        val value = strValue.toDoubleOrNull() ?: return@OutlinedTextField
+
+                        tempEfficiency.value = value
+                    },
+                    label = { Text("Производительность") },
+
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
+                )
             }
         },
         confirmButton = {
             Button(
                 {
                     salary = tempSalary.value
+                    efficiency = tempEfficiency.value
                     editSettings = false
                 }
             ) {

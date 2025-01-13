@@ -26,6 +26,7 @@ class Manufacture(
     var price by MutableStateDelegate(0)
     var showSalary by MutableStateDelegate(false)
     var salary by MutableStateDelegate(1.0)
+    var efficiency by MutableStateDelegate(2.0)
     
     var editSettings by MutableStateDelegate(false)
     
@@ -41,7 +42,7 @@ class Manufacture(
         Age.FINISH -> manufactureIcon
     }
 
-    fun nextAddProduct(workersCount: Int) = workersCount * 2
+    fun nextAddProduct(workersCount: Int) = (workersCount * efficiency).toInt()
 
     fun click() {
         onClick()
