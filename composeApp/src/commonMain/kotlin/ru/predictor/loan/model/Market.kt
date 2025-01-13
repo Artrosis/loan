@@ -29,6 +29,8 @@ class Market(
     private val marketIcon = Res.drawable.market
     private val shopIcon = Res.drawable.shop
 
+    var editSettings by MutableStateDelegate(false)
+
     fun getIcon() = when(getAge()) {
         Age.INDEPENDENT -> throw Exception("На этапе Самообеспечение нет рынка")
         Age.BARTER -> marketIcon
