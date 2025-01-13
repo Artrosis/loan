@@ -46,13 +46,14 @@ open class IndustryMode: LevelMode() {
 
     override fun Model.takeProductsFromManufactureToMarket() {
         
-        if (market.money == 0.0) {
+        if (market.money <= 0.0) {
             messages.apply {
                 lines = listOf("Нет денег в магазине")
                 buttonText = "Понял"
                 onNext = {clear()}
                 closeDismiss = true
             }
+            return
         }
         
         val maxCount = minOf(manufacture.products, market.money.toInt())
@@ -69,13 +70,14 @@ open class IndustryMode: LevelMode() {
     }
 
     override fun Model.takeProductsFromMarketToPeople() {
-        if (people.money == 0.0) {
+        if (people.money <= 0.0) {
             messages.apply {
                 lines = listOf("Нет денег у населения")
                 buttonText = "Понял"
                 onNext = {clear()}
                 closeDismiss = true
             }
+            return
         }
         
         val maxCount = minOf(people.money.toInt(), market.products)
