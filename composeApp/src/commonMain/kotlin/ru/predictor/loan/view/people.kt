@@ -46,14 +46,15 @@ fun people(
          shape = RoundedCornerShape(corner = CornerSize(16.dp)),
          border = BorderStroke(width = 1.dp, color = Color.Gray),
          color = model.state.color,
-     ){
+        )
+    {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text("Население: ${model.population.format()}")
             Box(
                 modifier = Modifier
-                    .size(150.dp)
+                    .size(if (model.isMobile) 80.dp else 150.dp)
             ) {
                 model.settings(
                     modifier = Modifier.align(Alignment.TopEnd)
@@ -62,7 +63,7 @@ fun people(
                     painterResource(Res.drawable.people),
                     null,
                     modifier = Modifier
-                        .size(150.dp)
+                        .size(if (model.isMobile) 70.dp else 150.dp)
                 )
             }
             Text("Продукты: ${model.products.toCaption()}")

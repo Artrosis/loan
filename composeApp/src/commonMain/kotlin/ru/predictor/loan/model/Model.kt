@@ -13,7 +13,7 @@ enum class Age(val caption: String){
     FINISH("Конец")
 }
 
-class Model {
+class Model: CheckMobile() {
     var date by MutableStateDelegate(LocalDate(2000, 1, 1))
     
     var levelMode by MutableStateDelegate<LevelMode>(IndependentMode())
@@ -226,7 +226,7 @@ class Model {
     }
 
     fun populationProgress() = people.population / levelMode.maxLevelPopulation.toFloat()
-    fun populationText() = "${people.population.format()} / ${levelMode.maxLevelPopulation}"    
+    fun populationText() = "${people.population.format()} / ${levelMode.maxLevelPopulation}"
 
     companion object {
         val manufactureToPeopleHintAlignment = BiasAlignment(-0.4f, 0.6f)

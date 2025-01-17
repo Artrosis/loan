@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
@@ -67,9 +68,10 @@ fun app(model: Model) {
         Box(
             Modifier
                 .fillMaxSize()
+                .background( Color.Green.copy(alpha = 0.6f))
                 .paint(
                     painterResource(Res.drawable.grass),
-                    contentScale = ContentScale.FillBounds),
+                    contentScale = if (model.isMobile) ContentScale.FillHeight else ContentScale.FillBounds),
         ){
             messageBox(model.messages)
             

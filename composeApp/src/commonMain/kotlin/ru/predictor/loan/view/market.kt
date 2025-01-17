@@ -57,7 +57,7 @@ fun market(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(150.dp)
+                        .size(if (model.isMobile) 80.dp else 150.dp)
                 ) {
                     model.settings(
                         modifier = Modifier.align(Alignment.TopEnd)
@@ -66,7 +66,7 @@ fun market(
                         painterResource(model.getIcon()),
                         null,
                         modifier = modifier
-                            .size(150.dp),
+                            .size(if (model.isMobile) 70.dp else 150.dp),
                     )
                 }
 

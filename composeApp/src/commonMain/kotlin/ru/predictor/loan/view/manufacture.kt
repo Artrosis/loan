@@ -58,7 +58,7 @@ fun manufacture(
         ) {
             Box(
                 modifier = Modifier
-                    .size(150.dp)
+                    .size(if (model.isMobile) 80.dp else 150.dp)
             ){
                 model.settings(
                     modifier = Modifier.align(Alignment.TopEnd)
@@ -67,7 +67,7 @@ fun manufacture(
                     painterResource(model.getIcon()),
                     null,
                     modifier = Modifier
-                        .size(150.dp),
+                        .size(if (model.isMobile) 70.dp else 150.dp),
                 )
             }
             
