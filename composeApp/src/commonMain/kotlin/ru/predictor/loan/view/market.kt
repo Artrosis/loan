@@ -52,6 +52,7 @@ fun market(
             color = Color(0xA0FFFFFF),
         ) {
             Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .padding(16.dp)
             ) {
