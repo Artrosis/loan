@@ -52,7 +52,7 @@ fun market(
             color = Color(0xA0FFFFFF),
         ) {
             Column(
-                modifier = modifier
+                modifier = Modifier
                     .padding(16.dp)
             ) {
                 Box(
