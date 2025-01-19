@@ -96,7 +96,7 @@ class Model: CheckMobile() {
     init{
         initialization()
 
-        /*messages.clear()
+        messages.clear()
         levelMode = IndependentMode()
         initialization()
         manufacture.products = 13
@@ -108,7 +108,7 @@ class Model: CheckMobile() {
         levelMode = CreditingMode()
         initialization()
         hint.clear()
-        hintQueue.clear()*/
+        hintQueue.clear()
     }
 
     inline fun initialization(){

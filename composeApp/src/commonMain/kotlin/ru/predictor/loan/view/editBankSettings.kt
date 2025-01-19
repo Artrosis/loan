@@ -46,8 +46,7 @@ fun Bank.editSettings() {
                     value = tempLoanSize.value.toString(),
                     onValueChange = {strValue: String ->
                         val value = strValue.toIntOrNull() ?: return@OutlinedTextField
-
-                        tempLoanSize.value = value
+                        tempLoanSize.value = maxOf( 1, minOf(value, 10000))
                     },
                     label = { Text("Величина кредита") },
 
