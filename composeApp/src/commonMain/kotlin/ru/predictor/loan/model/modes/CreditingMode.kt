@@ -35,15 +35,50 @@ open class CreditingMode: IndustryMode() {
     }
 
     override fun Model.peopleGiveMoney(){
-        people.addCredit(makeCredit())
+        if (people.hasCredit()){
+            messages.apply {
+                lines = listOf("Сперва закройте прошлый кредит")
+                buttonText = "Понятно"
+                onNext = {clear()}
+                closeDismiss = true
+            }
+        }
+        else {
+            people.addCredit(makeCredit())
+        }
+
     }
     
     override fun Model.manufactureGiveMoney(){
-        manufacture.addCredit(makeCredit())
+
+        if (manufacture.hasCredit()){
+            messages.apply {
+                lines = listOf("Сперва закройте прошлый кредит")
+                buttonText = "Понятно"
+                onNext = {clear()}
+                closeDismiss = true
+            }
+        }
+        else {
+            manufacture.addCredit(makeCredit())
+        }
+
     }
     
     override fun Model.marketGiveMoney(){
-        market.addCredit(makeCredit()) 
+
+        if (market.hasCredit()){
+            messages.apply {
+                lines = listOf("Сперва закройте прошлый кредит")
+                buttonText = "Понятно"
+                onNext = {clear()}
+                closeDismiss = true
+            }
+        }
+        else {
+            market.addCredit(makeCredit())
+        }
+
     }
   
     override fun Model.bankTick() {}

@@ -13,12 +13,15 @@ open class Creditor: CheckMobile(){
     var money by MutableStateDelegate(0.0)
     
     fun addCredit(newCredit: Credit){
+
         money += newCredit.value
 
         credits.add(newCredit)
         
         updateCreditData()
     }
+
+    fun hasCredit() = credits.isNotEmpty()
 
     private fun updateCreditData() {
         credit = credits.sumOf { it.loan }.toInt()
