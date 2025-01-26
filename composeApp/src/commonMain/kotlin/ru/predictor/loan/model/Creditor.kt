@@ -2,7 +2,7 @@ package ru.predictor.loan.model
 
 import ru.predictor.loan.utils.MutableStateDelegate
 
-open class Creditor: CheckMobile(){
+open class Creditor: ViewObject(){
     var showCredit by MutableStateDelegate(false)
     private var credits by MutableStateDelegate(mutableListOf<Credit>())
 

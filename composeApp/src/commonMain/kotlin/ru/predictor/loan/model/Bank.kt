@@ -6,7 +6,7 @@ class Bank(
     val onClick: () -> Unit,
     val getMoneyCount: () -> Double,
     val getProductsData: () -> Map<String, Int>,
-): CheckMobile(){
+): ViewObject(){
     //Видимость
     var has by MutableStateDelegate(false)
 

@@ -2,7 +2,8 @@ package ru.predictor.loan.model
 
 import androidx.compose.ui.BiasAlignment
 import kotlinx.datetime.LocalDate
-import ru.predictor.loan.model.modes.*
+import ru.predictor.loan.model.modes.IndependentMode
+import ru.predictor.loan.model.modes.LevelMode
 import ru.predictor.loan.utils.MutableStateDelegate
 
 enum class Age(val caption: String){
@@ -40,6 +41,8 @@ class Model: CheckMobile() {
         },
         getAge = { levelMode.age },
     )
+
+    var movedProductsFromManufactureToPeople by MutableStateDelegate(false)
 
     val bank = Bank(
         onClick = {
@@ -195,8 +198,13 @@ class Model: CheckMobile() {
         }
     }
 
-    fun moveProductsFromManufactureToPeople() = canInteractLevelMode {
-        takeProductsFromManufactureToPeople()
+    fun moveProductsFromManufactureToPeople() = canInteractLevelMode {        
+        movedProductsFromManufactureToPeople = true
+    }
+    
+    fun finishedMoveProductsFromManufactureToPeople() = canInteractLevelMode {        
+            takeProductsFromManufactureToPeople()
+            movedProductsFromManufactureToPeople = false
     }
 
     fun moveProductsFromManufactureToMarket() = canInteractLevelMode {

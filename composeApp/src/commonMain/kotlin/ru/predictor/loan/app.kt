@@ -15,7 +15,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
@@ -24,6 +24,9 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import loaninterest.composeapp.generated.resources.Res
@@ -35,6 +38,7 @@ import ru.predictor.loan.model.modes.BarterMode
 import ru.predictor.loan.model.modes.CreditingMode
 import ru.predictor.loan.model.modes.IndependentMode
 import ru.predictor.loan.model.modes.IndustryMode
+import ru.predictor.loan.utils.animateIntOffsetToTarget
 import ru.predictor.loan.view.*
 
 @Composable
@@ -92,25 +96,52 @@ fun app(model: Model) {
             
             people(
                 model.people,
-                Modifier.padding(16.dp).align(Alignment.BottomEnd)
+                Modifier
+                    .padding(16.dp)
+                    .align(Alignment.BottomEnd)
+                    .onGloballyPositioned {
+                        model.people.coordinates = it
+                    }
+                    .onSizeChanged {
+                        model.people.size = it
+                    }
             )
             
             bankWithActions(
                 model,
                 modifier = Modifier
-                    .align(bankAlignment),
+                    .align(bankAlignment)
+                    .onGloballyPositioned {
+                        model.bank.coordinates = it
+                    }
+                    .onSizeChanged {
+                        model.bank.size = it
+                    },
             )
 
             manufactureWithAction(
                 model,
                 modifier = Modifier
                     .padding(16.dp)
-                    .align(Alignment.BottomStart),
+                    .align(Alignment.BottomStart)
+                    .onGloballyPositioned {
+                        model.manufacture.coordinates = it
+                    }
+                    .onSizeChanged {
+                        model.manufacture.size = it
+                    },
             )
 
             marketWithAction(
                 model,
-                modifier = Modifier.align(marketAlignment),
+                modifier = Modifier
+                    .align(marketAlignment)
+                    .onGloballyPositioned {
+                        model.market.coordinates = it
+                    }
+                    .onSizeChanged {
+                        model.market.size = it
+                    },
             )            
             
             hint(model.hint)
@@ -334,11 +365,29 @@ fun moveProductsFromManufactureToMarket(
 fun moveProductsFromManufactureToPeople(
     model: Model
 ) {
+    var selfCoordinates by remember{ mutableStateOf<LayoutCoordinates?>(null) }
+
+    val offset by selfCoordinates.animateIntOffsetToTarget(
+        model.movedProductsFromManufactureToPeople,
+        model.people        
+    )
+    {
+        model.finishedMoveProductsFromManufactureToPeople()
+    }
+    
     AnimatedVisibility(
         model.manufacture.products > 0
                 && model.levelMode.canMoveProductsFromManufactureToPeople
     ){
-        move{
+        move(
+            modifier = Modifier
+                .offset {
+                    offset
+                }
+                .onGloballyPositioned { coordinates ->
+                    selfCoordinates = coordinates
+                }
+        ){
             model.moveProductsFromManufactureToPeople()
         }
     }
