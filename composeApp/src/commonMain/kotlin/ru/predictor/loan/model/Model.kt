@@ -40,6 +40,7 @@ class Model: CheckMobile() {
             }
         },
         getAge = { levelMode.age },
+        canInteract = { canInteract() }
     )
 
     var movedProductsFromManufactureToPeople by MutableStateDelegate(false)
@@ -123,7 +124,7 @@ class Model: CheckMobile() {
         initialization()
     }
 
-    private fun canInteract(): Boolean = hint.disable || hint.message.isEmpty()
+    private fun canInteract(): Boolean = !hint.isShow() && !movedProductsFromManufactureToPeople
 
     private fun countMoney(): Double {
         return bank.money + 
@@ -202,9 +203,11 @@ class Model: CheckMobile() {
         movedProductsFromManufactureToPeople = true
     }
     
-    fun finishedMoveProductsFromManufactureToPeople() = canInteractLevelMode {        
-            takeProductsFromManufactureToPeople()
-            movedProductsFromManufactureToPeople = false
+    fun finishedMoveProductsFromManufactureToPeople() {
+        levelMode.apply {
+            takeProductsFromManufactureToPeople() 
+        }
+        movedProductsFromManufactureToPeople = false
     }
 
     fun moveProductsFromManufactureToMarket() = canInteractLevelMode {

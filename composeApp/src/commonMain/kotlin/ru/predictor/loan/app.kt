@@ -365,20 +365,19 @@ fun moveProductsFromManufactureToMarket(
 fun moveProductsFromManufactureToPeople(
     model: Model
 ) {
-    var selfCoordinates by remember{ mutableStateOf<LayoutCoordinates?>(null) }
-
-    val offset by selfCoordinates.animateIntOffsetToTarget(
-        model.movedProductsFromManufactureToPeople,
-        model.people        
-    )
-    {
-        model.finishedMoveProductsFromManufactureToPeople()
-    }
-    
     AnimatedVisibility(
         model.manufacture.products > 0
                 && model.levelMode.canMoveProductsFromManufactureToPeople
     ){
+        var selfCoordinates by remember{ mutableStateOf<LayoutCoordinates?>(null) }
+
+        val offset by selfCoordinates.animateIntOffsetToTarget(
+            model.movedProductsFromManufactureToPeople,
+            model.people
+        )
+        {
+            model.finishedMoveProductsFromManufactureToPeople()
+        }
         move(
             modifier = Modifier
                 .offset {

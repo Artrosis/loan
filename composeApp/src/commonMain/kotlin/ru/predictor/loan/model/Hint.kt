@@ -18,4 +18,6 @@ class Hint(
     fun clear() {
         message = listOf()
     }
+
+    fun isShow(): Boolean = !(disable || message.isEmpty())
 }

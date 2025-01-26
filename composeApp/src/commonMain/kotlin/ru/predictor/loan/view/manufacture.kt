@@ -30,6 +30,7 @@ fun previewManufacture(){
     val model = Manufacture(
         onClick = { },
         getAge = { Age.INDEPENDENT },
+        canInteract = { false }
     ).apply {
         products = 70
     }
