@@ -30,7 +30,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import loaninterest.composeapp.generated.resources.Res
-import loaninterest.composeapp.generated.resources.grass
+import loaninterest.composeapp.generated.resources.background_banking_01
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.Hint
 import ru.predictor.loan.model.Model
@@ -74,7 +74,7 @@ fun app(model: Model) {
                 .fillMaxSize()
                 .background( Color.Green.copy(alpha = 0.6f))
                 .paint(
-                    painterResource(Res.drawable.grass),
+                    painterResource(Res.drawable.background_banking_01),
                     contentScale = if (model.isMobile) ContentScale.FillHeight else ContentScale.FillBounds),
         ){
             messageBox(model.messages)
