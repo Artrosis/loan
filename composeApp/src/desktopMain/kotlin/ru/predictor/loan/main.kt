@@ -5,7 +5,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import loaninterest.composeapp.generated.resources.Res
-import loaninterest.composeapp.generated.resources.bank
+import loaninterest.composeapp.generated.resources.icon
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.Model
 
@@ -19,7 +19,7 @@ fun main() = application {
             height = 800.dp
         ),
         title = "Ссудный процент",
-        icon = painterResource(Res.drawable.bank)
+        icon = painterResource(Res.drawable.icon)
     ) {
         app(model)
     }

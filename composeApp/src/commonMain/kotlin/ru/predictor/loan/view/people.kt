@@ -18,13 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import loaninterest.composeapp.generated.resources.Res
-import loaninterest.composeapp.generated.resources.people
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.People
 import ru.predictor.loan.model.format
 import ru.predictor.loan.utils.toCaption
 
+/*
 @Composable
 @Preview
 fun previewApp(){
@@ -34,6 +33,7 @@ fun previewApp(){
 
     people(model)
 }
+ */
 
 @Composable
 fun people(
@@ -60,7 +60,7 @@ fun people(
                     modifier = Modifier.align(Alignment.TopEnd)
                 )
                 Image(
-                    painterResource(Res.drawable.people),
+                    painterResource(model.getIcon()),
                     null,
                     modifier = Modifier
                         .size(if (model.isMobile) 70.dp else 150.dp)

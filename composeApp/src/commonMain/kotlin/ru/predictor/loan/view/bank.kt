@@ -19,22 +19,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import loaninterest.composeapp.generated.resources.Res
-import loaninterest.composeapp.generated.resources.bank
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.Bank
 import ru.predictor.loan.utils.toCaption
 
+/*
 @Composable
 @Preview
 fun previewBank(){
-    val model = Bank({}, {0.0}, { mapOf()}).apply { 
+    val model = Bank({}, {0.0}, { mapOf()}).apply {
         has = true
         money = 100500.0
     }
 
     bank(model)
 }
+*/
 
 @Composable
 fun bank(
@@ -65,7 +65,7 @@ fun bank(
                         modifier = Modifier.align(Alignment.TopEnd)
                     )
                     Image(
-                        painterResource(Res.drawable.bank),
+                        painterResource(model.getIcon()),
                         null,
                         modifier = modifier
                             .size(if (model.isMobile) 70.dp else 150.dp),

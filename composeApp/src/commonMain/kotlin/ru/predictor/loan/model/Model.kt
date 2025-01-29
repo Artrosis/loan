@@ -6,7 +6,7 @@ import ru.predictor.loan.model.modes.IndependentMode
 import ru.predictor.loan.model.modes.LevelMode
 import ru.predictor.loan.utils.MutableStateDelegate
 
-enum class Age(val caption: String){
+enum class Age(val caption: String) {
     INDEPENDENT("Самообеспечение"),
     BARTER("Натуральный обмен"),
     INDUSTRY("Индустриализация"),
@@ -14,9 +14,9 @@ enum class Age(val caption: String){
     FINISH("Конец")
 }
 
-class Model: CheckMobile() {
+class Model : CheckMobile() {
     var date by MutableStateDelegate(LocalDate(2000, 1, 1))
-    
+
     var levelMode by MutableStateDelegate<LevelMode>(IndependentMode())
 
     val people = People(
@@ -27,7 +27,8 @@ class Model: CheckMobile() {
                 levelMode = IndependentMode()
                 initialization()
             }
-        }
+        },
+        getAge = { levelMode.age }
     )
 
     val market = Market(
@@ -51,6 +52,7 @@ class Model: CheckMobile() {
                 clickBank()
             }
         },
+        getAge = { levelMode.age },
         getMoneyCount = ::countMoney,
         getProductsData = {
             mutableMapOf(
@@ -88,37 +90,37 @@ class Model: CheckMobile() {
         ),
     )
 
-    val messages = Messages{
+    val messages = Messages {
         startMessage()
     }
 
-    val hint = Hint{
+    val hint = Hint {
         clearHint()
         nextHint()
     }
-    
-    init{
+
+    init {
         initialization()
 
-       /* messages.clear()
-        levelMode = IndependentMode()
-        initialization()
-        manufacture.products = 13
-        levelMode = BarterMode()
-        initialization()
-        levelMode = IndustryMode()
-        initialization()
-        messages.clear()
-        levelMode = CreditingMode()
-        initialization()
-        hint.clear()
-        hintQueue.clear()*/
+        /* messages.clear()
+         levelMode = IndependentMode()
+         initialization()
+         manufacture.products = 13
+         levelMode = BarterMode()
+         initialization()
+         levelMode = IndustryMode()
+         initialization()
+         messages.clear()
+         levelMode = CreditingMode()
+         initialization()
+         hint.clear()
+         hintQueue.clear()*/
     }
 
-    inline fun initialization(){
+    inline fun initialization() {
         levelMode.apply { initModel() }
     }
-    
+
     private fun initNextAge() {
         levelMode = levelMode.nextMode()
         initialization()
@@ -127,9 +129,9 @@ class Model: CheckMobile() {
     private fun canInteract(): Boolean = !hint.isShow() && !movedProductsFromManufactureToPeople
 
     private fun countMoney(): Double {
-        return bank.money + 
-                manufacture.money + 
-                people.money + 
+        return bank.money +
+                manufacture.money +
+                people.money +
                 market.money
     }
 
@@ -137,17 +139,17 @@ class Model: CheckMobile() {
         hint.clear()
     }
 
-    private fun startMessage(){
+    private fun startMessage() {
         messages.lines = listOf()
         nextHint()
     }
 
     fun nextHint() {
-        
+
         if (hintQueue.size == 0) return
-        
+
         val nextHint = hintQueue.first()
-        
+
         hint.message = nextHint.message
         hint.alignment = nextHint.alignment
 
@@ -167,18 +169,18 @@ class Model: CheckMobile() {
 
         if (checkLevelUp()) levelUp()
     }
-    
-    private fun LocalDate.incrementMonth(): LocalDate{
+
+    private fun LocalDate.incrementMonth(): LocalDate {
         var year = this.year
         var monthNumber = this.monthNumber
-        
+
         if (monthNumber == 12) {
             monthNumber = 1
             year++
         } else {
             monthNumber++
         }
-        
+
         return LocalDate(year, monthNumber, this.dayOfMonth)
     }
 
@@ -189,7 +191,7 @@ class Model: CheckMobile() {
         messages.apply {
             val showMessage = mutableListOf("Вы перешли на этап: ${levelMode.age.caption}")
             showMessage.addAll(levelMode.levelMessages)
-            
+
             lines = showMessage
             buttonText = "Продолжить"
             onNext = {
@@ -199,13 +201,13 @@ class Model: CheckMobile() {
         }
     }
 
-    fun moveProductsFromManufactureToPeople() = canInteractLevelMode {        
+    fun moveProductsFromManufactureToPeople() = canInteractLevelMode {
         movedProductsFromManufactureToPeople = true
     }
-    
+
     fun finishedMoveProductsFromManufactureToPeople() {
         levelMode.apply {
-            takeProductsFromManufactureToPeople() 
+            takeProductsFromManufactureToPeople()
         }
         movedProductsFromManufactureToPeople = false
     }
@@ -213,8 +215,8 @@ class Model: CheckMobile() {
     fun moveProductsFromManufactureToMarket() = canInteractLevelMode {
         takeProductsFromManufactureToMarket()
     }
-    
-    fun moveProductsFromMarketToPeople()= canInteractLevelMode {
+
+    fun moveProductsFromMarketToPeople() = canInteractLevelMode {
         takeProductsFromMarketToPeople()
     }
 
@@ -230,9 +232,9 @@ class Model: CheckMobile() {
 
     fun manufactureTakeMoney() = canInteractLevelMode {
         manufactureGiveMoney()
-    }    
+    }
 
-    fun peopleTakeMoney() = canInteractLevelMode{
+    fun peopleTakeMoney() = canInteractLevelMode {
         peopleGiveMoney()
     }
 

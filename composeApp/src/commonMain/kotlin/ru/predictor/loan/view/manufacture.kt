@@ -24,6 +24,7 @@ import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.Manufacture
 import ru.predictor.loan.utils.toCaption
 
+/*
 @Composable
 @Preview
 fun previewManufacture(){
@@ -37,6 +38,7 @@ fun previewManufacture(){
 
     manufacture(model)
 }
+*/
 
 @Composable
 fun manufacture(
@@ -46,13 +48,13 @@ fun manufacture(
     model.editSettings()
     Surface(
         modifier = modifier
-            .clickable { 
+            .clickable {
                 model.click()
             },
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
         border = BorderStroke(width = 1.dp, color = Color.Gray),
         color = Color(0xA0FFFFFF),
-    ){
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(2.dp)
@@ -60,7 +62,7 @@ fun manufacture(
             Box(
                 modifier = Modifier
                     .size(if (model.isMobile) 80.dp else 150.dp)
-            ){
+            ) {
                 model.settings(
                     modifier = Modifier.align(Alignment.TopEnd)
                 )
@@ -71,7 +73,7 @@ fun manufacture(
                         .size(if (model.isMobile) 70.dp else 150.dp),
                 )
             }
-            
+
             Text("Продукты: ${model.products.toCaption()}")
             if (model.showMoney) {
                 Text("Деньги: ${model.money.toCaption()}")
