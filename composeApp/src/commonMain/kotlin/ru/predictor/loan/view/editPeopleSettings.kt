@@ -38,7 +38,7 @@ fun People.editSettings() {
                     onValueChange = {strValue: String ->
                         val value = strValue.toIntOrNull() ?: return@OutlinedTextField
 
-                        tempProducts.value = value
+                        tempProducts.value = maxOf(0, value)
                     },
                     label = { Text("Продукты") },
 
@@ -49,7 +49,7 @@ fun People.editSettings() {
                     onValueChange = {strValue: String ->
                         val value = strValue.toDoubleOrNull() ?: return@OutlinedTextField
 
-                        tempMoney.value = value
+                        tempMoney.value = maxOf(0.0, minOf(value, 9999999.0))
                     },
                     label = { Text("Деньги") },
 
@@ -60,7 +60,7 @@ fun People.editSettings() {
                     onValueChange = {strValue: String ->
                         val value = strValue.toFloatOrNull() ?: return@OutlinedTextField
 
-                        tempPopulation.value = value
+                        tempPopulation.value = maxOf(0F, minOf(value, 9999999F))
                     },
                     label = { Text("Население") },
 
@@ -71,7 +71,7 @@ fun People.editSettings() {
                     onValueChange = {strValue: String ->
                         val value = strValue.toFloatOrNull() ?: return@OutlinedTextField
 
-                        tempPopulationRate.value = value
+                        tempPopulationRate.value = maxOf(0F, minOf(value, 9999999F))
                     },
                     label = { Text("Коэффициент роста") },
 

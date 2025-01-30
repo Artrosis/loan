@@ -37,7 +37,7 @@ fun Market.editSettings() {
                     onValueChange = { strValue: String ->
                         val value = strValue.toIntOrNull() ?: return@OutlinedTextField
 
-                        tempProducts.value = value
+                        tempProducts.value = maxOf(0, value)
                     },
                     label = { Text("Продукты") },
 
@@ -48,7 +48,7 @@ fun Market.editSettings() {
                     onValueChange = { strValue: String ->
                         val value = strValue.toDoubleOrNull() ?: return@OutlinedTextField
 
-                        tempMoney.value = value
+                        tempMoney.value = maxOf(0.0, minOf(value, 9999999.0))
                     },
                     label = { Text("Деньги") },
 
