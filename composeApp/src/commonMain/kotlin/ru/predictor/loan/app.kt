@@ -13,8 +13,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
@@ -31,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.level_all_background
+import loaninterest.composeapp.generated.resources.wood
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.Hint
 import ru.predictor.loan.model.Model
@@ -398,13 +397,12 @@ fun move(
     onMove: () -> Unit
 ) {
     Image(
-        imageVector = Icons.Filled.PlayArrow,
+        painterResource(Res.drawable.wood),
         contentDescription = "Забрать товары",
         modifier = modifier
             .size(60.dp)
             .clickable(
                 onClick = onMove
-            ),
-        colorFilter = ColorFilter.tint(color = Color(0xFFF0E68C)),
+            )
     )
 }
