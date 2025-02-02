@@ -62,10 +62,10 @@ fun previewApp() {
     app(model)
 }
 
-val peopleOffset: Density.() -> IntOffset = { IntOffset(-350, 100) }
-val bankOffset: Density.() -> IntOffset = { IntOffset(0, 0) }
-val marketOffset: Density.() -> IntOffset = { IntOffset(0, -300) }
-val manufactureOffset: Density.() -> IntOffset = { IntOffset(300, 100) }
+val peopleOffset: Density.() -> IntOffset = { IntOffset(-310, 100) }
+val bankOffset: Density.() -> IntOffset = { IntOffset(30, -20) }
+val marketOffset: Density.() -> IntOffset = { IntOffset(-60, -150) }
+val manufactureOffset: Density.() -> IntOffset = { IntOffset(280, 100) }
 
 
 @Composable
