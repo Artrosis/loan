@@ -30,10 +30,10 @@ class People(
 
     fun getIcon() = when (getAge()) {
         Age.INDEPENDENT -> Res.drawable.level_1_people
-        Age.BARTER -> Res.drawable.old_people
-        Age.INDUSTRY -> Res.drawable.old_people
-        Age.CREDITING -> Res.drawable.old_people
-        Age.FINISH -> Res.drawable.old_people
+        Age.BARTER -> Res.drawable.level_1_people
+        Age.INDUSTRY -> Res.drawable.level_1_people
+        Age.CREDITING -> Res.drawable.level_1_people
+        Age.FINISH -> Res.drawable.level_1_people
 
     }
 

@@ -30,9 +30,9 @@ class Market(
     fun getIcon() = when(getAge()) {
         Age.INDEPENDENT -> throw Exception("На этапе Самообеспечение нет рынка")
         Age.BARTER -> Res.drawable.level_2_market
-        Age.INDUSTRY -> Res.drawable.old_shop
-        Age.CREDITING -> Res.drawable.old_shop
-        Age.FINISH -> Res.drawable.old_shop
+        Age.INDUSTRY -> Res.drawable.level_2_market
+        Age.CREDITING -> Res.drawable.level_2_market
+        Age.FINISH -> Res.drawable.level_2_market
     }
 
     fun takeProducts(): Int {

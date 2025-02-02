@@ -38,7 +38,7 @@ class Bank(
         Age.BARTER -> throw Exception("На этапе Бартера нет банка")
         Age.INDUSTRY -> Res.drawable.level_3_bank
         Age.CREDITING -> Res.drawable.level_4_bank
-        Age.FINISH -> Res.drawable.old_bank
+        Age.FINISH -> Res.drawable.level_3_bank
     }
 
     fun click() {

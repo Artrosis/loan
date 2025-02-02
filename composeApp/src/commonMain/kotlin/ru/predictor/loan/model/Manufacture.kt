@@ -33,8 +33,8 @@ class Manufacture(
         Age.INDEPENDENT -> Res.drawable.level_1_manuf
         Age.BARTER -> Res.drawable.level_2_manuf
         Age.INDUSTRY -> Res.drawable.level_3_manuf
-        Age.CREDITING -> Res.drawable.old_manuf
-        Age.FINISH -> Res.drawable.old_manuf
+        Age.CREDITING -> Res.drawable.level_3_manuf
+        Age.FINISH -> Res.drawable.level_3_manuf
     }
 
     fun nextAddProduct(workersCount: Int) = (workersCount * efficiency).toInt()

@@ -15,21 +15,21 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import loaninterest.composeapp.generated.resources.Res
+import loaninterest.composeapp.generated.resources.level_1_wood
 import loaninterest.composeapp.generated.resources.level_all_background
-import loaninterest.composeapp.generated.resources.wood
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.Hint
 import ru.predictor.loan.model.Model
@@ -42,7 +42,7 @@ import ru.predictor.loan.view.*
 
 @Composable
 @Preview
-fun previewApp(){
+fun previewApp() {
     val model = Model().apply {
         messages.clear()
         levelMode = IndependentMode()
@@ -58,12 +58,15 @@ fun previewApp(){
         hint.clear()
         hintQueue.clear()
     }
-    
+
     app(model)
 }
 
-val marketAlignment: Alignment = BiasAlignment(0f, -0.5f)
-val bankAlignment: Alignment = BiasAlignment(0f, 0.7f)
+val peopleOffset: Density.() -> IntOffset = { IntOffset(-350, 100) }
+val bankOffset: Density.() -> IntOffset = { IntOffset(0, 0) }
+val marketOffset: Density.() -> IntOffset = { IntOffset(0, -300) }
+val manufactureOffset: Density.() -> IntOffset = { IntOffset(300, 100) }
+
 
 @Composable
 fun app(model: Model) {
@@ -71,33 +74,28 @@ fun app(model: Model) {
         Box(
             Modifier
                 .fillMaxSize()
-                .background( Color.Green.copy(alpha = 0.6f))
+                .background(Color.Green.copy(alpha = 0.6f))
                 .paint(
                     painterResource(Res.drawable.level_all_background),
-                    contentScale = if (model.isMobile) ContentScale.FillHeight else ContentScale.FillBounds),
-        ){
+                    contentScale = if (model.isMobile) ContentScale.FillHeight else ContentScale.Crop
+                ),
+        ) {
             messageBox(model.messages)
-            
+
             level(
                 model,
                 modifier = Modifier
-                    .fillMaxWidth()
                     .padding(16.dp)
-                    .align(Alignment.TopCenter)
+                    .align(Alignment.TopStart)
+                    .fillMaxHeight()
             )
-            
-            Text(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .align(Alignment.TopEnd),
-                text = "Дата: ${model.date}"
-            )
-            
+
             people(
                 model.people,
                 Modifier
                     .padding(16.dp)
-                    .align(Alignment.BottomEnd)
+                    .align(Alignment.Center)
+                    .offset(peopleOffset)
                     .onGloballyPositioned {
                         model.people.coordinates = it
                     }
@@ -105,11 +103,12 @@ fun app(model: Model) {
                         model.people.size = it
                     }
             )
-            
+
             bankWithActions(
                 model,
                 modifier = Modifier
-                    .align(bankAlignment)
+                    .align(Alignment.Center)
+                    .offset(bankOffset)
                     .onGloballyPositioned {
                         model.bank.coordinates = it
                     }
@@ -122,7 +121,8 @@ fun app(model: Model) {
                 model,
                 modifier = Modifier
                     .padding(16.dp)
-                    .align(Alignment.BottomStart)
+                    .align(Alignment.Center)
+                    .offset(manufactureOffset)
                     .onGloballyPositioned {
                         model.manufacture.coordinates = it
                     }
@@ -134,15 +134,16 @@ fun app(model: Model) {
             marketWithAction(
                 model,
                 modifier = Modifier
-                    .align(marketAlignment)
+                    .align(Alignment.Center)
+                    .offset(marketOffset)
                     .onGloballyPositioned {
                         model.market.coordinates = it
                     }
                     .onSizeChanged {
                         model.market.size = it
                     },
-            )            
-            
+            )
+
             hint(model.hint)
         }
     }
@@ -150,7 +151,7 @@ fun app(model: Model) {
 
 @Composable
 fun bankWithActions(
-    model: Model, 
+    model: Model,
     modifier: Modifier,
 ) {
     Column(
@@ -199,7 +200,7 @@ fun marketTakeMoney(
     move(
         modifier = modifier
             .rotate(-90f)
-    ){
+    ) {
         model.marketTakeMoney()
     }
 }
@@ -212,7 +213,7 @@ fun manufactureTakeMoney(
     move(
         modifier = modifier
             .rotate(180f)
-    ){
+    ) {
         model.manufactureTakeMoney()
     }
 }
@@ -224,7 +225,7 @@ fun peopleTakeMoney(
 ) {
     move(
         modifier = modifier
-    ){
+    ) {
         model.peopleTakeMoney()
     }
 }
@@ -301,19 +302,18 @@ fun BoxScope.hint(
             ) {
 
                 Button(
-                    onClick = {model.disable = true}
-                ){
+                    onClick = { model.disable = true }
+                ) {
                     Text(
                         text = "Отключить подсказки",
                         fontSize = 10.sp
                     )
                 }
-                
                 Button(
                     modifier = Modifier
                         .padding(start = 4.dp),
-                    onClick = {model.confirm()}
-                ){
+                    onClick = { model.confirm() }
+                ) {
                     Text(
                         text = model.buttonText,
                     )
@@ -331,14 +331,14 @@ fun moveProductsFromMarketToPeople(
     AnimatedVisibility(
         model.market.products > 0,
         modifier = modifier
-    ){
+    ) {
         move(
             modifier = Modifier
                 .rotate(40f)
-        ){
+        ) {
             model.moveProductsFromMarketToPeople()
         }
-        
+
     }
 }
 
@@ -351,11 +351,11 @@ fun moveProductsFromManufactureToMarket(
         model.manufacture.products > 0
                 && model.levelMode.canMoveProductsFromManufactureToMarket,
         modifier = modifier
-    ){
+    ) {
         move(
             modifier = Modifier
                 .rotate(-40f),
-            onMove = {model.moveProductsFromManufactureToMarket()}
+            onMove = { model.moveProductsFromManufactureToMarket() }
         )
     }
 }
@@ -367,8 +367,8 @@ fun moveProductsFromManufactureToPeople(
     AnimatedVisibility(
         model.manufacture.products > 0
                 && model.levelMode.canMoveProductsFromManufactureToPeople
-    ){
-        var selfCoordinates by remember{ mutableStateOf<LayoutCoordinates?>(null) }
+    ) {
+        var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
 
         val offset by selfCoordinates.animateIntOffsetToTarget(
             model.movedProductsFromManufactureToPeople,
@@ -385,7 +385,7 @@ fun moveProductsFromManufactureToPeople(
                 .onGloballyPositioned { coordinates ->
                     selfCoordinates = coordinates
                 }
-        ){
+        ) {
             model.moveProductsFromManufactureToPeople()
         }
     }
@@ -397,7 +397,7 @@ fun move(
     onMove: () -> Unit
 ) {
     Image(
-        painterResource(Res.drawable.wood),
+        painterResource(Res.drawable.level_1_wood),
         contentDescription = "Забрать товары",
         modifier = modifier
             .size(60.dp)
