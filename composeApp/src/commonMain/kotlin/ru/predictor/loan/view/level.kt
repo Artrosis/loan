@@ -32,7 +32,7 @@ fun level(
         Surface(
             shape = RoundedCornerShape(corner = CornerSize(8.dp)),
             border = BorderStroke(width = 1.dp, color = Color.Gray),
-            color = Color(0xA0FFD700),
+            color = Color(0xA0e49c52),
         ) {
             Text(
                 text = "Этап: ${model.levelMode.age.caption}",
@@ -62,7 +62,7 @@ fun VerticalProgress(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(Color(0xB000FF00))
+            .background(Color(0xB0E5E4E2))
             .width(16.dp)
     ) {
         Box(
@@ -80,10 +80,10 @@ fun VerticalProgress(
                 .background(
                     Brush.verticalGradient(
                         listOf(
-                            Color(0xffE000FF),
-                            Color(0xffE000FF),
-                            Color(0xff7700FF),
-                            Color(0xff7700FF),
+                            Color(0xff719baa),
+                            Color(0xff719baa),
+                            Color(0xff467b9c),
+                            Color(0xff467b9c),
                         )
                     )
                 )

@@ -72,7 +72,7 @@ fun app(model: Model) {
         Box(
             Modifier
                 .fillMaxSize()
-                .background(Color.Green.copy(alpha = 0.6f))
+                .background(Color.Gray.copy(alpha = 0.6f))
                 .paint(
                     painterResource(Res.drawable.level_all_background),
                     contentScale = FixedScale(0.7f)
