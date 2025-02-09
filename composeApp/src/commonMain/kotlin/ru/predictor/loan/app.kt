@@ -19,10 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.LayoutCoordinates
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.layout.*
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -77,7 +74,7 @@ fun app(model: Model) {
                 .background(Color.Green.copy(alpha = 0.6f))
                 .paint(
                     painterResource(Res.drawable.level_all_background),
-                    contentScale = if (model.isMobile) ContentScale.FillHeight else ContentScale.Crop
+                    contentScale = FixedScale(0.8f)
                 ),
         ) {
             messageBox(model.messages)
