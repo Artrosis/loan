@@ -17,7 +17,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.unit.Density
@@ -47,6 +46,7 @@ fun previewApp() {
         levelMode = IndependentMode()
         initialization()
         manufacture.products = 13
+        market.products = 50
         levelMode = BarterMode()
         initialization()
         levelMode = IndustryMode()
@@ -61,8 +61,8 @@ fun previewApp() {
     app(model)
 }
 
-val peopleOffset: Density.() -> IntOffset = { IntOffset(-310, 100) }
-val bankOffset: Density.() -> IntOffset = { IntOffset(30, -20) }
+val peopleOffset: Density.() -> IntOffset = { IntOffset(-320, 100) }
+val bankOffset: Density.() -> IntOffset = { IntOffset(40, -20) }
 val marketOffset: Density.() -> IntOffset = { IntOffset(-60, -230) }
 val manufactureOffset: Density.() -> IntOffset = { IntOffset(280, 100) }
 
@@ -75,7 +75,7 @@ fun app(model: Model) {
                 .background(Color.Green.copy(alpha = 0.6f))
                 .paint(
                     painterResource(Res.drawable.level_all_background),
-                    contentScale = FixedScale(0.8f)
+                    contentScale = FixedScale(0.7f)
                 ),
         ) {
             messageBox(model.messages)
@@ -198,7 +198,6 @@ fun marketTakeMoney(
     move(
         Res.drawable.money,
         modifier = modifier
-            .rotate(-90f)
     ) {
         model.marketTakeMoney()
     }
@@ -212,7 +211,6 @@ fun manufactureTakeMoney(
     move(
         Res.drawable.money,
         modifier = modifier
-            .rotate(180f)
     ) {
         model.manufactureTakeMoney()
     }
@@ -336,7 +334,6 @@ fun moveProductsFromMarketToPeople(
         move(
             Res.drawable.level_1_wood,
             modifier = Modifier
-                .rotate(40f)
         ) {
             model.moveProductsFromMarketToPeople()
         }
@@ -356,8 +353,7 @@ fun moveProductsFromManufactureToMarket(
     ) {
         move(
             Res.drawable.level_1_wood,
-            modifier = Modifier
-                .rotate(-40f),
+            modifier = Modifier,
             onMove = { model.moveProductsFromManufactureToMarket() }
         )
     }
