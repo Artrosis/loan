@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.sp
 import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.level_1_wood
 import loaninterest.composeapp.generated.resources.level_all_background
+import loaninterest.composeapp.generated.resources.money
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.Hint
 import ru.predictor.loan.model.Model
@@ -194,6 +196,7 @@ fun marketTakeMoney(
     model: Model
 ) {
     move(
+        Res.drawable.money,
         modifier = modifier
             .rotate(-90f)
     ) {
@@ -207,6 +210,7 @@ fun manufactureTakeMoney(
     model: Model
 ) {
     move(
+        Res.drawable.money,
         modifier = modifier
             .rotate(180f)
     ) {
@@ -220,6 +224,7 @@ fun peopleTakeMoney(
     model: Model
 ) {
     move(
+        Res.drawable.money,
         modifier = modifier
     ) {
         model.peopleTakeMoney()
@@ -329,6 +334,7 @@ fun moveProductsFromMarketToPeople(
         modifier = modifier
     ) {
         move(
+            Res.drawable.level_1_wood,
             modifier = Modifier
                 .rotate(40f)
         ) {
@@ -349,6 +355,7 @@ fun moveProductsFromManufactureToMarket(
         modifier = modifier
     ) {
         move(
+            Res.drawable.level_1_wood,
             modifier = Modifier
                 .rotate(-40f),
             onMove = { model.moveProductsFromManufactureToMarket() }
@@ -374,6 +381,7 @@ fun moveProductsFromManufactureToPeople(
             model.finishedMoveProductsFromManufactureToPeople()
         }
         move(
+            Res.drawable.level_1_wood,
             modifier = Modifier
                 .offset {
                     offset
@@ -389,11 +397,12 @@ fun moveProductsFromManufactureToPeople(
 
 @Composable
 fun move(
+    icon: DrawableResource,
     modifier: Modifier = Modifier,
     onMove: () -> Unit
 ) {
     Image(
-        painterResource(Res.drawable.level_1_wood),
+        painterResource(icon),
         contentDescription = "Забрать товары",
         modifier = modifier
             .size(60.dp)
