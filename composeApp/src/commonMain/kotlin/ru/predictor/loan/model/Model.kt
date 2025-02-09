@@ -2,8 +2,7 @@ package ru.predictor.loan.model
 
 import androidx.compose.ui.BiasAlignment
 import kotlinx.datetime.LocalDate
-import ru.predictor.loan.model.modes.IndependentMode
-import ru.predictor.loan.model.modes.LevelMode
+import ru.predictor.loan.model.modes.*
 import ru.predictor.loan.utils.MutableStateDelegate
 
 enum class Age(val caption: String) {
@@ -102,22 +101,26 @@ class Model : CheckMobile() {
     init {
         initialization()
 
-        /* messages.clear()
-         levelMode = IndependentMode()
-         initialization()
-         manufacture.products = 13
-         levelMode = BarterMode()
-         initialization()
-         levelMode = IndustryMode()
-         initialization()
-         messages.clear()
-         levelMode = CreditingMode()
-         initialization()
-         hint.clear()
-         hintQueue.clear()*/
+        /*messages.clear()
+        levelMode = IndependentMode()
+        initialization()
+        manufacture.products = 13
+        
+        levelMode = BarterMode()
+        initialization()
+        
+        levelMode = IndustryMode()
+        initialization()
+        
+        levelMode = CreditingMode()
+        initialization()
+        
+        messages.clear()
+        hint.clear()
+        hintQueue.clear()*/
     }
 
-    inline fun initialization() {
+    fun initialization() {
         levelMode.apply { initModel() }
     }
 

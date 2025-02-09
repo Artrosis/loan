@@ -61,9 +61,8 @@ fun previewApp() {
 
 val peopleOffset: Density.() -> IntOffset = { IntOffset(-310, 100) }
 val bankOffset: Density.() -> IntOffset = { IntOffset(30, -20) }
-val marketOffset: Density.() -> IntOffset = { IntOffset(-60, -150) }
+val marketOffset: Density.() -> IntOffset = { IntOffset(-60, -230) }
 val manufactureOffset: Density.() -> IntOffset = { IntOffset(280, 100) }
-
 
 @Composable
 fun app(model: Model) {

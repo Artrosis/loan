@@ -4,7 +4,6 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,7 +23,6 @@ import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.Manufacture
 import ru.predictor.loan.utils.toCaption
 
-/*
 @Composable
 @Preview
 fun previewManufacture(){
@@ -38,7 +36,6 @@ fun previewManufacture(){
 
     manufacture(model)
 }
-*/
 
 @Composable
 fun manufacture(
@@ -46,45 +43,46 @@ fun manufacture(
     modifier: Modifier = Modifier,
 ) {
     model.editSettings()
-    Surface(
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .clickable {
-                model.click()
-            },
-        shape = RoundedCornerShape(corner = CornerSize(16.dp)),
-        border = BorderStroke(width = 1.dp, color = Color.Gray),
-        color = Color(0xA0FFFFFF),
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(2.dp)
+        Image(
+            painterResource(model.getIcon()),
+            null,
+            modifier = Modifier
+                .clickable {
+                    model.click()
+                }
+                .size(if (model.isMobile) 70.dp else 200.dp),
+        )
+        Surface(
+            shape = RoundedCornerShape(corner = CornerSize(16.dp)),
+            border = BorderStroke(width = 1.dp, color = Color.Gray),
+            color = Color(0xA0FFFFFF),
         ) {
-            Box(
-                modifier = Modifier
-                    .size(if (model.isMobile) 80.dp else 200.dp)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier
+                    .clickable {
+                        model.click()
+                    }.padding(8.dp)
             ) {
                 model.settings(
-                    modifier = Modifier.align(Alignment.TopEnd)
+                    modifier = Modifier.align(Alignment.End)
                 )
-                Image(
-                    painterResource(model.getIcon()),
-                    null,
-                    modifier = Modifier
-                        .size(if (model.isMobile) 70.dp else 200.dp),
-                )
+                Text("Продукты: ${model.products.toCaption()}")
+                if (model.showMoney) {
+                    Text("Деньги: ${model.money.toCaption()}")
+                }
+                if (model.showPrice) {
+                    Text("Цены: ${model.price}")
+                }
+                if (model.showSalary) {
+                    Text("Зарплаты: ${model.salary}")
+                }
+                model.creditText()
             }
-
-            Text("Продукты: ${model.products.toCaption()}")
-            if (model.showMoney) {
-                Text("Деньги: ${model.money.toCaption()}")
-            }
-            if (model.showPrice) {
-                Text("Цены: ${model.price}")
-            }
-            if (model.showSalary) {
-                Text("Зарплаты: ${model.salary}")
-            }
-            model.creditText()
         }
     }
 }

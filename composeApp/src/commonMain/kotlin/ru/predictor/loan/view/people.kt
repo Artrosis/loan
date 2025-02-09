@@ -4,7 +4,6 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,8 +26,8 @@ import ru.predictor.loan.utils.toCaption
 
 @Composable
 @Preview
-fun previewApp(){
-    val model = People({}, {Age.INDEPENDENT}).apply {
+fun previewApp() {
+    val model = People({}, { Age.INDEPENDENT }).apply {
         population = 315f
     }
 
@@ -47,20 +46,12 @@ fun people(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text("Население: ${model.population.format()}")
-        Box(
+        Image(
+            painterResource(model.getIcon()),
+            null,
             modifier = Modifier
-                .size(if (model.isMobile) 80.dp else 200.dp)
-        ) {
-            model.settings(
-                modifier = Modifier.align(Alignment.TopEnd)
-            )
-            Image(
-                painterResource(model.getIcon()),
-                null,
-                modifier = Modifier
-                    .size(if (model.isMobile) 70.dp else 200.dp)
-            )
-        }
+                .size(if (model.isMobile) 70.dp else 200.dp)
+        )
         Surface(
             shape = RoundedCornerShape(corner = CornerSize(16.dp)),
             border = BorderStroke(width = 1.dp, color = Color.Gray),
@@ -70,6 +61,9 @@ fun people(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(8.dp)
             ) {
+                model.settings(
+                    modifier = Modifier.align(Alignment.End)
+                )
                 Text("Продукты: ${model.products.toCaption()}")
                 if (model.showMoney) {
                     Text("Деньги: ${model.money.toCaption()}")

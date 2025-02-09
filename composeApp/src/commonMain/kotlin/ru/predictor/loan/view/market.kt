@@ -4,7 +4,6 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,11 +25,10 @@ import ru.predictor.loan.utils.toCaption
 
 @Composable
 @Preview
-fun previewMarket(){
+fun previewMarket() {
     val model = Market(
         getAge = { Age.BARTER },
-    )
-        .apply {
+    ).apply {
             has = true
             products = 70
         }
@@ -45,40 +43,39 @@ fun market(
 ) {
     if (model.has) {
         model.editSettings()
-        Surface(
-            modifier = modifier,
-            shape = RoundedCornerShape(corner = CornerSize(16.dp)),
-            border = BorderStroke(width = 1.dp, color = Color.Gray),
-            color = Color(0xA0FFFFFF),
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally, 
+            modifier = modifier
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .padding(16.dp)
+            Image(
+                painterResource(model.getIcon()),
+                null,
+                modifier = modifier.size(if (model.isMobile) 70.dp else 200.dp),
+            )
+
+            Surface(
+                shape = RoundedCornerShape(corner = CornerSize(16.dp)),
+                border = BorderStroke(width = 1.dp, color = Color.Gray),
+                color = Color(0xA0FFFFFF),
             ) {
-                Box(
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally, 
                     modifier = Modifier
-                        .size(if (model.isMobile) 80.dp else 200.dp)
+                        .padding(8.dp)
                 ) {
                     model.settings(
-                        modifier = Modifier.align(Alignment.TopEnd)
+                        modifier = Modifier.align(Alignment.End)
                     )
-                    Image(
-                        painterResource(model.getIcon()),
-                        null,
-                        modifier = modifier
-                            .size(if (model.isMobile) 70.dp else 200.dp),
-                    )
+                    Text("Продукты: ${model.products.toCaption()}")
+                    if (model.showMoney) {
+                        Text("Деньги: ${model.money.toCaption()}")
+                    }
+                    if (model.showPrice) {
+                        Text("Цены: ${model.price}")
+                    }
+                    model.creditText()
                 }
-
-                Text("Продукты: ${model.products.toCaption()}")
-                if (model.showMoney) {
-                    Text("Деньги: ${model.money.toCaption()}")
-                }
-                if (model.showPrice) {
-                    Text("Цены: ${model.price}")
-                }
-                model.creditText()
             }
         }
     }
@@ -91,11 +88,8 @@ fun Market.settings(
     Image(
         imageVector = Icons.Filled.Settings,
         contentDescription = "Настройки",
-        modifier = modifier
-            .clickable(
-                onClick = {
-                    editSettings = true
-                }
-            ),
+        modifier = modifier.clickable(onClick = {
+                editSettings = true
+            }),
     )
 }
