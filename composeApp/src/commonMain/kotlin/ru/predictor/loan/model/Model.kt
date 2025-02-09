@@ -242,7 +242,7 @@ class Model : CheckMobile() {
     }
 
     fun populationProgress() = people.population / levelMode.maxLevelPopulation.toFloat()
-    fun populationText() = "${people.population.format()} / ${levelMode.maxLevelPopulation}"
+    fun populationText() = "Население: ${people.population.format()} (из ${levelMode.maxLevelPopulation})"
 
     companion object {
         val manufactureToPeopleHintAlignment = BiasAlignment(-0.4f, 0.6f)

@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.People
-import ru.predictor.loan.model.format
 import ru.predictor.loan.utils.toCaption
 
 @Composable
@@ -45,7 +44,6 @@ fun people(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Население: ${model.population.format()}")
         Image(
             painterResource(model.getIcon()),
             null,
