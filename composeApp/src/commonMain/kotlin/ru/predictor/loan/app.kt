@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import loaninterest.composeapp.generated.resources.*
 import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.level_1_wood
 import loaninterest.composeapp.generated.resources.level_all_background
@@ -332,7 +333,7 @@ fun moveProductsFromMarketToPeople(
         modifier = modifier
     ) {
         move(
-            Res.drawable.level_1_wood,
+            Res.drawable.level_2_wood,
             modifier = Modifier
         ) {
             model.moveProductsFromMarketToPeople()
@@ -352,7 +353,7 @@ fun moveProductsFromManufactureToMarket(
         modifier = modifier
     ) {
         move(
-            Res.drawable.level_1_wood,
+            Res.drawable.level_2_wood,
             modifier = Modifier,
             onMove = { model.moveProductsFromManufactureToMarket() }
         )
