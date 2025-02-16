@@ -66,6 +66,8 @@ val peopleOffset: Density.() -> IntOffset = { IntOffset(-320, 100) }
 val bankOffset: Density.() -> IntOffset = { IntOffset(40, -20) }
 val marketOffset: Density.() -> IntOffset = { IntOffset(-60, -230) }
 val manufactureOffset: Density.() -> IntOffset = { IntOffset(280, 100) }
+val moveProductsFromManufactureToPeopleOffset: Density.() -> IntOffset = { IntOffset(200, 100) }
+val moveProductsFromManufactureToMarketOffset: Density.() -> IntOffset = { IntOffset(200, 50) }
 
 @Composable
 fun app(model: Model) {
@@ -115,11 +117,10 @@ fun app(model: Model) {
                         model.bank.size = it
                     },
             )
-
-            manufactureWithAction(
-                model,
+            
+            manufacture(
+                model.manufacture,
                 modifier = Modifier
-                    .padding(16.dp)
                     .align(Alignment.Center)
                     .offset(manufactureOffset)
                     .onGloballyPositioned {
@@ -128,6 +129,20 @@ fun app(model: Model) {
                     .onSizeChanged {
                         model.manufacture.size = it
                     },
+            )
+
+            moveProductsFromManufactureToPeople(                
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .offset(moveProductsFromManufactureToPeopleOffset),
+                model,
+            )
+
+            moveProductsFromManufactureToMarket(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .offset(moveProductsFromManufactureToMarketOffset),
+                model,
             )
 
             marketWithAction(
@@ -227,28 +242,6 @@ fun peopleTakeMoney(
         modifier = modifier
     ) {
         model.peopleTakeMoney()
-    }
-}
-
-@Composable
-fun manufactureWithAction(
-    model: Model,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.Bottom
-    ) {
-        Column {
-            moveProductsFromManufactureToMarket(
-                modifier = Modifier.align(Alignment.End),
-                model
-            )
-            manufacture(
-                model.manufacture
-            )
-        }
-        moveProductsFromManufactureToPeople(model)
     }
 }
 
@@ -362,10 +355,12 @@ fun moveProductsFromManufactureToMarket(
 
 @Composable
 fun moveProductsFromManufactureToPeople(
-    model: Model
+    modifier: Modifier = Modifier,
+    model: Model,    
 ) {
     AnimatedVisibility(
-        model.manufacture.products > 0
+        modifier = modifier,
+        visible = model.manufacture.products > 0
                 && model.levelMode.canMoveProductsFromManufactureToPeople
     ) {
         var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }

@@ -63,7 +63,7 @@ fun manufacture(
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier
+                modifier = Modifier
                     .clickable {
                         model.click()
                     }.padding(8.dp)
