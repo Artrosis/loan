@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import loaninterest.composeapp.generated.resources.*
 import loaninterest.composeapp.generated.resources.Res
-import loaninterest.composeapp.generated.resources.level_1_wood
 import loaninterest.composeapp.generated.resources.level_all_background
 import loaninterest.composeapp.generated.resources.money
 import org.jetbrains.compose.resources.DrawableResource
@@ -62,13 +61,14 @@ fun previewApp() {
     app(model)
 }
 
-val peopleOffset: Density.() -> IntOffset = { IntOffset(-320, 100) }
+val peopleOffset: Density.() -> IntOffset = { IntOffset(-350, 100) }
 val movePeopleWorkOffset: Density.() -> IntOffset = { IntOffset(-270, 100) }
 val bankOffset: Density.() -> IntOffset = { IntOffset(40, -20) }
 val marketOffset: Density.() -> IntOffset = { IntOffset(-60, -230) }
 val manufactureOffset: Density.() -> IntOffset = { IntOffset(280, 100) }
 val moveProductsFromManufactureToPeopleOffset: Density.() -> IntOffset = { IntOffset(200, 100) }
 val moveProductsFromManufactureToMarketOffset: Density.() -> IntOffset = { IntOffset(200, 50) }
+val moveProductsFromMarketToPeopleOffset: Density.() -> IntOffset = { IntOffset(-150, -240) }
 
 @Composable
 fun app(model: Model) {
@@ -83,14 +83,6 @@ fun app(model: Model) {
                 ),
         ) {
             messageBox(model.messages)
-
-            level(
-                model,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .align(Alignment.TopStart)
-                    .fillMaxHeight()
-            )
 
             people(
                 model.people,
@@ -124,7 +116,7 @@ fun app(model: Model) {
                         model.bank.size = it
                     },
             )
-            
+
             manufacture(
                 model.manufacture,
                 modifier = Modifier
@@ -138,7 +130,7 @@ fun app(model: Model) {
                     },
             )
 
-            moveProductsFromManufactureToPeople(                
+            moveProductsFromManufactureToPeople(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .offset(moveProductsFromManufactureToPeopleOffset),
@@ -152,8 +144,8 @@ fun app(model: Model) {
                 model,
             )
 
-            marketWithAction(
-                model,
+            market(
+                model.market,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .offset(marketOffset)
@@ -163,6 +155,21 @@ fun app(model: Model) {
                     .onSizeChanged {
                         model.market.size = it
                     },
+            )
+
+            moveProductsFromMarketToPeople(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .offset(moveProductsFromMarketToPeopleOffset),
+                model,
+            )
+
+            level(
+                model,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.TopStart)
+                    .fillMaxHeight()
             )
 
             hint(model.hint)
@@ -253,24 +260,6 @@ fun peopleTakeMoney(
 }
 
 @Composable
-fun marketWithAction(
-    model: Model,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier.padding(16.dp)
-    ) {
-        market(
-            model.market
-        )
-        moveProductsFromMarketToPeople(
-            Modifier.align(Alignment.Bottom),
-            model
-        )
-    }
-}
-
-@Composable
 fun BoxScope.hint(
     model: Hint
 ) {
@@ -327,9 +316,9 @@ fun BoxScope.hint(
 fun movePeopleWork(
     modifier: Modifier = Modifier,
     model: Model
-){
+) {
     move(
-        Res.drawable.level_2_wood,
+        Res.drawable.woodcutter_out,
         modifier = modifier
     ) {
         model.manufacture.click()
@@ -375,7 +364,7 @@ fun moveProductsFromManufactureToMarket(
 @Composable
 fun moveProductsFromManufactureToPeople(
     modifier: Modifier = Modifier,
-    model: Model,    
+    model: Model,
 ) {
     AnimatedVisibility(
         modifier = modifier,
@@ -392,7 +381,7 @@ fun moveProductsFromManufactureToPeople(
             model.finishedMoveProductsFromManufactureToPeople()
         }
         move(
-            Res.drawable.level_1_wood,
+            Res.drawable.woodcutter_back,
             modifier = Modifier
                 .offset {
                     offset
