@@ -11,8 +11,6 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,7 +50,7 @@ fun manufacture(
             null,
             modifier = Modifier
                 .clickable {
-                    model.click()
+                    model.editSettings = true
                 }
                 .size(if (model.isMobile) 70.dp else 200.dp),
         )
@@ -68,9 +66,6 @@ fun manufacture(
                         model.click()
                     }.padding(8.dp)
             ) {
-                model.settings(
-                    modifier = Modifier.align(Alignment.End)
-                )
                 Text("Продукты: ${model.products.toCaption()}")
                 if (model.showMoney) {
                     Text("Деньги: ${model.money.toCaption()}")
@@ -85,20 +80,4 @@ fun manufacture(
             }
         }
     }
-}
-
-@Composable
-fun Manufacture.settings(
-    modifier: Modifier = Modifier,
-) {
-    Image(
-        imageVector = Icons.Filled.Settings,
-        contentDescription = "Настройки",
-        modifier = modifier
-            .clickable(
-                onClick = {
-                    editSettings = true
-                }
-            ),
-    )
 }

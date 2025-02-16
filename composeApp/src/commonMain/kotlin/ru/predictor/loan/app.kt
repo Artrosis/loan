@@ -63,6 +63,7 @@ fun previewApp() {
 }
 
 val peopleOffset: Density.() -> IntOffset = { IntOffset(-320, 100) }
+val movePeopleWorkOffset: Density.() -> IntOffset = { IntOffset(-270, 100) }
 val bankOffset: Density.() -> IntOffset = { IntOffset(40, -20) }
 val marketOffset: Density.() -> IntOffset = { IntOffset(-60, -230) }
 val manufactureOffset: Density.() -> IntOffset = { IntOffset(280, 100) }
@@ -94,7 +95,6 @@ fun app(model: Model) {
             people(
                 model.people,
                 Modifier
-                    .padding(16.dp)
                     .align(Alignment.Center)
                     .offset(peopleOffset)
                     .onGloballyPositioned {
@@ -103,6 +103,13 @@ fun app(model: Model) {
                     .onSizeChanged {
                         model.people.size = it
                     }
+            )
+
+            movePeopleWork(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .offset(movePeopleWorkOffset),
+                model,
             )
 
             bankWithActions(
@@ -317,6 +324,19 @@ fun BoxScope.hint(
 }
 
 @Composable
+fun movePeopleWork(
+    modifier: Modifier = Modifier,
+    model: Model
+){
+    move(
+        Res.drawable.level_2_wood,
+        modifier = modifier
+    ) {
+        model.manufacture.click()
+    }
+}
+
+@Composable
 fun moveProductsFromMarketToPeople(
     modifier: Modifier = Modifier,
     model: Model
@@ -331,7 +351,6 @@ fun moveProductsFromMarketToPeople(
         ) {
             model.moveProductsFromMarketToPeople()
         }
-
     }
 }
 
