@@ -58,7 +58,7 @@ fun VerticalProgress(
     text: String,
     modifier: Modifier = Modifier
 ) {
-    val mProgress = animateFloatAsState(targetValue = progress)
+    val mProgress = animateFloatAsState(targetValue = maxOf(0f, minOf(progress, 1F)))
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
