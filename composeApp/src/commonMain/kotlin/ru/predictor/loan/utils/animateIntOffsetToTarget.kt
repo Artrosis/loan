@@ -1,8 +1,6 @@
 package ru.predictor.loan.utils
 
-import androidx.compose.animation.core.VisibilityThreshold
-import androidx.compose.animation.core.animateIntOffsetAsState
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.layout.LayoutCoordinates
@@ -43,9 +41,9 @@ fun LayoutCoordinates?.animateIntOffsetToTarget(
         },
         label = "offset",
         finishedListener = onFinished,
-        animationSpec = spring(
-            dampingRatio = 3f,
-            visibilityThreshold = IntOffset.VisibilityThreshold
+        animationSpec = tween(
+            easing = FastOutSlowInEasing,
+            durationMillis = 500,
         )
     )
 }
