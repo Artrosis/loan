@@ -11,8 +11,6 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,7 +47,8 @@ fun bank(
             Image(
                 painterResource(model.getIcon()),
                 null,
-                modifier = modifier.clickable {
+                modifier = modifier
+                    .clickable {
                         model.click()
                     }.size(if (model.isMobile) 70.dp else 200.dp),
             )
@@ -60,12 +59,12 @@ fun bank(
                 color = Color(0xA0FFFFFF),
             ) {
                 Column(
-                    modifier = modifier.padding(8.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .clickable {
+                            model.editSettings = true
+                        }.padding(8.dp)
                 ) {
-                    model.settings(
-                        modifier = Modifier.align(Alignment.End)
-                    )
 
                     if (model.showLoanInterest) {
                         Text("Ссудный процент: ${model.loanInterest}")
@@ -78,17 +77,4 @@ fun bank(
             }
         }
     }
-}
-
-@Composable
-fun Bank.settings(
-    modifier: Modifier = Modifier,
-) {
-    Image(
-        imageVector = Icons.Filled.Settings,
-        contentDescription = "Настройки",
-        modifier = modifier.clickable(onClick = {
-                editSettings = true
-            }),
-    )
 }

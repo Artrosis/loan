@@ -26,7 +26,6 @@ class Manufacture(
     var showSalary by MutableStateDelegate(false)
     var salary by MutableStateDelegate(1.0)
     var efficiency by MutableStateDelegate(2.0)
-
     var editSettings by MutableStateDelegate(false)
 
     fun getIcon() = when (getAge()) {

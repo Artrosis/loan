@@ -27,9 +27,9 @@ fun previewMarket() {
     val model = Market(
         getAge = { Age.BARTER },
     ).apply {
-            has = true
-            products = 70
-        }
+        has = true
+        products = 70
+    }
 
     market(model)
 }
@@ -43,7 +43,7 @@ fun market(
         model.editSettings()
 
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally, 
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
         ) {
             Image(
@@ -62,9 +62,11 @@ fun market(
                 color = Color(0xA0FFFFFF),
             ) {
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally, 
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .padding(8.dp)
+                        .clickable {
+                            model.editSettings = true
+                        }.padding(8.dp)
                 ) {
                     Text("Продукты: ${model.products.toCaption()}")
                     if (model.showMoney) {

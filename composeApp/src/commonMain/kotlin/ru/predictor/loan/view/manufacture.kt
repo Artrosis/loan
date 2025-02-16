@@ -63,7 +63,7 @@ fun manufacture(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .clickable {
-                        model.click()
+                        model.editSettings = true
                     }.padding(8.dp)
             ) {
                 Text("Продукты: ${model.products.toCaption()}")

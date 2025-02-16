@@ -11,8 +11,6 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,6 +46,9 @@ fun people(
             painterResource(model.getIcon()),
             null,
             modifier = Modifier
+                .clickable {
+                    model.editSettings = true
+                }
                 .size(if (model.isMobile) 70.dp else 200.dp)
         )
         Surface(
@@ -57,11 +58,11 @@ fun people(
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier
+                    .clickable {
+                        model.editSettings = true
+                    }.padding(8.dp)
             ) {
-                model.settings(
-                    modifier = Modifier.align(Alignment.End)
-                )
                 Text("Продукты: ${model.products.toCaption()}")
                 if (model.showMoney) {
                     Text("Деньги: ${model.money.toCaption()}")
@@ -71,20 +72,4 @@ fun people(
             }
         }
     }
-}
-
-@Composable
-fun People.settings(
-    modifier: Modifier = Modifier,
-) {
-    Image(
-        imageVector = Icons.Filled.Settings,
-        contentDescription = "Настройки",
-        modifier = modifier
-            .clickable(
-                onClick = {
-                    editSettings = true
-                }
-            ),
-    )
 }
