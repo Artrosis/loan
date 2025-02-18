@@ -50,7 +50,7 @@ fun bank(
                 modifier = modifier
                     .clickable {
                         model.click()
-                    }.size(if (model.isMobile) 70.dp else 200.dp),
+                    }.size(if (model.isMobile) 70.dp else 300.dp),
             )
 
             Surface(

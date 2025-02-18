@@ -52,7 +52,7 @@ fun manufacture(
                 .clickable {
                     model.editSettings = true
                 }
-                .size(if (model.isMobile) 70.dp else 200.dp),
+                .size(if (model.isMobile) 70.dp else 300.dp),
         )
         Surface(
             shape = RoundedCornerShape(corner = CornerSize(16.dp)),

@@ -32,7 +32,7 @@ class People(
         Age.INDEPENDENT -> Res.drawable.level_1_people
         Age.BARTER -> Res.drawable.level_2_people
         Age.INDUSTRY -> Res.drawable.level_3_people
-        Age.CREDITING -> Res.drawable.level_1_people
+        Age.CREDITING -> Res.drawable.level_3_people
         Age.FINISH -> Res.drawable.level_1_people
 
     }

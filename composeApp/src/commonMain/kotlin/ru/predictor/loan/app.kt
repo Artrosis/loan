@@ -61,14 +61,14 @@ fun previewApp() {
     app(model)
 }
 
-val peopleOffset: Density.() -> IntOffset = { IntOffset(-350, 100) }
-val movePeopleWorkOffset: Density.() -> IntOffset = { IntOffset(-270, 100) }
-val bankOffset: Density.() -> IntOffset = { IntOffset(40, -20) }
-val marketOffset: Density.() -> IntOffset = { IntOffset(-60, -230) }
-val manufactureOffset: Density.() -> IntOffset = { IntOffset(280, 100) }
-val moveProductsFromManufactureToPeopleOffset: Density.() -> IntOffset = { IntOffset(200, 100) }
-val moveProductsFromManufactureToMarketOffset: Density.() -> IntOffset = { IntOffset(200, 50) }
-val moveProductsFromMarketToPeopleOffset: Density.() -> IntOffset = { IntOffset(-150, -240) }
+val peopleOffset: Density.() -> IntOffset = { IntOffset(-380, 130) }
+val manufactureOffset: Density.() -> IntOffset = { IntOffset(460, 180) }
+val marketOffset: Density.() -> IntOffset = { IntOffset(-130, -230) }
+val bankOffset: Density.() -> IntOffset = { IntOffset(50, -10) }
+val movePeopleWorkOffset: Density.() -> IntOffset = { IntOffset(-250, 110) }
+val moveProductsFromManufactureToPeopleOffset: Density.() -> IntOffset = { IntOffset(260, 100) }
+val moveProductsFromManufactureToMarketOffset: Density.() -> IntOffset = { IntOffset(300, 70) }
+val moveProductsFromMarketToPeopleOffset: Density.() -> IntOffset = { IntOffset(-220, -240) }
 
 @Composable
 fun app(model: Model) {
@@ -79,7 +79,7 @@ fun app(model: Model) {
                 .background(Color.Gray.copy(alpha = 0.6f))
                 .paint(
                     painterResource(Res.drawable.level_all_background),
-                    contentScale = FixedScale(0.7f)
+                    contentScale = FixedScale(0.8f)
                 ),
         ) {
             messageBox(model.messages)
@@ -200,7 +200,7 @@ fun bankWithActions(
             ) {
                 AnimatedVisibility(model.levelMode.canTakeMoneyFromBank)
                 {
-                    manufactureTakeMoney(
+                    peopleTakeMoney(
                         Modifier.align(Alignment.Bottom),
                         model
                     )
@@ -210,7 +210,7 @@ fun bankWithActions(
                 )
                 AnimatedVisibility(model.levelMode.canTakeMoneyFromBank)
                 {
-                    peopleTakeMoney(
+                    manufactureTakeMoney(
                         Modifier.align(Alignment.Bottom),
                         model
                     )
