@@ -334,9 +334,26 @@ fun moveProductsFromMarketToPeople(
         model.market.products > 0,
         modifier = modifier
     ) {
+
+        var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+
+        val offset by selfCoordinates.animateIntOffsetToTarget(
+            model.movedProductsFromMarketToPeople,
+            model.people
+        )
+        {
+            model.finishedMoveProductsFromMarketToPeople()
+        }
+
         move(
             Res.drawable.level_2_wood,
             modifier = Modifier
+                .offset {
+                    offset
+                }
+                .onGloballyPositioned { coordinates ->
+                    selfCoordinates = coordinates
+                }
         ) {
             model.moveProductsFromMarketToPeople()
         }
@@ -356,8 +373,8 @@ fun moveProductsFromManufactureToMarket(
         move(
             Res.drawable.level_2_wood,
             modifier = Modifier,
-            onMove = { model.moveProductsFromManufactureToMarket() }
         )
+        { model.moveProductsFromManufactureToMarket() }
     }
 }
 

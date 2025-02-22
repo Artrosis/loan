@@ -44,6 +44,7 @@ class Model : CheckMobile() {
     )
 
     var movedProductsFromManufactureToPeople by MutableStateDelegate(false)
+    var movedProductsFromMarketToPeople by MutableStateDelegate(false)
 
     val bank = Bank(
         onClick = {
@@ -108,7 +109,7 @@ class Model : CheckMobile() {
         
         levelMode = BarterMode()
         initialization()
-        
+
         levelMode = IndustryMode()
         initialization()
         
@@ -220,8 +221,16 @@ class Model : CheckMobile() {
     }
 
     fun moveProductsFromMarketToPeople() = canInteractLevelMode {
-        takeProductsFromMarketToPeople()
+        movedProductsFromMarketToPeople = true
     }
+
+    fun finishedMoveProductsFromMarketToPeople() {
+        levelMode.apply {
+            takeProductsFromMarketToPeople()
+        }
+        movedProductsFromMarketToPeople = false
+    }
+
 
     private fun canInteractLevelMode(levelModeAction: LevelMode.() -> Unit) {
         if (!canInteract()) return
