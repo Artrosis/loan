@@ -370,9 +370,26 @@ fun moveProductsFromManufactureToMarket(
                 && model.levelMode.canMoveProductsFromManufactureToMarket,
         modifier = modifier
     ) {
+
+        var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+
+        val offset by selfCoordinates.animateIntOffsetToTarget(
+            model.movedProductsFromManufactureToMarket,
+            model.market
+        )
+        {
+            model.finishedMoveProductsFromManufactureToMarket()
+        }
+
         move(
             Res.drawable.level_2_wood,
-            modifier = Modifier,
+            modifier = Modifier
+                .offset {
+                    offset
+                }
+                .onGloballyPositioned { coordinates ->
+                    selfCoordinates = coordinates
+                }
         )
         { model.moveProductsFromManufactureToMarket() }
     }
