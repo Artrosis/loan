@@ -48,9 +48,7 @@ fun bank(
                 painterResource(model.getIcon()),
                 null,
                 modifier = modifier
-                    .clickable {
-                        model.distributeMoney()
-                    }.size(if (model.isMobile) 70.dp else 300.dp),
+                    .size(if (model.isMobile) 70.dp else 300.dp),
             )
 
             Surface(

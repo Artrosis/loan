@@ -49,9 +49,6 @@ fun manufacture(
             painterResource(model.getIcon()),
             null,
             modifier = Modifier
-                .clickable {
-                    model.editSettings = true
-                }
                 .size(if (model.isMobile) 70.dp else 300.dp),
         )
         Surface(
