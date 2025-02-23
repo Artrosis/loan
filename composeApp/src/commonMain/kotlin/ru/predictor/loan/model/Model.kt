@@ -1,6 +1,9 @@
 package ru.predictor.loan.model
 
 import androidx.compose.ui.BiasAlignment
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import ru.predictor.loan.model.modes.*
 import ru.predictor.loan.utils.MutableStateDelegate
@@ -46,6 +49,13 @@ class Model : CheckMobile() {
     var movedProductsFromManufactureToPeople by MutableStateDelegate(false)
     var movedProductsFromMarketToPeople by MutableStateDelegate(false)
     var movedProductsFromManufactureToMarket by MutableStateDelegate(false)
+
+    var movedMoneyFromBankToMarket by MutableStateDelegate(false)
+    var movedMoneyFromBankToManufacture by MutableStateDelegate(false)
+    var movedMoneyFromBankToPeople by MutableStateDelegate(false)
+    
+    var movedMoneyFromBankToAll by MutableStateDelegate(false)
+    var isAnimatedMoveMoney by MutableStateDelegate(false)
 
     val bank = Bank(
         onClick = {
@@ -120,6 +130,16 @@ class Model : CheckMobile() {
         messages.clear()
         hint.clear()
         hintQueue.clear()*/
+    }
+    
+    fun canManufactureTakeMoneyFromBank(): Boolean{
+        return levelMode.canTakeMoneyFromBank && !manufacture.hideMoveMoney
+    }
+    fun canMarketTakeMoneyFromBank(): Boolean{
+        return levelMode.canTakeMoneyFromBank && !market.hideMoveMoney
+    }
+    fun canPeopleTakeMoneyFromBank(): Boolean{
+        return levelMode.canTakeMoneyFromBank && !people.hideMoveMoney
     }
 
     fun initialization() {
@@ -210,6 +230,18 @@ class Model : CheckMobile() {
         movedProductsFromManufactureToPeople = true
     }
 
+    fun moveMoneyFromBankToManufacture() = canInteractLevelMode {
+        movedMoneyFromBankToManufacture = true
+    }
+
+    fun moveMoneyFromBankToPeople() = canInteractLevelMode {
+        movedMoneyFromBankToPeople = true
+    }
+
+    fun moveMoneyFromBankToMarket() = canInteractLevelMode {
+        movedMoneyFromBankToMarket = true
+    }
+    
     fun finishedMoveProductsFromManufactureToPeople() {
         levelMode.apply {
             takeProductsFromManufactureToPeople()
@@ -245,20 +277,53 @@ class Model : CheckMobile() {
         levelMode.apply(levelModeAction)
     }
 
-    fun marketTakeMoney() = canInteractLevelMode {
+    fun finishedMoveMoneyFromBankToMarket() = canInteractLevelMode {
+        movedMoneyFromBankToMarket = false
+        market.hideMoveMoney = true
         marketGiveMoney()
+        
+        GlobalScope.launch {
+            delay(100L)
+            market.hideMoveMoney = false
+        }
     }
 
-    fun manufactureTakeMoney() = canInteractLevelMode {
+    fun finishedMoveMoneyFromBankToManufacture() = canInteractLevelMode {
+        movedMoneyFromBankToManufacture = false
+        manufacture.hideMoveMoney = true
         manufactureGiveMoney()
+
+        GlobalScope.launch {
+            delay(100L)
+            manufacture.hideMoveMoney = false
+        }
     }
 
-    fun peopleTakeMoney() = canInteractLevelMode {
+    fun finishedMoveMoneyFromBankToPeople() = canInteractLevelMode {
+        movedMoneyFromBankToPeople = false
+        people.hideMoveMoney = true
         peopleGiveMoney()
+
+        GlobalScope.launch {
+            delay(100L)
+            people.hideMoveMoney = false
+        }
     }
 
     fun populationProgress() = people.population / levelMode.maxLevelPopulation.toFloat()
     fun populationText() = "Население: ${people.population.format()} (из ${levelMode.maxLevelPopulation})"
+    fun snowBankMoney(): Boolean {
+        return levelMode.showBankMoney && !movedMoneyFromBankToAll && bank.money >= 3
+    }
+    
+    fun startDistributeMoney(){
+        movedMoneyFromBankToAll = true
+        isAnimatedMoveMoney = true
+    }
+    fun finishedMoneyFromBankToAll(){        
+        movedMoneyFromBankToAll = false
+        bank.distributeMoney()
+    }
 
     companion object {
         val manufactureToPeopleHintAlignment = BiasAlignment(-0.4f, 0.6f)

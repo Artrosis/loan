@@ -9,6 +9,7 @@ open class CreditingMode: IndustryMode() {
     override val maxLevelPopulation = 50000
     override var age by MutableStateDelegate(Age.CREDITING)
     override val canTakeMoneyFromBank = true
+    override val showBankMoney = false
     override val levelMessages = listOf(
         "На этом этапе Банк решил давать деньги только в кредит под 8%"
     )

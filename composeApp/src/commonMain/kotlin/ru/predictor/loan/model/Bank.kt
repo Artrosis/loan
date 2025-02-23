@@ -41,7 +41,7 @@ class Bank(
         Age.FINISH -> Res.drawable.level_3_bank
     }
 
-    fun click() {
+    fun distributeMoney() {
         onClick()
     }
 }

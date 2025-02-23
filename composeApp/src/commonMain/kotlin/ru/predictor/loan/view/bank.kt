@@ -49,7 +49,7 @@ fun bank(
                 null,
                 modifier = modifier
                     .clickable {
-                        model.click()
+                        model.distributeMoney()
                     }.size(if (model.isMobile) 70.dp else 300.dp),
             )
 

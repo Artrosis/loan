@@ -65,6 +65,10 @@ val peopleOffset: Density.() -> IntOffset = { IntOffset(-380, 130) }
 val manufactureOffset: Density.() -> IntOffset = { IntOffset(460, 180) }
 val marketOffset: Density.() -> IntOffset = { IntOffset(-130, -230) }
 val bankOffset: Density.() -> IntOffset = { IntOffset(50, -10) }
+val bankMoneyOffset: Density.() -> IntOffset = { IntOffset(0, 150) }
+val moneyToMarketOffset: Density.() -> IntOffset = { IntOffset(0, -50) }
+val moneyToPeopleOffset: Density.() -> IntOffset = { IntOffset(-50, -10) }
+val moneyToManufactureOffset: Density.() -> IntOffset = { IntOffset(100, 50) }
 val movePeopleWorkOffset: Density.() -> IntOffset = { IntOffset(-250, 110) }
 val moveProductsFromManufactureToPeopleOffset: Density.() -> IntOffset = { IntOffset(260, 100) }
 val moveProductsFromManufactureToMarketOffset: Density.() -> IntOffset = { IntOffset(300, 70) }
@@ -104,18 +108,44 @@ fun app(model: Model) {
                 model,
             )
 
-            bankWithActions(
-                model,
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .offset(bankOffset)
-                    .onGloballyPositioned {
-                        model.bank.coordinates = it
-                    }
-                    .onSizeChanged {
-                        model.bank.size = it
-                    },
-            )
+            if (model.bank.has) {
+                bank(
+                    model.bank,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .offset(bankOffset)
+                        .onGloballyPositioned {
+                            model.bank.coordinates = it
+                        }
+                        .onSizeChanged {
+                            model.bank.size = it
+                        },
+                )
+                bankMoney(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .offset(bankMoneyOffset),
+                    model
+                )                
+                marketTakeMoney(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .offset(moneyToMarketOffset),
+                    model
+                )
+                peopleTakeMoney(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .offset(moneyToPeopleOffset),
+                    model
+                )
+                manufactureTakeMoney(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .offset(moneyToManufactureOffset),
+                    model
+                )
+            }
 
             manufacture(
                 model.manufacture,
@@ -178,45 +208,92 @@ fun app(model: Model) {
 }
 
 @Composable
-fun bankWithActions(
-    model: Model,
-    modifier: Modifier,
+fun bankMoney(
+    modifier: Modifier = Modifier,
+    model: Model
 ) {
-    Column(
-        modifier = modifier
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        if (model.bank.has) {
-            AnimatedVisibility(model.levelMode.canTakeMoneyFromBank)
-            {
-                marketTakeMoney(
-                    Modifier.align(Alignment.CenterHorizontally),
-                    model
-                )
-            }
-            Row(
-                verticalAlignment = Alignment.Bottom
-            ) {
-                AnimatedVisibility(model.levelMode.canTakeMoneyFromBank)
-                {
-                    peopleTakeMoney(
-                        Modifier.align(Alignment.Bottom),
-                        model
-                    )
-                }
-                bank(
-                    model.bank,
-                )
-                AnimatedVisibility(model.levelMode.canTakeMoneyFromBank)
-                {
-                    manufactureTakeMoney(
-                        Modifier.align(Alignment.Bottom),
-                        model
-                    )
-                }
-            }
+    if (model.snowBankMoney()) {
+        move(
+            Res.drawable.money,
+            modifier = modifier
+        ) {
+            model.startDistributeMoney()
         }
+    }
+
+    //Иконки показывающие перенос денег
+    
+    //к магазину
+    if (model.movedMoneyFromBankToAll)
+    {
+        var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+
+        val offset by selfCoordinates.animateIntOffsetToTarget(
+            model.isAnimatedMoveMoney,
+            model.market
+        )
+        {
+            model.isAnimatedMoveMoney = false
+            model.finishedMoneyFromBankToAll()
+        }
+        move(
+            Res.drawable.money,
+            modifier = modifier
+                .offset {
+                    offset
+                }
+                .onGloballyPositioned { coordinates ->
+                    selfCoordinates = coordinates
+                }
+        ){}
+    }
+    //к заводу
+    if (model.movedMoneyFromBankToAll)
+    {
+        var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+
+        val offset by selfCoordinates.animateIntOffsetToTarget(
+            model.isAnimatedMoveMoney,
+            model.manufacture
+        )
+        {
+            model.isAnimatedMoveMoney = false
+            model.finishedMoneyFromBankToAll()
+        }
+        move(
+            Res.drawable.money,
+            modifier = modifier
+                .offset {
+                    offset
+                }
+                .onGloballyPositioned { coordinates ->
+                    selfCoordinates = coordinates
+                }
+        ){}
+    }
+    //к населению
+    if (model.movedMoneyFromBankToAll)
+    {
+        var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+
+        val offset by selfCoordinates.animateIntOffsetToTarget(
+            model.isAnimatedMoveMoney,
+            model.people
+        )
+        {
+            model.isAnimatedMoveMoney = false
+            model.finishedMoneyFromBankToAll()
+        }
+        move(
+            Res.drawable.money,
+            modifier = modifier
+                .offset {
+                    offset
+                }
+                .onGloballyPositioned { coordinates ->
+                    selfCoordinates = coordinates
+                }
+        ){}
     }
 }
 
@@ -225,11 +302,29 @@ fun marketTakeMoney(
     modifier: Modifier = Modifier,
     model: Model
 ) {
-    move(
-        Res.drawable.money,
-        modifier = modifier
-    ) {
-        model.marketTakeMoney()
+    if (model.canMarketTakeMoneyFromBank())
+    {
+        var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+
+        val offset by selfCoordinates.animateIntOffsetToTarget(
+            model.movedMoneyFromBankToMarket,
+            model.market
+        )
+        {
+            model.finishedMoveMoneyFromBankToMarket()
+        }
+        move(
+            Res.drawable.money,
+            modifier = modifier
+                .offset {
+                    offset
+                }
+                .onGloballyPositioned { coordinates ->
+                    selfCoordinates = coordinates
+                }
+        ) {
+            model.moveMoneyFromBankToMarket()
+        }
     }
 }
 
@@ -238,11 +333,29 @@ fun manufactureTakeMoney(
     modifier: Modifier = Modifier,
     model: Model
 ) {
-    move(
-        Res.drawable.money,
-        modifier = modifier
-    ) {
-        model.manufactureTakeMoney()
+    if (model.canManufactureTakeMoneyFromBank())
+    {
+        var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+
+        val offset by selfCoordinates.animateIntOffsetToTarget(
+            model.movedMoneyFromBankToManufacture,
+            model.manufacture
+        )
+        {
+            model.finishedMoveMoneyFromBankToManufacture()
+        }
+        move(
+            Res.drawable.money,
+            modifier = modifier
+                .offset {
+                    offset
+                }
+                .onGloballyPositioned { coordinates ->
+                    selfCoordinates = coordinates
+                }
+        ) {
+            model.moveMoneyFromBankToManufacture()
+        }
     }
 }
 
@@ -251,11 +364,29 @@ fun peopleTakeMoney(
     modifier: Modifier = Modifier,
     model: Model
 ) {
-    move(
-        Res.drawable.money,
-        modifier = modifier
-    ) {
-        model.peopleTakeMoney()
+    if (model.canPeopleTakeMoneyFromBank())
+    {
+        var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+
+        val offset by selfCoordinates.animateIntOffsetToTarget(
+            model.movedMoneyFromBankToPeople,
+            model.people
+        )
+        {
+            model.finishedMoveMoneyFromBankToPeople()
+        }
+        move(
+            Res.drawable.money,
+            modifier = modifier
+                .offset {
+                    offset
+                }
+                .onGloballyPositioned { coordinates ->
+                    selfCoordinates = coordinates
+                }
+        ) {
+            model.moveMoneyFromBankToPeople()
+        }
     }
 }
 

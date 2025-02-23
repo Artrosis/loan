@@ -9,6 +9,7 @@ open class IndustryMode: LevelMode() {
     override val maxLevelPopulation = 3000
     override var age by MutableStateDelegate(Age.INDUSTRY)
     override val canMoveProductsFromManufactureToMarket = true
+    override val showBankMoney = true
     override val levelMessages = listOf(
         "Людей стало больше.",
         "Для удобства обмена, люди придумали деньги.",

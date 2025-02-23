@@ -7,6 +7,7 @@ abstract class LevelMode{
     open val canMoveProductsFromManufactureToPeople = false
     open val canMoveProductsFromManufactureToMarket = false
     open val canTakeMoneyFromBank = false
+    open val showBankMoney = false
     abstract val maxLevelPopulation: Int
     abstract var age: Age
     open val levelMessages = listOf<String>()

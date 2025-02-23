@@ -9,6 +9,8 @@ open class Creditor: ViewObject(){
     var credit by MutableStateDelegate(0)
     var payment by MutableStateDelegate(0)
 
+    var hideMoveMoney by MutableStateDelegate(false)
+
     var showMoney by MutableStateDelegate(false)
     var money by MutableStateDelegate(0.0)
     
