@@ -6,7 +6,7 @@ import ru.predictor.loan.model.Model
 import ru.predictor.loan.utils.MutableStateDelegate
 
 open class CreditingMode: IndustryMode() {
-    override val maxLevelPopulation = 50000
+    override val maxLevelPopulation = 30000
     override var age by MutableStateDelegate(Age.CREDITING)
     override val canTakeMoneyFromBank = true
     override val showBankMoney = false

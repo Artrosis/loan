@@ -66,13 +66,13 @@ val manufactureOffset: Density.() -> IntOffset = { IntOffset(460, 180) }
 val marketOffset: Density.() -> IntOffset = { IntOffset(-130, -230) }
 val bankOffset: Density.() -> IntOffset = { IntOffset(50, -10) }
 val bankMoneyOffset: Density.() -> IntOffset = { IntOffset(0, 150) }
-val moneyToMarketOffset: Density.() -> IntOffset = { IntOffset(0, -50) }
-val moneyToPeopleOffset: Density.() -> IntOffset = { IntOffset(-50, -10) }
-val moneyToManufactureOffset: Density.() -> IntOffset = { IntOffset(100, 50) }
+val moneyToMarketOffset: Density.() -> IntOffset = { IntOffset(-30, -80) }
+val moneyToPeopleOffset: Density.() -> IntOffset = { IntOffset(-60, 0) }
+val moneyToManufactureOffset: Density.() -> IntOffset = { IntOffset(100, 70) }
 val movePeopleWorkOffset: Density.() -> IntOffset = { IntOffset(-250, 110) }
 val moveProductsFromManufactureToPeopleOffset: Density.() -> IntOffset = { IntOffset(260, 100) }
-val moveProductsFromManufactureToMarketOffset: Density.() -> IntOffset = { IntOffset(300, 70) }
-val moveProductsFromMarketToPeopleOffset: Density.() -> IntOffset = { IntOffset(-220, -240) }
+val moveProductsFromManufactureToMarketOffset: Density.() -> IntOffset = { IntOffset(300, 120) }
+val moveProductsFromMarketToPeopleOffset: Density.() -> IntOffset = { IntOffset(-210, -230) }
 
 @Composable
 fun app(model: Model) {

@@ -4,6 +4,7 @@ import androidx.annotation.FloatRange
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,7 +37,11 @@ fun level(
         ) {
             Text(
                 text = "Этап: ${model.levelMode.age.caption}",
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier
+                    .clickable {
+                        model.aboutLevel()
+                    }
+                    .padding(8.dp),
                 fontSize = 24.sp,
             )
         }
@@ -98,7 +103,7 @@ fun BoxScope.levelProgressText(text: String) {
     Text(
         text = text,
         modifier = Modifier
-            .requiredWidth(200.dp)
+            .requiredWidth(400.dp)
             .rotate(-90F)
             .align(Alignment.Center),
         softWrap = false

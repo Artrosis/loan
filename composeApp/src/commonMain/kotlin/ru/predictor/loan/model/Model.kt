@@ -227,6 +227,20 @@ class Model : CheckMobile() {
         }
     }
 
+    fun aboutLevel() {
+        messages.apply {
+            val showMessage = mutableListOf("Вы на этапе: ${levelMode.age.caption}")
+            showMessage.addAll(levelMode.levelMessages)
+
+            lines = showMessage
+            buttonText = "Продолжить"
+            onNext = {
+                lines = listOf()
+                nextHint()
+            }
+        }
+    }
+
     fun moveProductsFromManufactureToPeople() = canInteractLevelMode {
         movedProductsFromManufactureToPeople = true
     }
