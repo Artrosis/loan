@@ -6,7 +6,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-//import androidx.compose.foundation.layout.FlowRowScopeInstance.align
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
@@ -18,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.predictor.loan.model.Model
@@ -46,7 +46,7 @@ fun level(
                 fontSize = 24.sp,
             )
         }
-        VerticalProgress(
+        verticalProgress(
             progress = model.populationProgress(),
             text = model.populationText(),
             modifier = Modifier
@@ -58,29 +58,23 @@ fun level(
 }
 
 @Composable
-fun VerticalProgress(
+fun verticalProgress(
     @FloatRange(from = 0.0, to = 1.0)
     progress: Float,
     text: String,
     modifier: Modifier = Modifier
 ) {
     val mProgress = animateFloatAsState(targetValue = maxOf(0f, minOf(progress, 1F)))
+    
+    val captionOffset = IntOffset(x = 0, y = -100)
     Box(
-        modifier = Modifier
+        modifier = modifier
     ) {
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .clip(RoundedCornerShape(12.dp))
                 .background(Color(0xB0E5E4E2))
-                .width(16.dp)
         ) {
-            Text(
-                text = text,
-                modifier = Modifier
-                    .requiredWidth(400.dp)
-                    .rotate(-90F)
-                    .align(Alignment.CenterHorizontally)
-            )
             Box(
                 modifier = Modifier
                     .weight((if ((1 - mProgress.value) == 0.0F) 0.0001 else 1 - mProgress.value).toFloat())
@@ -105,5 +99,14 @@ fun VerticalProgress(
             ) {
             }
         }
+        
+        Text(
+            text = text,
+            modifier = Modifier
+                .requiredWidth(400.dp)
+                .offset { captionOffset }
+                .rotate(-90F)
+                .align(Alignment.Center)                
+        )
     }
 }
