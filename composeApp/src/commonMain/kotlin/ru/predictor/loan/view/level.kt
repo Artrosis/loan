@@ -6,6 +6,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+//import androidx.compose.foundation.layout.FlowRowScopeInstance.align
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
@@ -64,48 +65,45 @@ fun VerticalProgress(
     modifier: Modifier = Modifier
 ) {
     val mProgress = animateFloatAsState(targetValue = maxOf(0f, minOf(progress, 1F)))
-    Column(
-        modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .background(Color(0xB0E5E4E2))
-            .width(16.dp)
+    Box(
+        modifier = Modifier
     ) {
-        Box(
-            modifier = Modifier
-                .weight((if ((1 - mProgress.value) == 0.0F) 0.0001 else 1 - mProgress.value).toFloat())
-                .fillMaxWidth()
-        ) {
-            if (mProgress.value < 0.5) levelProgressText(text)
-        }
-        Box(
-            modifier = Modifier
+        Column(
+            modifier = modifier
                 .clip(RoundedCornerShape(12.dp))
-                .weight(mProgress.value)
-                .fillMaxWidth()
-                .background(
-                    Brush.verticalGradient(
-                        listOf(
-                            Color(0xff719baa),
-                            Color(0xff719baa),
-                            Color(0xff467b9c),
-                            Color(0xff467b9c),
+                .background(Color(0xB0E5E4E2))
+                .width(16.dp)
+        ) {
+            Text(
+                text = text,
+                modifier = Modifier
+                    .requiredWidth(400.dp)
+                    .rotate(-90F)
+                    .align(Alignment.CenterHorizontally)
+            )
+            Box(
+                modifier = Modifier
+                    .weight((if ((1 - mProgress.value) == 0.0F) 0.0001 else 1 - mProgress.value).toFloat())
+                    .fillMaxWidth()
+            ) {
+            }
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .weight(mProgress.value)
+                    .fillMaxWidth()
+                    .background(
+                        Brush.verticalGradient(
+                            listOf(
+                                Color(0xff719baa),
+                                Color(0xff719baa),
+                                Color(0xff467b9c),
+                                Color(0xff467b9c),
+                            )
                         )
                     )
-                )
-        ) {
-            if (mProgress.value >= 0.5) levelProgressText(text)
+            ) {
+            }
         }
     }
-}
-
-@Composable
-fun BoxScope.levelProgressText(text: String) {
-    Text(
-        text = text,
-        modifier = Modifier
-            .requiredWidth(400.dp)
-            .rotate(-90F)
-            .align(Alignment.Center),
-        softWrap = false
-    )
 }
