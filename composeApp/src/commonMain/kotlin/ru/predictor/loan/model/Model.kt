@@ -1,10 +1,11 @@
 package ru.predictor.loan.model
 
 import androidx.compose.ui.BiasAlignment
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.DrawableResource
 import ru.predictor.loan.model.modes.*
 import ru.predictor.loan.utils.MutableStateDelegate
 
@@ -292,36 +293,42 @@ class Model : CheckMobile() {
         levelMode.apply(levelModeAction)
     }
 
-    fun finishedMoveMoneyFromBankToMarket() = canInteractLevelMode {
-        movedMoneyFromBankToMarket = false
-        market.hideMoveMoney = true
-        marketGiveMoney()
-        
-        GlobalScope.launch {
-            delay(100L)
-            market.hideMoveMoney = false
+    suspend fun finishedMoveMoneyFromBankToMarket() = coroutineScope {
+        canInteractLevelMode {
+            movedMoneyFromBankToMarket = false
+            market.hideMoveMoney = true
+            marketGiveMoney()
+
+            launch {
+                delay(100L)
+                market.hideMoveMoney = false
+            }
         }
-    }
+    } 
 
-    fun finishedMoveMoneyFromBankToManufacture() = canInteractLevelMode {
-        movedMoneyFromBankToManufacture = false
-        manufacture.hideMoveMoney = true
-        manufactureGiveMoney()
+    suspend fun finishedMoveMoneyFromBankToManufacture() = coroutineScope {
+        canInteractLevelMode {
+            movedMoneyFromBankToManufacture = false
+            manufacture.hideMoveMoney = true
+            manufactureGiveMoney()
 
-        GlobalScope.launch {
-            delay(100L)
-            manufacture.hideMoveMoney = false
+            launch {
+                delay(100L)
+                manufacture.hideMoveMoney = false
+            }
         }
-    }
+    } 
 
-    fun finishedMoveMoneyFromBankToPeople() = canInteractLevelMode {
-        movedMoneyFromBankToPeople = false
-        people.hideMoveMoney = true
-        peopleGiveMoney()
+    suspend fun finishedMoveMoneyFromBankToPeople() = coroutineScope {
+        canInteractLevelMode {
+            movedMoneyFromBankToPeople = false
+            people.hideMoveMoney = true
+            peopleGiveMoney()
 
-        GlobalScope.launch {
-            delay(100L)
-            people.hideMoveMoney = false
+            launch {
+                delay(100L)
+                people.hideMoveMoney = false
+            }
         }
     }
 
@@ -338,6 +345,10 @@ class Model : CheckMobile() {
     fun finishedMoneyFromBankToAll(){        
         movedMoneyFromBankToAll = false
         bank.distributeMoney()
+    }
+
+    fun moneyIcon(): DrawableResource {
+        return levelMode.moneyIcon
     }
 
     companion object {

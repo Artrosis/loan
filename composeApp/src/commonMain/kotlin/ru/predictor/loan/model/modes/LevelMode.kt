@@ -1,5 +1,7 @@
 package ru.predictor.loan.model.modes
 
+import loaninterest.composeapp.generated.resources.Res
+import loaninterest.composeapp.generated.resources.money
 import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.Model
 
@@ -11,6 +13,7 @@ abstract class LevelMode{
     abstract val maxLevelPopulation: Int
     abstract var age: Age
     open val levelMessages = listOf<String>()
+    open val moneyIcon = Res.drawable.money
     
     open fun Model.initModel(){}
     abstract fun nextMode(): LevelMode

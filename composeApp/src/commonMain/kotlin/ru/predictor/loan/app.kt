@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 import loaninterest.composeapp.generated.resources.*
 import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.level_all_background
@@ -214,7 +215,7 @@ fun bankMoney(
 ) {
     if (model.snowBankMoney()) {
         move(
-            Res.drawable.money,
+            model.moneyIcon(),
             modifier = modifier
         ) {
             model.startDistributeMoney()
@@ -304,6 +305,7 @@ fun marketTakeMoney(
 ) {
     if (model.canMarketTakeMoneyFromBank())
     {
+        val coroutineScope = rememberCoroutineScope()
         var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
 
         val offset by selfCoordinates.animateIntOffsetToTarget(
@@ -311,7 +313,9 @@ fun marketTakeMoney(
             model.market
         )
         {
-            model.finishedMoveMoneyFromBankToMarket()
+            coroutineScope.launch {
+                model.finishedMoveMoneyFromBankToMarket()
+            }
         }
         move(
             Res.drawable.money,
@@ -335,6 +339,7 @@ fun manufactureTakeMoney(
 ) {
     if (model.canManufactureTakeMoneyFromBank())
     {
+        val coroutineScope = rememberCoroutineScope()
         var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
 
         val offset by selfCoordinates.animateIntOffsetToTarget(
@@ -342,7 +347,9 @@ fun manufactureTakeMoney(
             model.manufacture
         )
         {
-            model.finishedMoveMoneyFromBankToManufacture()
+            coroutineScope.launch {
+                model.finishedMoveMoneyFromBankToManufacture() 
+            }
         }
         move(
             Res.drawable.money,
@@ -366,6 +373,7 @@ fun peopleTakeMoney(
 ) {
     if (model.canPeopleTakeMoneyFromBank())
     {
+        val coroutineScope = rememberCoroutineScope()
         var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
 
         val offset by selfCoordinates.animateIntOffsetToTarget(
@@ -373,7 +381,9 @@ fun peopleTakeMoney(
             model.people
         )
         {
-            model.finishedMoveMoneyFromBankToPeople()
+            coroutineScope.launch {
+                model.finishedMoveMoneyFromBankToPeople() 
+            }
         }
         move(
             Res.drawable.money,

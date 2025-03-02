@@ -1,5 +1,7 @@
 package ru.predictor.loan.model.modes
 
+import loaninterest.composeapp.generated.resources.Res
+import loaninterest.composeapp.generated.resources.woodcutter_back
 import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.Credit
 import ru.predictor.loan.model.Model
@@ -13,6 +15,8 @@ open class CreditingMode: IndustryMode() {
     override val levelMessages = listOf(
         "На этом этапе Банк решил давать деньги только в кредит под 8%"
     )
+    
+    override val moneyIcon = Res.drawable.woodcutter_back
 
     override fun Model.initModel() {
         //У банка появился ссудный процент
