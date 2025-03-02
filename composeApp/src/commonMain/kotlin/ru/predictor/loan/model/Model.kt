@@ -72,7 +72,8 @@ class Model : CheckMobile() {
                 "people.food" to people.products,
                 "market.products" to market.products
             )
-        }
+        },
+        allPayments = { people.payment + manufacture.payment + market.payment}
     )
 
     private val peopleHintAlignment = BiasAlignment(0.6f, 0.3f)

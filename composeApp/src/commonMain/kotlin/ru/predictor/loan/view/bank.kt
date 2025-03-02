@@ -19,12 +19,11 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.Bank
-import ru.predictor.loan.utils.toCaption
 
 @Composable
 @Preview
 fun previewBank() {
-    val model = Bank({}, { Age.CREDITING }, { 0.0 }, { mapOf() }).apply {
+    val model = Bank({}, { Age.CREDITING }, { 0.0 }, { mapOf() }, {0}).apply {
         has = true
         money = 100500.0
     }
@@ -66,11 +65,10 @@ fun bank(
 
                     if (model.showLoanInterest) {
                         Text("Ссудный процент: ${model.loanInterest}")
+                        Text("Платежи: ${model.payments()}")
                     }
-
-                    if (model.showMoney) {
-                        Text("Деньги: ${model.money.toCaption()}")
-                    }
+                    
+                    Text("Деньги: ${model.moneyCaption()}")
                 }
             }
         }

@@ -19,10 +19,10 @@ class IndependentMode() : LevelMode() {
         manufacture.showMoney = false
         market.showMoney = false
         bank.showLoanInterest = false
-        bank.showMoney = true
         people.showCredit = false
         manufacture.showCredit = false
         market.showCredit = false
+        bank.infinityMoney = false
 
         people.population = 10f
         people.products = 20
