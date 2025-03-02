@@ -4,6 +4,7 @@ import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.HintData
 import ru.predictor.loan.model.Model
 import ru.predictor.loan.model.Model.Companion.manufactureToPeopleHintAlignment
+import ru.predictor.loan.model.PeopleState
 import ru.predictor.loan.utils.MutableStateDelegate
 
 class IndependentMode() : LevelMode() {
@@ -12,10 +13,30 @@ class IndependentMode() : LevelMode() {
     override var age by MutableStateDelegate(Age.INDEPENDENT)
 
     override fun Model.initModel(){
+        market.has = false
+        bank.has = false
+        people.showMoney = false
+        manufacture.showMoney = false
+        market.showMoney = false
+        bank.showLoanInterest = false
+        bank.showMoney = true
+        people.showCredit = false
+        manufacture.showCredit = false
+        market.showCredit = false
+
         people.population = 10f
         people.products = 20
+        people.money = 0.0
+        people.clearCredits()
+        people.state = PeopleState.GOOD
 
         manufacture.products = 0
+        manufacture.money = 0.0
+        manufacture.clearCredits()
+
+        market.products = 0
+        market.money = 0.0
+        market.clearCredits()
 
         manufacture.onFirstGetProducts += {
             hintQueue.add(

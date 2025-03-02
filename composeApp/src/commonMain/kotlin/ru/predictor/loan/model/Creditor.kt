@@ -22,6 +22,10 @@ open class Creditor: ViewObject(){
         
         updateCreditData()
     }
+    
+    fun clearCredits(){
+        credits.clear()
+    }
 
     fun hasCredit() = credits.isNotEmpty()
 
