@@ -4,9 +4,7 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
@@ -46,7 +44,7 @@ fun people(
             painterResource(model.getIcon()),
             null,
             modifier = Modifier
-                .size(if (model.isMobile) 70.dp else 300.dp)
+                .width(if (model.isMobile) 70.dp else 280.dp),
         )
         Surface(
             shape = RoundedCornerShape(corner = CornerSize(16.dp)),

@@ -63,7 +63,7 @@ fun previewApp() {
 }
 
 val peopleOffset: Density.() -> IntOffset = { IntOffset(-380, 130) }
-val manufactureOffset: Density.() -> IntOffset = { IntOffset(460, 180) }
+val manufactureOffset: Density.() -> IntOffset = { IntOffset(440, 150) }
 val marketOffset: Density.() -> IntOffset = { IntOffset(-130, -230) }
 val bankOffset: Density.() -> IntOffset = { IntOffset(50, -10) }
 val bankMoneyOffset: Density.() -> IntOffset = { IntOffset(0, 150) }
