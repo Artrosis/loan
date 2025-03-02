@@ -21,6 +21,8 @@ class Manufacture(
 
     val onFirstGetProducts = Event<Unit>()
 
+    var hideProductsToMarket by MutableStateDelegate(false)
+
     var showPrice by MutableStateDelegate(false)
     var price by MutableStateDelegate(0)
     var showSalary by MutableStateDelegate(false)

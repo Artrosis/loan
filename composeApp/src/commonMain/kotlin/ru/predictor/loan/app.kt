@@ -506,12 +506,9 @@ fun moveProductsFromManufactureToMarket(
     modifier: Modifier = Modifier,
     model: Model
 ) {
-    AnimatedVisibility(
-        model.manufacture.products > 0
-                && model.levelMode.canMoveProductsFromManufactureToMarket,
-        modifier = modifier
-    ) {
-
+    val coroutineScope = rememberCoroutineScope()
+    if (model.showProductsFromManufactureToMarket())
+    {
         var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
 
         val offset by selfCoordinates.animateIntOffsetToTarget(
@@ -519,12 +516,14 @@ fun moveProductsFromManufactureToMarket(
             model.market
         )
         {
-            model.finishedMoveProductsFromManufactureToMarket()
+            coroutineScope.launch {
+                model.finishedMoveProductsFromManufactureToMarket()
+            }
         }
 
         move(
             Res.drawable.level_2_wood,
-            modifier = Modifier
+            modifier = modifier
                 .offset {
                     offset
                 }

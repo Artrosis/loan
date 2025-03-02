@@ -268,11 +268,18 @@ class Model : CheckMobile() {
     fun moveProductsFromManufactureToMarket() = canInteractLevelMode {
         movedProductsFromManufactureToMarket = true
     }
-    fun finishedMoveProductsFromManufactureToMarket() {
+    
+    suspend fun finishedMoveProductsFromManufactureToMarket() = coroutineScope {
         levelMode.apply {
             takeProductsFromManufactureToMarket()
         }
         movedProductsFromManufactureToMarket = false
+        manufacture.hideProductsToMarket = true
+
+        launch {
+            delay(100L)
+            manufacture.hideProductsToMarket = false
+        }
     }
 
     fun moveProductsFromMarketToPeople() = canInteractLevelMode {
@@ -349,6 +356,12 @@ class Model : CheckMobile() {
 
     fun moneyIcon(): DrawableResource {
         return levelMode.moneyIcon
+    }
+
+    fun showProductsFromManufactureToMarket(): Boolean {
+        return manufacture.products > 0
+                && levelMode.canMoveProductsFromManufactureToMarket
+                && !manufacture.hideProductsToMarket
     }
 
     companion object {
