@@ -8,14 +8,22 @@ import ru.predictor.loan.model.Model.Companion.marketToPeopleHintAlignment
 import ru.predictor.loan.utils.MutableStateDelegate
 
 class BarterMode: LevelMode() {
-    override val maxLevelPopulation = 300
+    override val maxLevelPopulation = 50
     override var age by MutableStateDelegate(Age.BARTER)
     override val canMoveProductsFromManufactureToMarket = true
-    override val levelMessages = listOf("На этом этапе появляется специализация.", "Люди производят разные товары и обмениваются этими товарами на ярмарке.")
+    override val levelMessages = listOf(
+        " ",
+        "Число людей значительно возросло. ",
+        "Среди них появились специалисты в различных областях.",
+        "Кроме того, ассортимент Продуктов стал более разнообразным.",
+        "",
+        "Для обмена товарами было организовано специальное место — ярмарка.",
+    )
 
     private val manufactureToMarketHint = HintData(
         listOf(
-            "Отправим произведённые товары на ярмарку.",
+            "Отправь произведённые Продукты на ярмарку.",
+            "Для этого нажми на иконку рядом с Заводом.",
         ), manufactureToMarketHintAlignment
     )
     
@@ -41,7 +49,7 @@ class BarterMode: LevelMode() {
             hintQueue.add(
                 HintData(
                     listOf(
-                        "Нажми стрелочку, чтобы люди обменялись товарами.",
+                        "Теперь оправь Продукты к домам",
                     ), marketToPeopleHintAlignment
                 ),
             )

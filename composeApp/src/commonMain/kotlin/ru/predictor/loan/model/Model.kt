@@ -76,30 +76,29 @@ class Model : CheckMobile() {
         allPayments = { people.payment + manufacture.payment + market.payment}
     )
 
-    private val peopleHintAlignment = BiasAlignment(0.6f, 0.3f)
-    private val progressHintAlignment = BiasAlignment(0f, -0.6f)
-    private val manufactureHintAlignment = BiasAlignment(-0.8f, 0.3f)
+    private val peopleHintAlignment = BiasAlignment(0.0f, 0.0f)
+    private val progressHintAlignment = BiasAlignment(-0.6f, -0.5f)
+    private val manufactureHintAlignment = BiasAlignment(0.0f, 0.0f)
 
     val hintQueue = mutableListOf(
         HintData(
             listOf(
-                "В этом живописном месте у реки будет основано новое поселение.",
-                "Для жизни людям будут нужны продукты. Если Продуктов достаточно,",
-                "то население увеличивается. Каждый ваш клик по иконке человечка",
-                "рядом с поселением, будет расходовать Продукты.",
+                "Здесь будет основано новое поселение.",
+                "Для жизни людям будут нужны Продукты.",
+                "Если Продуктов достаточно, то население увеличивается.",
             ), peopleHintAlignment
         ),
         HintData(
             listOf(
-                "Шкала показывает количество населения. Чтобы перейти на следующий этап,",
-                "нужно увеличить количество населения, показанное на шкале. По мере",
-                "увеличения населения меняются экономические отношения между людьми.",
+                "Количество населения показано на этой шкале.",
+                "Когда она достигнет максимума - вы перейдёте на следующий этап",
+
             ), progressHintAlignment
         ),
         HintData(
             listOf(
                 "На начальном этапе всё необходимое для жизни люди берут из природы.",
-                "Нажмите на иконку Лесоруба, чтобы отправить Людей трудиться.",
+                "Нажмите на иконку Работника, чтобы отправить его добывать Продукты.",
             ), manufactureHintAlignment
         ),
     )
@@ -366,9 +365,10 @@ class Model : CheckMobile() {
     }
 
     companion object {
-        val manufactureToPeopleHintAlignment = BiasAlignment(-0.4f, 0.6f)
-        val manufactureToMarketHintAlignment = BiasAlignment(-0.4f, 0.2f)
-        val marketToPeopleHintAlignment = BiasAlignment(0.6f, 0.2f)
+        val manufactureToPeopleHintAlignment = BiasAlignment(-0.0f, 0.0f)
+        val manufactureToMarketHintAlignment = BiasAlignment(-0.0f, 0.0f)
+        val marketToPeopleHintAlignment = BiasAlignment(-0.3f, -0.3f)
         val bankHintAlignment = BiasAlignment(0f, 0.8f)
+        val bankHint2Alignment = BiasAlignment(0f, 0.8f)
     }
 }

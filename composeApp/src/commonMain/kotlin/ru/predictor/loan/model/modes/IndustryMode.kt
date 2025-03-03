@@ -6,15 +6,17 @@ import ru.predictor.loan.model.Model
 import ru.predictor.loan.utils.MutableStateDelegate
 
 open class IndustryMode: LevelMode() {
-    override val maxLevelPopulation = 3000
+    override val maxLevelPopulation = 300
     override var age by MutableStateDelegate(Age.INDUSTRY)
     override val canMoveProductsFromManufactureToMarket = true
     override val showBankMoney = true
     override val levelMessages = listOf(
-        "Людей стало больше.",
-        "Для удобства обмена, люди придумали деньги.",
-        "Учёт денег выполняет банк.",
-        "Он же следит за тем, чтобы количество денег было равно количеству товаров.",
+        " ",
+        "Население продолжает расти и, для облегчения процесса обмена, люди придумали деньги",
+        "В нашей игре функция Банка будет заключаться в эмиссии - ",
+        "создании и распределении новых денежных единиц.",
+        "Кроме того, Банк будет вести учёт денежной массы и следить за тем,",
+        "чтобы количество денег соответствовало объёму товаров на рынке.",
     )
     
     override fun Model.initModel() {        
@@ -34,7 +36,9 @@ open class IndustryMode: LevelMode() {
         hintQueue.add(
             HintData(
                 listOf(
-                    "Клинки на Банк, чтобы раздать всем деньги для начала обмена.",
+                    "Клинки на монетки, чтобы раздать всем деньги для начала обмена.",
+                    "1 Продукт стоит 1 денежную единицу;",
+                    "1 человек производит 2 Продукта, зарабатывая за это 1 единицу денег",
                 ), Model.bankHintAlignment
             ),
         )

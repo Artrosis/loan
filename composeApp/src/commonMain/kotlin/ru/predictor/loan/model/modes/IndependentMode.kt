@@ -9,7 +9,7 @@ import ru.predictor.loan.utils.MutableStateDelegate
 
 class IndependentMode() : LevelMode() {
     override val canMoveProductsFromManufactureToPeople = true
-    override val maxLevelPopulation = 30
+    override val maxLevelPopulation = 20
     override var age by MutableStateDelegate(Age.INDEPENDENT)
 
     override fun Model.initModel(){
@@ -42,8 +42,8 @@ class IndependentMode() : LevelMode() {
             hintQueue.add(
                 HintData(
                     listOf(
-                        "Люди потрудились и проголодались.",
-                        "Нажми на стрелку, чтобы перенести к ним продукты.",
+                        "Каждый клик по иконке Работника, будет расходовать Продукты.",
+                        "Нажми на иконку рядом с лесом, чтобы восполнить запасы.",
                     ), manufactureToPeopleHintAlignment
                 ),
             )

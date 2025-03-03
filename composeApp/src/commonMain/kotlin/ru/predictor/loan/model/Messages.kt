@@ -7,7 +7,9 @@ class Messages(
 ) {
     var lines by MutableStateDelegate(listOf(
         "Привет!",
-        "Это игра про ссудный процент и его влияние на экономику."
+        " ",
+        "Эта игра покажет зачем обществу нужны деньги, банки и что будет,",
+        "если банк будет выдавать деньги только под проценты.",
     ))
 
     var closeDismiss by MutableStateDelegate(false)

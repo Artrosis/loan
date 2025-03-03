@@ -33,7 +33,6 @@ import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.Hint
 import ru.predictor.loan.model.Model
 import ru.predictor.loan.model.modes.BarterMode
-import ru.predictor.loan.model.modes.CreditingMode
 import ru.predictor.loan.model.modes.IndependentMode
 import ru.predictor.loan.model.modes.IndustryMode
 import ru.predictor.loan.utils.animateIntOffsetToTarget
@@ -53,8 +52,8 @@ fun previewApp() {
         levelMode = IndustryMode()
         initialization()
         messages.clear()
-        levelMode = CreditingMode()
-        initialization()
+        /*levelMode = CreditingMode()
+        initialization()*/
         hint.clear()
         hintQueue.clear()
     }
@@ -66,14 +65,14 @@ val peopleOffset: Density.() -> IntOffset = { IntOffset(-380, 130) }
 val manufactureOffset: Density.() -> IntOffset = { IntOffset(440, 150) }
 val marketOffset: Density.() -> IntOffset = { IntOffset(-130, -230) }
 val bankOffset: Density.() -> IntOffset = { IntOffset(50, -10) }
-val bankMoneyOffset: Density.() -> IntOffset = { IntOffset(0, 150) }
-val moneyToMarketOffset: Density.() -> IntOffset = { IntOffset(-30, -80) }
-val moneyToPeopleOffset: Density.() -> IntOffset = { IntOffset(-60, 0) }
-val moneyToManufactureOffset: Density.() -> IntOffset = { IntOffset(100, 70) }
+val bankMoneyOffset: Density.() -> IntOffset = { IntOffset(0, 30) }
+val moneyToMarketOffset: Density.() -> IntOffset = { IntOffset(-40, -80) }
+val moneyToPeopleOffset: Density.() -> IntOffset = { IntOffset(-40, 10) }
+val moneyToManufactureOffset: Density.() -> IntOffset = { IntOffset(170, 40) }
 val movePeopleWorkOffset: Density.() -> IntOffset = { IntOffset(-250, 110) }
 val moveProductsFromManufactureToPeopleOffset: Density.() -> IntOffset = { IntOffset(260, 100) }
 val moveProductsFromManufactureToMarketOffset: Density.() -> IntOffset = { IntOffset(300, 120) }
-val moveProductsFromMarketToPeopleOffset: Density.() -> IntOffset = { IntOffset(-210, -230) }
+val moveProductsFromMarketToPeopleOffset: Density.() -> IntOffset = { IntOffset(-220, -220) }
 
 @Composable
 fun app(model: Model) {
