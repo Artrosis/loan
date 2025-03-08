@@ -11,6 +11,15 @@ class IndependentMode() : LevelMode() {
     override val canMoveProductsFromManufactureToPeople = true
     override val maxLevelPopulation = 20
     override var age by MutableStateDelegate(Age.INDEPENDENT)
+    override val levelMessages = listOf(
+        "Привет!",
+        " ",
+        "Эта игра покажет зачем обществу нужны деньги, банки и что будет,",
+        "если банк будет выдавать деньги только под проценты.",
+        " ",
+        " ",
+        "Для отзывов: https://t.me/c/2363429679/769",
+    )
 
     override fun Model.initModel(){
         market.has = false
@@ -42,7 +51,7 @@ class IndependentMode() : LevelMode() {
             hintQueue.add(
                 HintData(
                     listOf(
-                        "Каждый клик по иконке Работника, будет расходовать Продукты.",
+                        "Каждый клик по иконке работника, будет расходовать продукты.",
                         "Нажми на иконку рядом с лесом, чтобы восполнить запасы.",
                     ), manufactureToPeopleHintAlignment
                 ),
