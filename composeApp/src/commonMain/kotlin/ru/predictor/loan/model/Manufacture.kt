@@ -31,7 +31,7 @@ class Manufacture(
     var editSettings by MutableStateDelegate(false)
 
     fun getIcon() = when (getAge()) {
-        Age.INDEPENDENT -> Res.drawable.level_1_manuf
+        Age.INDEPENDENT -> Res.drawable.level_1_manuf_2
         Age.BARTER -> Res.drawable.level_2_manuf
         Age.INDUSTRY -> Res.drawable.level_3_manuf
         Age.CREDITING -> Res.drawable.level_3_manuf

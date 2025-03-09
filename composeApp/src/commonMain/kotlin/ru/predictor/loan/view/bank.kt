@@ -65,8 +65,7 @@ fun bank(
                 ) {
 
                     if (model.showLoanInterest) {
-                        Text("Ссудный процент: ${model.loanInterest}")
-                        Text("Платежи: ${model.payments()}")
+                        Text("Ссуда: ${model.loanInterest}%")
                     }
                     
                     Text("Деньги: ${model.moneyCaption()}")
