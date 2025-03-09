@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import loaninterest.composeapp.generated.resources.*
 import loaninterest.composeapp.generated.resources.Res
@@ -33,6 +34,7 @@ import loaninterest.composeapp.generated.resources.money
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.images.Telegram
+import ru.predictor.loan.model.MoveableAnimation
 import ru.predictor.loan.model.Hint
 import ru.predictor.loan.model.Model
 import ru.predictor.loan.model.modes.BarterMode
@@ -336,29 +338,45 @@ fun marketTakeMoney(
     val coroutineScope = rememberCoroutineScope()
     if (model.canMarketTakeMoneyFromBank())
     {
-        var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
-
-        val offset by selfCoordinates.animateIntOffsetToTarget(
-            model.movedMoneyFromBankToMarket,
-            model.market
-        )
-        {
-            coroutineScope.launch {
-                model.finishedMoveMoneyFromBankToMarket()
-            }
-        }
-        move(
-            Res.drawable.money,
-            modifier = modifier
-                .offset {
-                    offset
-                }
-                .onGloballyPositioned { coordinates ->
-                    selfCoordinates = coordinates
-                }
-        ) {
+        coroutineScope.animatedMove(
+            modifier,
+            model.moneyToMarket,                       
+        ){
             model.moveMoneyFromBankToMarket()
         }
+    }
+}
+
+@Composable
+fun CoroutineScope.animatedMove(
+    modifier: Modifier = Modifier,
+    model: MoveableAnimation,
+    action: () -> Unit
+){
+    var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+
+    val offset by selfCoordinates.animateIntOffsetToTarget(
+        model.isAnimated,
+        model.target,
+    ){
+        launch {
+            model.onFinishAnimation{
+                action()
+            }
+        }
+    }
+    
+    move(
+        model.icon,
+        modifier = modifier
+            .offset {
+                offset
+            }
+            .onGloballyPositioned { coordinates ->
+                selfCoordinates = coordinates
+            }
+    ) {
+        model.startAnimation()
     }
 }
 
@@ -370,27 +388,10 @@ fun manufactureTakeMoney(
     val coroutineScope = rememberCoroutineScope()
     if (model.canManufactureTakeMoneyFromBank())
     {
-        var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
-
-        val offset by selfCoordinates.animateIntOffsetToTarget(
-            model.movedMoneyFromBankToManufacture,
-            model.manufacture
-        )
-        {
-            coroutineScope.launch {
-                model.finishedMoveMoneyFromBankToManufacture() 
-            }
-        }
-        move(
-            Res.drawable.money,
-            modifier = modifier
-                .offset {
-                    offset
-                }
-                .onGloballyPositioned { coordinates ->
-                    selfCoordinates = coordinates
-                }
-        ) {
+        coroutineScope.animatedMove(
+            modifier,
+            model.moneyToManufacture,            
+        ){
             model.moveMoneyFromBankToManufacture()
         }
     }
@@ -404,27 +405,10 @@ fun peopleTakeMoney(
     val coroutineScope = rememberCoroutineScope()
     if (model.canPeopleTakeMoneyFromBank())
     {
-        var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
-
-        val offset by selfCoordinates.animateIntOffsetToTarget(
-            model.movedMoneyFromBankToPeople,
-            model.people
-        )
-        {
-            coroutineScope.launch {
-                model.finishedMoveMoneyFromBankToPeople() 
-            }
-        }
-        move(
-            Res.drawable.money,
-            modifier = modifier
-                .offset {
-                    offset
-                }
-                .onGloballyPositioned { coordinates ->
-                    selfCoordinates = coordinates
-                }
-        ) {
+        coroutineScope.animatedMove(
+            modifier,
+            model.moneyToPeople,            
+        ){
             model.moveMoneyFromBankToPeople()
         }
     }
@@ -570,30 +554,16 @@ fun moveProductsFromManufactureToPeople(
     modifier: Modifier = Modifier,
     model: Model,
 ) {
-    AnimatedVisibility(
-        modifier = modifier,
-        visible = model.manufacture.products > 0
-                && model.levelMode.canMoveProductsFromManufactureToPeople
-    ) {
-        var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
-
-        val offset by selfCoordinates.animateIntOffsetToTarget(
-            model.movedProductsFromManufactureToPeople,
-            model.people
-        )
-        {
-            model.finishedMoveProductsFromManufactureToPeople()
-        }
-        move(
-            Res.drawable.woodcutter_back,
-            modifier = Modifier
-                .offset {
-                    offset
-                }
-                .onGloballyPositioned { coordinates ->
-                    selfCoordinates = coordinates
-                }
-        ) {
+    val coroutineScope = rememberCoroutineScope()
+    if (
+        model.manufacture.products > 0
+        && model.levelMode.canMoveProductsFromManufactureToPeople
+    )
+    {
+        coroutineScope.animatedMove(
+            modifier,
+            model.productsFromManufactureToPeople,            
+        ){
             model.moveProductsFromManufactureToPeople()
         }
     }

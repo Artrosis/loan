@@ -5,6 +5,9 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import loaninterest.composeapp.generated.resources.Res
+import loaninterest.composeapp.generated.resources.money
+import loaninterest.composeapp.generated.resources.woodcutter_back
 import org.jetbrains.compose.resources.DrawableResource
 import ru.predictor.loan.model.modes.*
 import ru.predictor.loan.utils.MutableStateDelegate
@@ -37,6 +40,7 @@ class Model : CheckMobile() {
     val market = Market(
         getAge = { levelMode.age },
     )
+
     val manufacture = Manufacture(
         onClick = {
             canInteractLevelMode {
@@ -47,13 +51,29 @@ class Model : CheckMobile() {
         canInteract = { canInteract() }
     )
 
+    val moneyToMarket = MoveableAnimation(
+        market,
+        Res.drawable.money,
+    )
+
+    val moneyToPeople = MoveableAnimation(
+        people,
+        Res.drawable.money,
+    )
+
+    val moneyToManufacture = MoveableAnimation(
+        manufacture,
+        Res.drawable.money,
+    )
+
+    val productsFromManufactureToPeople = MoveableAnimation(
+        people,
+        Res.drawable.woodcutter_back,
+    )
+
     var movedProductsFromManufactureToPeople by MutableStateDelegate(false)
     var movedProductsFromMarketToPeople by MutableStateDelegate(false)
     var movedProductsFromManufactureToMarket by MutableStateDelegate(false)
-
-    var movedMoneyFromBankToMarket by MutableStateDelegate(false)
-    var movedMoneyFromBankToManufacture by MutableStateDelegate(false)
-    var movedMoneyFromBankToPeople by MutableStateDelegate(false)
     
     var movedMoneyFromBankToAll by MutableStateDelegate(false)
     var isAnimatedMoveMoney by MutableStateDelegate(false)
@@ -135,13 +155,13 @@ class Model : CheckMobile() {
     }
     
     fun canManufactureTakeMoneyFromBank(): Boolean{
-        return levelMode.canTakeMoneyFromBank && !manufacture.hideMoveMoney && !manufacture.hasCredit
+        return levelMode.canTakeMoneyFromBank && !manufacture.hasCredit
     }
     fun canMarketTakeMoneyFromBank(): Boolean{
-        return levelMode.canTakeMoneyFromBank && !market.hideMoveMoney && !market.hasCredit
+        return levelMode.canTakeMoneyFromBank && !market.hasCredit
     }
     fun canPeopleTakeMoneyFromBank(): Boolean{
-        return levelMode.canTakeMoneyFromBank && !people.hideMoveMoney && !people.hasCredit
+        return levelMode.canTakeMoneyFromBank && !people.hasCredit
     }
 
     fun initialization() {
@@ -173,7 +193,7 @@ class Model : CheckMobile() {
 
     fun nextHint() {
 
-        if (hintQueue.size == 0) return
+        if (hintQueue.isEmpty()) return
 
         val nextHint = hintQueue.first()
 
@@ -241,28 +261,11 @@ class Model : CheckMobile() {
             }
         }
     }
-
-    fun moveProductsFromManufactureToPeople() = canInteractLevelMode {
-        movedProductsFromManufactureToPeople = true
-    }
-
-    fun moveMoneyFromBankToManufacture() = canInteractLevelMode {
-        movedMoneyFromBankToManufacture = true
-    }
-
-    fun moveMoneyFromBankToPeople() = canInteractLevelMode {
-        movedMoneyFromBankToPeople = true
-    }
-
-    fun moveMoneyFromBankToMarket() = canInteractLevelMode {
-        movedMoneyFromBankToMarket = true
-    }
     
-    fun finishedMoveProductsFromManufactureToPeople() {
+    fun moveProductsFromManufactureToPeople() {
         levelMode.apply {
             takeProductsFromManufactureToPeople()
         }
-        movedProductsFromManufactureToPeople = false
     }
 
     fun moveProductsFromManufactureToMarket() = canInteractLevelMode {
@@ -293,49 +296,27 @@ class Model : CheckMobile() {
         movedProductsFromMarketToPeople = false
     }
 
-
     private fun canInteractLevelMode(levelModeAction: LevelMode.() -> Unit) {
         if (!canInteract()) return
 
         levelMode.apply(levelModeAction)
     }
 
-    suspend fun finishedMoveMoneyFromBankToMarket() = coroutineScope {
-        canInteractLevelMode {
-            movedMoneyFromBankToMarket = false
-            market.hideMoveMoney = true
+    fun moveMoneyFromBankToMarket() {
+        levelMode.apply {
             marketGiveMoney()
-
-            launch {
-                delay(100L)
-                market.hideMoveMoney = false
-            }
         }
-    } 
+    }
 
-    suspend fun finishedMoveMoneyFromBankToManufacture() = coroutineScope {
-        canInteractLevelMode {
-            movedMoneyFromBankToManufacture = false
-            manufacture.hideMoveMoney = true
+    fun moveMoneyFromBankToManufacture() {
+        levelMode.apply {
             manufactureGiveMoney()
-
-            launch {
-                delay(100L)
-                manufacture.hideMoveMoney = false
-            }
         }
-    } 
+    }
 
-    suspend fun finishedMoveMoneyFromBankToPeople() = coroutineScope {
-        canInteractLevelMode {
-            movedMoneyFromBankToPeople = false
-            people.hideMoveMoney = true
+    fun moveMoneyFromBankToPeople() {
+        levelMode.apply {
             peopleGiveMoney()
-
-            launch {
-                delay(100L)
-                people.hideMoveMoney = false
-            }
         }
     }
 
