@@ -4,6 +4,7 @@ import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.woodcutter_back
 import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.Credit
+import ru.predictor.loan.model.Creditor
 import ru.predictor.loan.model.HintData
 import ru.predictor.loan.model.Model
 import ru.predictor.loan.utils.MutableStateDelegate
@@ -60,8 +61,8 @@ open class CreditingMode: IndustryMode() {
         return Credit(bank.loanSize.toDouble(), bank.loanInterest)
     }
 
-    override fun Model.peopleGiveMoney(){
-        if (people.hasCredit()){
+    fun Model.creditorGiveMoney(creditor: Creditor){
+        if (creditor.checkCredit()){
             messages.apply {
                 lines = listOf("Сперва закройте прошлый кредит")
                 messages.buttonText = "Начать заново"
@@ -71,44 +72,15 @@ open class CreditingMode: IndustryMode() {
             }
         }
         else {
-            people.addCredit(makeCredit())
+            creditor.addCredit(makeCredit())
         }
-
     }
+
+    override fun Model.peopleGiveMoney() = creditorGiveMoney(people)
     
-    override fun Model.manufactureGiveMoney(){
-
-        if (manufacture.hasCredit()){
-            messages.apply {
-                lines = listOf("Сперва закройте прошлый кредит")
-                messages.buttonText = "Начать заново"
-                buttonText = "Понятно"
-                onNext = {clear()}
-                closeDismiss = true
-            }
-        }
-        else {
-            manufacture.addCredit(makeCredit())
-        }
-
-    }
+    override fun Model.manufactureGiveMoney() = creditorGiveMoney(manufacture)
     
-    override fun Model.marketGiveMoney(){
-
-        if (market.hasCredit()){
-            messages.apply {
-                lines = listOf("Сперва закройте прошлый кредит")
-                messages.buttonText = "Начать заново"
-                buttonText = "Понятно"
-                onNext = {clear()}
-                closeDismiss = true
-            }
-        }
-        else {
-            market.addCredit(makeCredit())
-        }
-
-    }
+    override fun Model.marketGiveMoney() = creditorGiveMoney(market)
   
     override fun Model.bankTick() {}
 }

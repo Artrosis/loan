@@ -10,6 +10,7 @@ open class Creditor: ViewObject(){
     var payment by MutableStateDelegate(0)
 
     var hideMoveMoney by MutableStateDelegate(false)
+    var hasCredit by MutableStateDelegate(false)
 
     var showMoney by MutableStateDelegate(false)
     var money by MutableStateDelegate(0.0)
@@ -27,11 +28,13 @@ open class Creditor: ViewObject(){
         credits.clear()
     }
 
-    fun hasCredit() = credits.isNotEmpty()
+    fun checkCredit() = credits.isNotEmpty()
 
     private fun updateCreditData() {
         credit = credits.sumOf { it.loan }.toInt()
         payment = credits.sumOf { it.payment }.toInt()
+
+        hasCredit = checkCredit()
     }
 
     open fun tick(){

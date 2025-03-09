@@ -135,13 +135,13 @@ class Model : CheckMobile() {
     }
     
     fun canManufactureTakeMoneyFromBank(): Boolean{
-        return levelMode.canTakeMoneyFromBank && !manufacture.hideMoveMoney
+        return levelMode.canTakeMoneyFromBank && !manufacture.hideMoveMoney && !manufacture.hasCredit
     }
     fun canMarketTakeMoneyFromBank(): Boolean{
-        return levelMode.canTakeMoneyFromBank && !market.hideMoveMoney
+        return levelMode.canTakeMoneyFromBank && !market.hideMoveMoney && !market.hasCredit
     }
     fun canPeopleTakeMoneyFromBank(): Boolean{
-        return levelMode.canTakeMoneyFromBank && !people.hideMoveMoney
+        return levelMode.canTakeMoneyFromBank && !people.hideMoveMoney && !people.hasCredit
     }
 
     fun initialization() {

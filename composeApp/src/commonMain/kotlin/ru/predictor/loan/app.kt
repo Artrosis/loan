@@ -302,9 +302,9 @@ fun marketTakeMoney(
     modifier: Modifier = Modifier,
     model: Model
 ) {
+    val coroutineScope = rememberCoroutineScope()
     if (model.canMarketTakeMoneyFromBank())
     {
-        val coroutineScope = rememberCoroutineScope()
         var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
 
         val offset by selfCoordinates.animateIntOffsetToTarget(
@@ -336,9 +336,9 @@ fun manufactureTakeMoney(
     modifier: Modifier = Modifier,
     model: Model
 ) {
+    val coroutineScope = rememberCoroutineScope()
     if (model.canManufactureTakeMoneyFromBank())
     {
-        val coroutineScope = rememberCoroutineScope()
         var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
 
         val offset by selfCoordinates.animateIntOffsetToTarget(
@@ -370,9 +370,9 @@ fun peopleTakeMoney(
     modifier: Modifier = Modifier,
     model: Model
 ) {
+    val coroutineScope = rememberCoroutineScope()
     if (model.canPeopleTakeMoneyFromBank())
     {
-        val coroutineScope = rememberCoroutineScope()
         var selfCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
 
         val offset by selfCoordinates.animateIntOffsetToTarget(
