@@ -1,11 +1,9 @@
 package ru.predictor.loan.model
 
 import androidx.compose.ui.BiasAlignment
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import loaninterest.composeapp.generated.resources.Res
+import loaninterest.composeapp.generated.resources.level_2_wood
 import loaninterest.composeapp.generated.resources.money
 import loaninterest.composeapp.generated.resources.woodcutter_back
 import org.jetbrains.compose.resources.DrawableResource
@@ -54,26 +52,47 @@ class Model : CheckMobile() {
     val moneyToMarket = MoveableAnimation(
         market,
         Res.drawable.money,
+        isVisible = { canMarketTakeMoneyFromBank() },
+        onFinishAction = { moveMoneyFromBankToMarket() }
     )
 
     val moneyToPeople = MoveableAnimation(
         people,
         Res.drawable.money,
+        isVisible = { canPeopleTakeMoneyFromBank() },
+        onFinishAction = { moveMoneyFromBankToPeople() }
     )
 
     val moneyToManufacture = MoveableAnimation(
         manufacture,
         Res.drawable.money,
+        isVisible = { canManufactureTakeMoneyFromBank() },
+        onFinishAction = { moveMoneyFromBankToManufacture() }
     )
 
     val productsFromManufactureToPeople = MoveableAnimation(
         people,
         Res.drawable.woodcutter_back,
+        isVisible = {
+            manufacture.products > 0
+                    && levelMode.canMoveProductsFromManufactureToPeople
+        },
+        onFinishAction = { moveProductsFromManufactureToPeople() }
     )
-
-    var movedProductsFromManufactureToPeople by MutableStateDelegate(false)
-    var movedProductsFromMarketToPeople by MutableStateDelegate(false)
-    var movedProductsFromManufactureToMarket by MutableStateDelegate(false)
+    
+    val productsToMarket = MoveableAnimation(
+        market,
+        Res.drawable.level_2_wood,
+        isVisible = { showProductsFromManufactureToMarket() },
+        onFinishAction = { moveProductsFromManufactureToMarket() }
+    )
+    
+    val productsFromMarketToPeople = MoveableAnimation(
+        people,
+        Res.drawable.level_2_wood,
+        isVisible = { market.products > 0 },
+        onFinishAction = { moveProductsFromMarketToPeople() }
+    )
     
     var movedMoneyFromBankToAll by MutableStateDelegate(false)
     var isAnimatedMoveMoney by MutableStateDelegate(false)
@@ -173,7 +192,7 @@ class Model : CheckMobile() {
         initialization()
     }
 
-    private fun canInteract(): Boolean = !hint.isShow() && !movedProductsFromManufactureToPeople
+    private fun canInteract(): Boolean = !hint.isShow()
 
     private fun countMoney(): Double {
         return bank.money +
@@ -267,33 +286,17 @@ class Model : CheckMobile() {
             takeProductsFromManufactureToPeople()
         }
     }
-
-    fun moveProductsFromManufactureToMarket() = canInteractLevelMode {
-        movedProductsFromManufactureToMarket = true
-    }
     
-    suspend fun finishedMoveProductsFromManufactureToMarket() = coroutineScope {
+    fun moveProductsFromManufactureToMarket() {
         levelMode.apply {
             takeProductsFromManufactureToMarket()
         }
-        movedProductsFromManufactureToMarket = false
-        manufacture.hideProductsToMarket = true
-
-        launch {
-            delay(100L)
-            manufacture.hideProductsToMarket = false
-        }
     }
 
-    fun moveProductsFromMarketToPeople() = canInteractLevelMode {
-        movedProductsFromMarketToPeople = true
-    }
-
-    fun finishedMoveProductsFromMarketToPeople() {
+    fun moveProductsFromMarketToPeople() {
         levelMode.apply {
             takeProductsFromMarketToPeople()
         }
-        movedProductsFromMarketToPeople = false
     }
 
     private fun canInteractLevelMode(levelModeAction: LevelMode.() -> Unit) {
