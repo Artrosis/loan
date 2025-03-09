@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.*
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -30,6 +32,7 @@ import loaninterest.composeapp.generated.resources.level_all_background
 import loaninterest.composeapp.generated.resources.money
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import ru.predictor.loan.images.Telegram
 import ru.predictor.loan.model.Hint
 import ru.predictor.loan.model.Model
 import ru.predictor.loan.model.modes.BarterMode
@@ -202,9 +205,36 @@ fun app(model: Model) {
                     .fillMaxHeight()
             )
 
+            telegramGroup(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.TopEnd)
+            )
+
             hint(model.hint)
         }
     }
+}
+
+@Composable
+fun telegramGroup(
+    modifier: Modifier = Modifier,
+){
+    val scope = rememberCoroutineScope()
+    val uriHandler = LocalUriHandler.current
+    Icon(
+        imageVector = Telegram,
+        "Телеграмм",
+        modifier
+            .size(40.dp)
+            .padding(4.dp)
+            .clickable {
+                scope.launch {
+                    uriHandler.openUri("https://t.me/russiznachalnaya")
+                }
+            },
+        tint = Color(0xFF039be5)
+    )
 }
 
 @Composable
