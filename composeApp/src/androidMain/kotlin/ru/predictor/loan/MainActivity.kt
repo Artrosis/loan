@@ -17,6 +17,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Suppress("unused")
 @Preview
 @Composable
 fun AppAndroidPreview() {

@@ -21,6 +21,7 @@ import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.Market
 import ru.predictor.loan.utils.toCaption
 
+@Suppress("unused")
 @Composable
 @Preview
 fun previewMarket() {

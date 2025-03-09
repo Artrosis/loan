@@ -21,6 +21,7 @@ import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.Manufacture
 import ru.predictor.loan.utils.toCaption
 
+@Suppress("unused")
 @Composable
 @Preview
 fun previewManufacture(){

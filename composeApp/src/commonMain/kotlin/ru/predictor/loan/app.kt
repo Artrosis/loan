@@ -41,6 +41,7 @@ import ru.predictor.loan.model.modes.IndustryMode
 import ru.predictor.loan.utils.animateIntOffsetToTarget
 import ru.predictor.loan.view.*
 
+@Suppress("unused")
 @Composable
 @Preview
 fun previewApp() {
@@ -230,7 +231,7 @@ fun telegramGroup(
             .padding(4.dp)
             .clickable {
                 scope.launch {
-                    uriHandler.openUri("https://t.me/russiznachalnaya")
+                    uriHandler.openUri("https://t.me/c/2363429679/769")
                 }
             },
         tint = Color(0xFF039be5)

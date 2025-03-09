@@ -20,6 +20,7 @@ import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.Bank
 
+@Suppress("unused")
 @Composable
 @Preview
 fun previewBank() {
