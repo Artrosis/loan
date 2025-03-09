@@ -38,6 +38,7 @@ import ru.predictor.loan.model.modes.BarterMode
 import ru.predictor.loan.model.modes.IndependentMode
 import ru.predictor.loan.model.modes.IndustryMode
 import ru.predictor.loan.utils.animateIntOffsetToTarget
+import ru.predictor.loan.utils.calcFullOffset
 import ru.predictor.loan.view.*
 
 @Suppress("unused")
@@ -373,6 +374,43 @@ fun animatedMove(
 }
 
 @Composable
+fun exchangeWithMoney(
+    modifier: Modifier = Modifier,
+    model: MoveableAnimation,
+    hasMoney: Boolean,
+){
+    animatedMove(
+        modifier,
+        model
+    )
+    
+    if (hasMoney && model.isAnimated)
+    {
+        var moneyCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+
+        val moneyOffset by moneyCoordinates.animateIntOffsetToTarget(
+            model.isAnimated,
+            model.target,
+        ){}
+        
+        val fullOffset = calcFullOffset(moneyCoordinates, model.target.coordinates, model.target.size)
+            
+        Image(
+            painterResource(Res.drawable.money),
+            contentDescription = "Забрать товары",
+            modifier = modifier
+                .offset {
+                    fullOffset - moneyOffset
+                }
+                .onGloballyPositioned { coordinates ->
+                    moneyCoordinates = coordinates
+                }
+                .size(60.dp)
+        )
+    }
+}
+
+@Composable
 fun manufactureTakeMoney(
     modifier: Modifier = Modifier,
     model: Model
@@ -476,9 +514,10 @@ fun moveProductsFromManufactureToMarket(
     modifier: Modifier = Modifier,
     model: Model
 ) {
-    animatedMove(
+    exchangeWithMoney(
         modifier,
         model.productsToMarket,
+        model.bank.has
     )
 }
 
