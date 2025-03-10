@@ -75,7 +75,7 @@ val moneyToPeopleOffset: Density.() -> IntOffset = { IntOffset(-40, 10) }
 val moneyToManufactureOffset: Density.() -> IntOffset = { IntOffset(170, 40) }
 val movePeopleWorkOffset: Density.() -> IntOffset = { IntOffset(-250, 110) }
 val moveProductsFromManufactureToPeopleOffset: Density.() -> IntOffset = { IntOffset(260, 100) }
-val moveProductsFromManufactureToMarketOffset: Density.() -> IntOffset = { IntOffset(300, 120) }
+val moveProductsFromManufactureToMarketOffset: Density.() -> IntOffset = { IntOffset(280, 120) }
 val moveProductsFromMarketToPeopleOffset: Density.() -> IntOffset = { IntOffset(-220, -220) }
 
 @Composable

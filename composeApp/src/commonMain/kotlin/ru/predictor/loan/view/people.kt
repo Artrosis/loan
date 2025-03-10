@@ -3,7 +3,6 @@ package ru.predictor.loan.view
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -55,9 +54,10 @@ fun people(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .clickable {
-                        model.editSettings = true
-                    }.padding(8.dp)
+                    //.clickable {
+                    //    model.editSettings = true
+                    //}
+                    .padding(8.dp)
             ) {
                 Text("Продукты: ${model.products.toCaption()}")
                 if (model.showMoney) {

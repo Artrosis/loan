@@ -22,8 +22,8 @@ class BarterMode: LevelMode() {
 
     private val manufactureToMarketHint = HintData(
         listOf(
-            "Отправь произведённые продукты на ярмарку.",
-            "Для этого нажми на иконку рядом с заводом.",
+            "Отправьте произведённые продукты на ярмарку.",
+            "Для этого нажмите на иконку рядом с заводом.",
         ), manufactureToMarketHintAlignment
     )
     
@@ -49,7 +49,7 @@ class BarterMode: LevelMode() {
             hintQueue.add(
                 HintData(
                     listOf(
-                        "Теперь оправь продукты к домам",
+                        "Теперь оправьте продукты к домам",
                     ), marketToPeopleHintAlignment
                 ),
             )

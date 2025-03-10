@@ -3,7 +3,6 @@ package ru.predictor.loan.view
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -24,7 +23,7 @@ import ru.predictor.loan.model.Bank
 @Composable
 @Preview
 fun previewBank() {
-    val model = Bank({}, { Age.CREDITING }, { 0.0 }, { mapOf() }, {0}).apply {
+    val model = Bank({}, { Age.CREDITING }, { 0.0 }, { mapOf() }, { 0 }).apply {
         has = true
         money = 100500.0
     }
@@ -59,15 +58,16 @@ fun bank(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .clickable {
-                            model.editSettings = true
-                        }.padding(8.dp)
+                        //.clickable {
+                        //    model.editSettings = true
+                        //}
+                        .padding(8.dp)
                 ) {
 
                     if (model.showLoanInterest) {
                         Text("Ссуда: ${model.loanInterest}%")
                     }
-                    
+
                     Text("Деньги: ${model.moneyCaption()}")
                 }
             }
