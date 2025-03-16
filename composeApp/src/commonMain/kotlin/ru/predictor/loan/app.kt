@@ -111,45 +111,6 @@ fun app(model: Model) {
                 model,
             )
 
-            if (model.bank.has) {
-                bank(
-                    model.bank,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .offset(bankOffset)
-                        .onGloballyPositioned {
-                            model.bank.coordinates = it
-                        }
-                        .onSizeChanged {
-                            model.bank.size = it
-                        },
-                )
-                bankMoney(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .offset(bankMoneyOffset),
-                    model
-                )                
-                marketTakeMoney(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .offset(moneyToMarketOffset),
-                    model
-                )
-                peopleTakeMoney(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .offset(moneyToPeopleOffset),
-                    model
-                )
-                manufactureTakeMoney(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .offset(moneyToManufactureOffset),
-                    model
-                )
-            }
-
             manufacture(
                 model.manufacture,
                 modifier = Modifier
@@ -196,6 +157,45 @@ fun app(model: Model) {
                     .offset(moveProductsFromMarketToPeopleOffset),
                 model,
             )
+
+            if (model.bank.has) {
+                bank(
+                    model.bank,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .offset(bankOffset)
+                        .onGloballyPositioned {
+                            model.bank.coordinates = it
+                        }
+                        .onSizeChanged {
+                            model.bank.size = it
+                        },
+                )
+                bankMoney(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .offset(bankMoneyOffset),
+                    model
+                )
+                marketTakeMoney(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .offset(moneyToMarketOffset),
+                    model
+                )
+                peopleTakeMoney(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .offset(moneyToPeopleOffset),
+                    model
+                )
+                manufactureTakeMoney(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .offset(moneyToManufactureOffset),
+                    model
+                )
+            }
 
             level(
                 model,
