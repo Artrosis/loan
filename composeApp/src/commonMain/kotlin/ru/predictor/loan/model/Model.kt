@@ -6,6 +6,7 @@ import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.level_2_wood
 import loaninterest.composeapp.generated.resources.money
 import loaninterest.composeapp.generated.resources.woodcutter_back
+import loaninterest.composeapp.generated.resources.woodcutter_out
 import org.jetbrains.compose.resources.DrawableResource
 import ru.predictor.loan.model.modes.*
 import ru.predictor.loan.utils.MutableStateDelegate
@@ -92,6 +93,13 @@ class Model : CheckMobile() {
         Res.drawable.level_2_wood,
         isVisible = { market.products > 0 },
         onFinishAction = { moveProductsFromMarketToPeople() }
+    )
+
+    val workPeople = MoveableAnimation(
+        manufacture,
+        Res.drawable.woodcutter_out,
+        isVisible = { true },
+        onFinishAction = { manufacture.product() }
     )
     
     var movedMoneyFromBankToAll by MutableStateDelegate(false)

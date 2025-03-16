@@ -27,7 +27,6 @@ import kotlinx.coroutines.launch
 import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.level_all_background
 import loaninterest.composeapp.generated.resources.money
-import loaninterest.composeapp.generated.resources.woodcutter_out
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import ru.predictor.loan.images.Telegram
@@ -490,12 +489,11 @@ fun movePeopleWork(
     modifier: Modifier = Modifier,
     model: Model
 ) {
-    move(
-        Res.drawable.woodcutter_out,
-        modifier = modifier
-    ) {
-        model.manufacture.click()
-    }
+    exchangeWithMoney(
+        modifier,
+        model.workPeople,
+        model.bank.has
+    )
 }
 
 @Composable
@@ -503,9 +501,10 @@ fun moveProductsFromMarketToPeople(
     modifier: Modifier = Modifier,
     model: Model
 ) {
-    animatedMove(
+    exchangeWithMoney(
         modifier,
         model.productsFromMarketToPeople,
+        model.bank.has
     )
 }
 

@@ -40,7 +40,7 @@ class Manufacture(
 
     fun nextAddProduct(workersCount: Int) = (workersCount * efficiency).toInt()
 
-    fun click() {
+    fun product() {
         if (canInteract()) onClick()
     }
 
