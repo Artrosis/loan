@@ -60,8 +60,8 @@ open class CreditingMode: IndustryMode() {
     private fun Model.makeCredit():Credit {
         return Credit(bank.loanSize.toDouble(), bank.loanInterest)
     }
-
-    fun Model.creditorGiveMoney(creditor: Creditor){
+    
+    fun Model.creditorCheckGiveMoney(creditor: Creditor): Boolean {
         if (creditor.checkCredit()){
             messages.apply {
                 lines = listOf("Сперва закройте прошлый кредит")
@@ -70,17 +70,25 @@ open class CreditingMode: IndustryMode() {
                 onNext = {clear()}
                 closeDismiss = true
             }
+            return false
         }
-        else {
-            creditor.addCredit(makeCredit())
-        }
+        
+        return true
     }
 
+    fun Model.creditorGiveMoney(creditor: Creditor){
+        creditor.addCredit(makeCredit())
+    }
+
+    override fun Model.checkPeopleGiveMoney() = creditorCheckGiveMoney(people)
+    
     override fun Model.peopleGiveMoney() = creditorGiveMoney(people)
+    
+    override fun Model.checkManufactureGiveMoney() = creditorCheckGiveMoney(manufacture)    
     
     override fun Model.manufactureGiveMoney() = creditorGiveMoney(manufacture)
     
+    override fun Model.checkMarketGiveMoney() = creditorCheckGiveMoney(market)
+    
     override fun Model.marketGiveMoney() = creditorGiveMoney(market)
-  
-    override fun Model.bankTick() {}
 }

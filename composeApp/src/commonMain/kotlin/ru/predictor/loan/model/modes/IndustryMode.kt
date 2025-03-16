@@ -49,8 +49,7 @@ open class IndustryMode: LevelMode() {
         return CreditingMode()
     }
 
-    override fun Model.takeProductsFromManufactureToMarket() {
-        
+    override fun Model.checkTakeProductsFromManufactureToMarket(): Boolean {
         if (market.money <= 0.0) {
             messages.apply {
                 lines = listOf("Нет денег в магазине")
@@ -58,9 +57,12 @@ open class IndustryMode: LevelMode() {
                 onNext = {clear()}
                 closeDismiss = true
             }
-            return
+            return false
         }
-        
+        return true
+    }
+
+    override fun Model.takeProductsFromManufactureToMarket() {        
         val maxCount = minOf(manufacture.products, market.money.toInt())
 
         market.apply {
@@ -73,8 +75,8 @@ open class IndustryMode: LevelMode() {
             products -= maxCount
         }
     }
-
-    override fun Model.takeProductsFromMarketToPeople() {
+    
+    override fun Model.checkTakeProductsFromMarketToPeople(): Boolean {
         if (people.money <= 0.0) {
             messages.apply {
                 lines = listOf("Нет денег у населения")
@@ -82,9 +84,13 @@ open class IndustryMode: LevelMode() {
                 onNext = {clear()}
                 closeDismiss = true
             }
-            return
+            return false
         }
         
+        return true
+    }
+
+    override fun Model.takeProductsFromMarketToPeople() {
         val maxCount = minOf(people.money.toInt(), market.products)
 
         people.apply { 
@@ -133,7 +139,7 @@ open class IndustryMode: LevelMode() {
        bank.emmitMoney()
     }
     
-    override fun Model.clickManufacture(){
+    override fun Model.checkClickManufacture(): Boolean {
         if (manufacture.money < calcSalary()) {
             messages.apply {
                 lines = listOf("Нет денег на предприятии для оплаты труда")
@@ -141,9 +147,13 @@ open class IndustryMode: LevelMode() {
                 onNext = {clear()}
                 closeDismiss = true
             }
-            return
+            return false
         }
         
+        return true
+    }
+    
+    override fun Model.clickManufacture(){
         tick()        
     }
     

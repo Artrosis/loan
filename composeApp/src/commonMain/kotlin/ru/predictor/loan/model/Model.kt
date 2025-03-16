@@ -37,18 +37,13 @@ class Model : CheckMobile() {
     )
 
     val manufacture = Manufacture(
-        onClick = {
-            canInteractLevelMode {
-                clickManufacture()
-            }
-        },
         getAge = { levelMode.age },
-        canInteract = { canInteract() }
     )
 
     val moneyToMarket = MoveableAnimation(
         market,
         { levelMode.moneyIcon },
+        check = { checkMoneyFromBankToMarket() },
         isVisible = { canMarketTakeMoneyFromBank() },
         onFinishAction = { moveMoneyFromBankToMarket() }
     )
@@ -56,6 +51,7 @@ class Model : CheckMobile() {
     val moneyToPeople = MoveableAnimation(
         people,
         { levelMode.moneyIcon },
+        check = { checkMoneyFromBankToPeople() },
         isVisible = { canPeopleTakeMoneyFromBank() },
         onFinishAction = { moveMoneyFromBankToPeople() }
     )
@@ -63,6 +59,7 @@ class Model : CheckMobile() {
     val moneyToManufacture = MoveableAnimation(
         manufacture,
         { levelMode.moneyIcon },
+        check = { checkMoneyFromBankToManufacture() },
         isVisible = { canManufactureTakeMoneyFromBank() },
         onFinishAction = { moveMoneyFromBankToManufacture() }
     )
@@ -70,6 +67,7 @@ class Model : CheckMobile() {
     val productsFromManufactureToPeople = MoveableAnimation(
         people,
         { levelMode.productIcon },
+        check = { true },
         isVisible = {
             manufacture.products > 0
                     && levelMode.canMoveProductsFromManufactureToPeople
@@ -80,6 +78,7 @@ class Model : CheckMobile() {
     val productsToMarket = MoveableAnimation(
         market,
         { levelMode.productIcon },
+        check = { checkMoveProductsFromManufactureToMarket() },
         isVisible = { showProductsFromManufactureToMarket() },
         onFinishAction = { moveProductsFromManufactureToMarket() }
     )
@@ -87,6 +86,7 @@ class Model : CheckMobile() {
     val productsFromMarketToPeople = MoveableAnimation(
         people,
         { levelMode.productIcon },
+        check = { checkMoveProductsFromMarketToPeople() },
         isVisible = { market.products > 0 },
         onFinishAction = { moveProductsFromMarketToPeople() }
     )
@@ -94,8 +94,9 @@ class Model : CheckMobile() {
     val workPeople = MoveableAnimation(
         manufacture,
         { levelMode.workPeople },
+        check = { checkMakeProducts() },
         isVisible = { true },
-        onFinishAction = { manufacture.product() }
+        onFinishAction = { makeProducts() }
     )
     
     var movedMoneyFromBankToAll by MutableStateDelegate(false)
@@ -290,9 +291,21 @@ class Model : CheckMobile() {
         }
     }
     
+    fun checkMoveProductsFromManufactureToMarket(): Boolean {
+        levelMode.apply {
+           return checkTakeProductsFromManufactureToMarket()
+        } 
+    }
+    
     fun moveProductsFromManufactureToMarket() {
         levelMode.apply {
             takeProductsFromManufactureToMarket()
+        }
+    }
+    
+    fun checkMoveProductsFromMarketToPeople(): Boolean {
+        levelMode.apply {
+            return checkTakeProductsFromMarketToPeople()
         }
     }
 
@@ -301,11 +314,41 @@ class Model : CheckMobile() {
             takeProductsFromMarketToPeople()
         }
     }
+    
+    fun checkMakeProducts(): Boolean {
+        levelMode.apply {
+            return checkClickManufacture()
+        }  
+    }
+    
+    fun makeProducts() {
+        levelMode.apply {
+            clickManufacture()
+        }
+    }
 
     private fun canInteractLevelMode(levelModeAction: LevelMode.() -> Unit) {
         if (!canInteract()) return
 
         levelMode.apply(levelModeAction)
+    }
+
+    fun checkMoneyFromBankToMarket(): Boolean {
+        levelMode.apply {
+            return checkMarketGiveMoney()
+        }
+    }
+
+    fun checkMoneyFromBankToPeople(): Boolean {
+        levelMode.apply {
+            return checkPeopleGiveMoney()
+        }
+    }
+
+    fun checkMoneyFromBankToManufacture(): Boolean {
+        levelMode.apply {
+            return checkManufactureGiveMoney()
+        }
     }
 
     fun moveMoneyFromBankToMarket() {

@@ -25,9 +25,7 @@ import ru.predictor.loan.utils.toCaption
 @Preview
 fun previewManufacture() {
     val model = Manufacture(
-        onClick = { },
-        getAge = { Age.INDEPENDENT },
-        canInteract = { false }
+        getAge = { Age.INDEPENDENT }
     ).apply {
         products = 70
     }

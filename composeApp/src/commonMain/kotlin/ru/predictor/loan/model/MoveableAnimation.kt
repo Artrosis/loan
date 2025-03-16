@@ -9,13 +9,16 @@ import ru.predictor.loan.utils.MutableStateDelegate
 open class MoveableAnimation(
     val target: ViewObject,
     val icon: () -> DrawableResource,
+    val check: () -> Boolean,
     val isVisible: () -> Boolean,
     val onFinishAction: () -> Unit,
 ): CheckMobile() {
     var isAnimated by MutableStateDelegate(false)
     
     fun startAnimation() {
-        isAnimated = true
+        if (check()) {
+            isAnimated = true
+        }
     }
 
     internal var hideForReturn by MutableStateDelegate(false)

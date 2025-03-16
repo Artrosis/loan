@@ -7,9 +7,7 @@ import ru.predictor.loan.utils.MutableStateDelegate
 import ru.predictor.loan.utils.ObservableStateDelegate
 
 class Manufacture(
-    val onClick: () -> Unit,
     val getAge: () -> Age,
-    val canInteract: () -> Boolean,
 ) : Creditor() {
     var isShowTakeProducts = false
     var products by ObservableStateDelegate(0) { newValue ->
@@ -39,10 +37,6 @@ class Manufacture(
     }
 
     fun nextAddProduct(workersCount: Int) = (workersCount * efficiency).toInt()
-
-    fun product() {
-        if (canInteract()) onClick()
-    }
 
     fun takeProducts(): Int {
         val result = products
