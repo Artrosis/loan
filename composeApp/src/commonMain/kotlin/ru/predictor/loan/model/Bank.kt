@@ -1,7 +1,8 @@
 package ru.predictor.loan.model
 
-import loaninterest.composeapp.generated.resources.*
 import loaninterest.composeapp.generated.resources.Res
+import loaninterest.composeapp.generated.resources.level_3_bank
+import loaninterest.composeapp.generated.resources.level_4_bank
 import ru.predictor.loan.utils.MutableStateDelegate
 import ru.predictor.loan.utils.toCaption
 
@@ -10,7 +11,6 @@ class Bank(
     val getAge: () -> Age,
     val getMoneyCount: () -> Double,
     val getProductsData: () -> Map<String, Int>,
-    val allPayments : () -> Int,
 ): ViewObject(){
     //Видимость
     var has by MutableStateDelegate(false)
@@ -50,6 +50,4 @@ class Bank(
     fun moneyCaption() =
         if (infinityMoney) "∞"
         else money.toCaption()
-
-    fun payments() = allPayments()
 }

@@ -2,13 +2,9 @@ package ru.predictor.loan.model
 
 import androidx.compose.ui.BiasAlignment
 import kotlinx.datetime.LocalDate
-import loaninterest.composeapp.generated.resources.Res
-import loaninterest.composeapp.generated.resources.level_2_wood
-import loaninterest.composeapp.generated.resources.money
-import loaninterest.composeapp.generated.resources.woodcutter_back
-import loaninterest.composeapp.generated.resources.woodcutter_out
 import org.jetbrains.compose.resources.DrawableResource
-import ru.predictor.loan.model.modes.*
+import ru.predictor.loan.model.modes.IndependentMode
+import ru.predictor.loan.model.modes.LevelMode
 import ru.predictor.loan.utils.MutableStateDelegate
 
 enum class Age(val caption: String) {
@@ -52,28 +48,28 @@ class Model : CheckMobile() {
 
     val moneyToMarket = MoveableAnimation(
         market,
-        Res.drawable.money,
+        { levelMode.moneyIcon },
         isVisible = { canMarketTakeMoneyFromBank() },
         onFinishAction = { moveMoneyFromBankToMarket() }
     )
 
     val moneyToPeople = MoveableAnimation(
         people,
-        Res.drawable.money,
+        { levelMode.moneyIcon },
         isVisible = { canPeopleTakeMoneyFromBank() },
         onFinishAction = { moveMoneyFromBankToPeople() }
     )
 
     val moneyToManufacture = MoveableAnimation(
         manufacture,
-        Res.drawable.money,
+        { levelMode.moneyIcon },
         isVisible = { canManufactureTakeMoneyFromBank() },
         onFinishAction = { moveMoneyFromBankToManufacture() }
     )
 
     val productsFromManufactureToPeople = MoveableAnimation(
         people,
-        Res.drawable.woodcutter_back,
+        { levelMode.productIcon },
         isVisible = {
             manufacture.products > 0
                     && levelMode.canMoveProductsFromManufactureToPeople
@@ -83,21 +79,21 @@ class Model : CheckMobile() {
     
     val productsToMarket = MoveableAnimation(
         market,
-        Res.drawable.level_2_wood,
+        { levelMode.productIcon },
         isVisible = { showProductsFromManufactureToMarket() },
         onFinishAction = { moveProductsFromManufactureToMarket() }
     )
     
     val productsFromMarketToPeople = MoveableAnimation(
         people,
-        Res.drawable.level_2_wood,
+        { levelMode.productIcon },
         isVisible = { market.products > 0 },
         onFinishAction = { moveProductsFromMarketToPeople() }
     )
 
     val workPeople = MoveableAnimation(
         manufacture,
-        Res.drawable.woodcutter_out,
+        { levelMode.workPeople },
         isVisible = { true },
         onFinishAction = { manufacture.product() }
     )
@@ -120,7 +116,6 @@ class Model : CheckMobile() {
                 "market.products" to market.products
             )
         },
-        allPayments = { people.payment + manufacture.payment + market.payment}
     )
 
     private val peopleHintAlignment = BiasAlignment(0.0f, 0.0f)
@@ -174,11 +169,11 @@ class Model : CheckMobile() {
         initialization()
         
         levelMode = CreditingMode()
-        initialization()
+        initialization()*/
         
         messages.clear()
         hint.clear()
-        hintQueue.clear()*/
+        hintQueue.clear()
     }
     
     fun canManufactureTakeMoneyFromBank(): Boolean{

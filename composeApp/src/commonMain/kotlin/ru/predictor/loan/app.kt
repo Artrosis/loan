@@ -103,14 +103,7 @@ fun app(model: Model) {
                         model.people.size = it
                     }
             )
-
-            movePeopleWork(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .offset(movePeopleWorkOffset),
-                model,
-            )
-
+            
             manufacture(
                 model.manufacture,
                 modifier = Modifier
@@ -122,6 +115,26 @@ fun app(model: Model) {
                     .onSizeChanged {
                         model.manufacture.size = it
                     },
+            )
+
+            market(
+                model.market,
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .offset(marketOffset)
+                    .onGloballyPositioned {
+                        model.market.coordinates = it
+                    }
+                    .onSizeChanged {
+                        model.market.size = it
+                    },
+            )
+            
+            movePeopleWork(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .offset(movePeopleWorkOffset),
+                model,
             )
 
             moveProductsFromManufactureToPeople(
@@ -136,19 +149,6 @@ fun app(model: Model) {
                     .align(Alignment.Center)
                     .offset(moveProductsFromManufactureToMarketOffset),
                 model,
-            )
-
-            market(
-                model.market,
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .offset(marketOffset)
-                    .onGloballyPositioned {
-                        model.market.coordinates = it
-                    }
-                    .onSizeChanged {
-                        model.market.size = it
-                    },
             )
 
             moveProductsFromMarketToPeople(
@@ -244,7 +244,7 @@ fun bankMoney(
 ) {
     if (model.snowBankMoney()) {
         move(
-            model.moneyIcon(),
+            { model.moneyIcon() },
             modifier = modifier
         ) {
             model.startDistributeMoney()
@@ -267,7 +267,7 @@ fun bankMoney(
             model.finishedMoneyFromBankToAll()
         }
         move(
-            Res.drawable.money,
+            { model.moneyIcon() },
             modifier = modifier
                 .offset {
                     offset
@@ -291,7 +291,7 @@ fun bankMoney(
             model.finishedMoneyFromBankToAll()
         }
         move(
-            Res.drawable.money,
+            { model.moneyIcon() },
             modifier = modifier
                 .offset {
                     offset
@@ -315,7 +315,7 @@ fun bankMoney(
             model.finishedMoneyFromBankToAll()
         }
         move(
-            Res.drawable.money,
+            { model.moneyIcon() },
             modifier = modifier
                 .offset {
                     offset
@@ -533,12 +533,12 @@ fun moveProductsFromManufactureToPeople(
 
 @Composable
 fun move(
-    icon: DrawableResource,
+    icon: () -> DrawableResource,
     modifier: Modifier = Modifier,
     onMove: () -> Unit
 ) {
     Image(
-        painterResource(icon),
+        painterResource(icon()),
         contentDescription = "Забрать товары",
         modifier = modifier
             .size(60.dp)

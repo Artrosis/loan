@@ -23,7 +23,7 @@ import ru.predictor.loan.model.Bank
 @Composable
 @Preview
 fun previewBank() {
-    val model = Bank({}, { Age.CREDITING }, { 0.0 }, { mapOf() }, { 0 }).apply {
+    val model = Bank({}, { Age.CREDITING }, { 0.0 }, { mapOf() }).apply {
         has = true
         money = 100500.0
     }
@@ -58,9 +58,6 @@ fun bank(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        //.clickable {
-                        //    model.editSettings = true
-                        //}
                         .padding(8.dp)
                 ) {
 

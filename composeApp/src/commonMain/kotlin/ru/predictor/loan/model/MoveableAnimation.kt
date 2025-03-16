@@ -8,7 +8,7 @@ import ru.predictor.loan.utils.MutableStateDelegate
 
 open class MoveableAnimation(
     val target: ViewObject,
-    val icon: DrawableResource,
+    val icon: () -> DrawableResource,
     val isVisible: () -> Boolean,
     val onFinishAction: () -> Unit,
 ): CheckMobile() {

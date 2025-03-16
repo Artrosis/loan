@@ -1,12 +1,10 @@
 package ru.predictor.loan.model.modes
 
 import loaninterest.composeapp.generated.resources.Res
-import loaninterest.composeapp.generated.resources.woodcutter_back
-import ru.predictor.loan.model.Age
-import ru.predictor.loan.model.Credit
-import ru.predictor.loan.model.Creditor
-import ru.predictor.loan.model.HintData
-import ru.predictor.loan.model.Model
+import loaninterest.composeapp.generated.resources.level_3_wood
+import loaninterest.composeapp.generated.resources.money
+import loaninterest.composeapp.generated.resources.woodcutter_out
+import ru.predictor.loan.model.*
 import ru.predictor.loan.utils.MutableStateDelegate
 
 open class CreditingMode: IndustryMode() {
@@ -25,7 +23,9 @@ open class CreditingMode: IndustryMode() {
         "Посмотрим, к чему это приведёт...",
     )
     
-    override val moneyIcon = Res.drawable.woodcutter_back
+    override val moneyIcon = Res.drawable.money
+    override val productIcon = Res.drawable.level_3_wood
+    override val workPeople = Res.drawable.woodcutter_out
 
     override fun Model.initModel() {
         //У банка появился ссудный процент
