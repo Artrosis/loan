@@ -1,7 +1,7 @@
 package ru.predictor.loan.model.modes
 
+import loaninterest.composeapp.generated.resources.*
 import loaninterest.composeapp.generated.resources.Res
-import loaninterest.composeapp.generated.resources.level_1_wood
 import loaninterest.composeapp.generated.resources.money
 import loaninterest.composeapp.generated.resources.woodcutter_out
 import ru.predictor.loan.model.Age
@@ -16,7 +16,7 @@ abstract class LevelMode{
     abstract var age: Age
     open val levelMessages = listOf<String>()
     open val moneyIcon = Res.drawable.money
-    open val productIcon = Res.drawable.level_1_wood
+    open val productIcon = Res.drawable.level_1_products
     open val workPeople = Res.drawable.woodcutter_out
     
     open fun Model.initModel(){}

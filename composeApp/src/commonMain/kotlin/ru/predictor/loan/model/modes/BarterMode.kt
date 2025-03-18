@@ -1,5 +1,7 @@
 package ru.predictor.loan.model.modes
 
+import loaninterest.composeapp.generated.resources.Res
+import loaninterest.composeapp.generated.resources.level_2_products
 import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.HintData
 import ru.predictor.loan.model.Model
@@ -26,7 +28,7 @@ class BarterMode: LevelMode() {
             "Для этого нажмите на иконку рядом с заводом.",
         ), manufactureToMarketHintAlignment
     )
-    
+    override val productIcon = Res.drawable.level_2_products
     override fun Model.initModel() {
         market.has = true
         

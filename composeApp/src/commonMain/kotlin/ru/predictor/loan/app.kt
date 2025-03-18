@@ -129,34 +129,6 @@ fun app(model: Model) {
                         model.market.size = it
                     },
             )
-            
-            movePeopleWork(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .offset(movePeopleWorkOffset),
-                model,
-            )
-
-            moveProductsFromManufactureToPeople(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .offset(moveProductsFromManufactureToPeopleOffset),
-                model,
-            )
-
-            moveProductsFromManufactureToMarket(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .offset(moveProductsFromManufactureToMarketOffset),
-                model,
-            )
-
-            moveProductsFromMarketToPeople(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .offset(moveProductsFromMarketToPeopleOffset),
-                model,
-            )
 
             if (model.bank.has) {
                 bank(
@@ -196,6 +168,34 @@ fun app(model: Model) {
                     model
                 )
             }
+
+            movePeopleWork(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .offset(movePeopleWorkOffset),
+                model,
+            )
+
+            moveProductsFromManufactureToPeople(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .offset(moveProductsFromManufactureToPeopleOffset),
+                model,
+            )
+
+            moveProductsFromManufactureToMarket(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .offset(moveProductsFromManufactureToMarketOffset),
+                model,
+            )
+
+            moveProductsFromMarketToPeople(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .offset(moveProductsFromMarketToPeopleOffset),
+                model,
+            )
 
             level(
                 model,

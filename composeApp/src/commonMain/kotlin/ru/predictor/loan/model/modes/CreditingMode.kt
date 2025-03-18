@@ -1,7 +1,7 @@
 package ru.predictor.loan.model.modes
 
 import loaninterest.composeapp.generated.resources.Res
-import loaninterest.composeapp.generated.resources.level_3_wood
+import loaninterest.composeapp.generated.resources.level_3_products
 import loaninterest.composeapp.generated.resources.money
 import loaninterest.composeapp.generated.resources.woodcutter_out
 import ru.predictor.loan.model.*
@@ -24,7 +24,7 @@ open class CreditingMode: IndustryMode() {
     )
     
     override val moneyIcon = Res.drawable.money
-    override val productIcon = Res.drawable.level_3_wood
+    override val productIcon = Res.drawable.level_3_products
     override val workPeople = Res.drawable.woodcutter_out
 
     override fun Model.initModel() {

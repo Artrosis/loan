@@ -1,5 +1,7 @@
 package ru.predictor.loan.model.modes
 
+import loaninterest.composeapp.generated.resources.Res
+import loaninterest.composeapp.generated.resources.level_3_products
 import ru.predictor.loan.model.Age
 import ru.predictor.loan.model.HintData
 import ru.predictor.loan.model.Model
@@ -18,7 +20,7 @@ open class IndustryMode: LevelMode() {
         "Кроме того, Банк будет вести учёт денежной массы и следить за тем,",
         "чтобы количество денег соответствовало объёму товаров на рынке.",
     )
-    
+    override val productIcon = Res.drawable.level_3_products
     override fun Model.initModel() {        
         BarterMode().apply { initModel() }
 
