@@ -29,7 +29,7 @@ class Bank(
         
         val needMoney = productCount - getMoneyCount()
         
-        if (needMoney < 0) throw Exception("На текущем этапе количество товаров, а следовательно и денег в экономике всегда увеличивается.")
+        // if (needMoney < 0) throw Exception("На текущем этапе количество товаров, а следовательно и денег в экономике всегда увеличивается.")
         
         money += needMoney
     }
