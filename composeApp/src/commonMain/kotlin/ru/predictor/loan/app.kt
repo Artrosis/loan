@@ -19,8 +19,6 @@ import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
@@ -64,19 +62,6 @@ fun previewApp() {
     app(model)
 }
 
-val peopleOffset: Density.() -> IntOffset = { IntOffset(-380, 130) }
-val manufactureOffset: Density.() -> IntOffset = { IntOffset(440, 150) }
-val marketOffset: Density.() -> IntOffset = { IntOffset(-130, -230) }
-val bankOffset: Density.() -> IntOffset = { IntOffset(50, -10) }
-val bankMoneyOffset: Density.() -> IntOffset = { IntOffset(0, 30) }
-val moneyToMarketOffset: Density.() -> IntOffset = { IntOffset(-40, -80) }
-val moneyToPeopleOffset: Density.() -> IntOffset = { IntOffset(-40, 10) }
-val moneyToManufactureOffset: Density.() -> IntOffset = { IntOffset(170, 40) }
-val movePeopleWorkOffset: Density.() -> IntOffset = { IntOffset(-250, 110) }
-val moveProductsFromManufactureToPeopleOffset: Density.() -> IntOffset = { IntOffset(260, 100) }
-val moveProductsFromManufactureToMarketOffset: Density.() -> IntOffset = { IntOffset(280, 120) }
-val moveProductsFromMarketToPeopleOffset: Density.() -> IntOffset = { IntOffset(-220, -220) }
-
 @Composable
 fun app(model: Model) {
     MaterialTheme {
@@ -95,7 +80,7 @@ fun app(model: Model) {
                 model.people,
                 Modifier
                     .align(Alignment.Center)
-                    .offset(peopleOffset)
+                    .offset(model.peopleOffset)
                     .onGloballyPositioned {
                         model.people.coordinates = it
                     }
@@ -108,7 +93,7 @@ fun app(model: Model) {
                 model.manufacture,
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .offset(manufactureOffset)
+                    .offset(model.manufactureOffset)
                     .onGloballyPositioned {
                         model.manufacture.coordinates = it
                     }
@@ -121,7 +106,7 @@ fun app(model: Model) {
                 model.market,
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .offset(marketOffset)
+                    .offset(model.marketOffset)
                     .onGloballyPositioned {
                         model.market.coordinates = it
                     }
@@ -135,7 +120,7 @@ fun app(model: Model) {
                     model.bank,
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .offset(bankOffset)
+                        .offset(model.bankOffset)
                         .onGloballyPositioned {
                             model.bank.coordinates = it
                         }
@@ -146,25 +131,25 @@ fun app(model: Model) {
                 bankMoney(
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .offset(bankMoneyOffset),
+                        .offset(model.bankMoneyOffset),
                     model
                 )
                 marketTakeMoney(
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .offset(moneyToMarketOffset),
+                        .offset(model.moneyToMarketOffset),
                     model
                 )
                 peopleTakeMoney(
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .offset(moneyToPeopleOffset),
+                        .offset(model.moneyToPeopleOffset),
                     model
                 )
                 manufactureTakeMoney(
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .offset(moneyToManufactureOffset),
+                        .offset(model.moneyToManufactureOffset),
                     model
                 )
             }
@@ -172,28 +157,28 @@ fun app(model: Model) {
             movePeopleWork(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .offset(movePeopleWorkOffset),
+                    .offset(model.movePeopleWorkOffset),
                 model,
             )
 
             moveProductsFromManufactureToPeople(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .offset(moveProductsFromManufactureToPeopleOffset),
+                    .offset(model.moveProductsFromManufactureToPeopleOffset),
                 model,
             )
 
             moveProductsFromManufactureToMarket(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .offset(moveProductsFromManufactureToMarketOffset),
+                    .offset(model.moveProductsFromManufactureToMarketOffset),
                 model,
             )
 
             moveProductsFromMarketToPeople(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .offset(moveProductsFromMarketToPeopleOffset),
+                    .offset(model.moveProductsFromMarketToPeopleOffset),
                 model,
             )
 
