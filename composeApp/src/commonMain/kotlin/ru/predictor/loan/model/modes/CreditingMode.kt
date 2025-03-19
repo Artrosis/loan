@@ -80,6 +80,8 @@ open class CreditingMode: IndustryMode() {
         creditor.addCredit(makeCredit())
     }
 
+    override fun Model.bankTick() {}
+
     override fun Model.checkPeopleGiveMoney() = creditorCheckGiveMoney(people)
     
     override fun Model.peopleGiveMoney() = creditorGiveMoney(people)
