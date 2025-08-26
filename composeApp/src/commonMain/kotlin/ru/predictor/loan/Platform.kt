@@ -16,6 +16,7 @@ interface Platform {
     val moveProductsFromManufactureToPeopleOffset: Density.() -> IntOffset
     val moveProductsFromManufactureToMarketOffset: Density.() -> IntOffset
     val moveProductsFromMarketToPeopleOffset: Density.() -> IntOffset
+    val soundOffset: Density.() -> IntOffset
 }
 
 open class MobilePlatform: Platform {
@@ -31,6 +32,7 @@ open class MobilePlatform: Platform {
     override val moveProductsFromManufactureToPeopleOffset: Density.() -> IntOffset = { IntOffset(260, 100) }
     override val moveProductsFromManufactureToMarketOffset: Density.() -> IntOffset = { IntOffset(280, 120) }
     override val moveProductsFromMarketToPeopleOffset: Density.() -> IntOffset = { IntOffset(-220, -220) }
+    override val soundOffset: Density.() -> IntOffset = { IntOffset(-220, -220) }
 }
 
 open class DesktopPlatform: Platform {
@@ -46,6 +48,7 @@ open class DesktopPlatform: Platform {
     override val moveProductsFromManufactureToPeopleOffset: Density.() -> IntOffset = { IntOffset(260, 100) }
     override val moveProductsFromManufactureToMarketOffset: Density.() -> IntOffset = { IntOffset(280, 120) }
     override val moveProductsFromMarketToPeopleOffset: Density.() -> IntOffset = { IntOffset(-220, -220) }
+    override val soundOffset: Density.() -> IntOffset = { IntOffset(-50, 0) }
 }
 
 expect fun getPlatform(): Platform

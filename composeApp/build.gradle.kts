@@ -73,6 +73,7 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+            implementation("com.googlecode.soundlibs:mp3spi:1.9.5.4")
         }
     }
 }

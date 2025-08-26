@@ -1,8 +1,16 @@
 package ru.predictor.loan.model
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.BiasAlignment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
+import loaninterest.composeapp.generated.resources.Res
+import loaninterest.composeapp.generated.resources.`sound off`
+import loaninterest.composeapp.generated.resources.`sound on`
 import org.jetbrains.compose.resources.DrawableResource
+import ru.predictor.loan.AudioPlayer
 import ru.predictor.loan.model.modes.IndependentMode
 import ru.predictor.loan.model.modes.LevelMode
 import ru.predictor.loan.utils.MutableStateDelegate
@@ -16,7 +24,41 @@ enum class Age(val caption: String) {
 }
 
 class Model : CheckMobile() {
-    var date by MutableStateDelegate(LocalDate(2000, 1, 1))
+
+    private var backgroundSoundPath = "/files/backgroundSnd.mp3" //"files/backgroundSnd.mp3"
+    private var backgroundPlayer = AudioPlayer(backgroundSoundPath)
+
+    var soundImage = mutableStateOf(Res.drawable.`sound on`)
+
+    suspend fun changeSound() = withContext(Dispatchers.Default) {
+        if (backgroundPlayer.isPlaying){
+            launch { backgroundPlayer.pause() }
+            soundImage.value = Res.drawable.`sound off`
+        }
+        else
+        {
+            launch { backgroundPlayer.play() }
+            soundImage.value = Res.drawable.`sound on`
+        }
+    }
+
+    suspend fun playBackgroundVolume() = withContext(Dispatchers.Default) {
+        launch { backgroundPlayer.play() }
+    }
+
+    suspend fun pauseBackgroundVolume() = withContext(Dispatchers.Default) {
+        launch { backgroundPlayer.pause() }
+    }
+
+    private var player: AudioPlayer? = null
+
+    suspend fun playSong(path: String) = withContext(Dispatchers.Default) {
+        player = AudioPlayer(path)
+
+        launch { player?.play() }
+    }
+
+    private var date by MutableStateDelegate(LocalDate(2000, 1, 1))
 
     var levelMode by MutableStateDelegate<LevelMode>(IndependentMode())
 

@@ -190,6 +190,14 @@ fun app(model: Model) {
                     .fillMaxHeight()
             )
 
+            sound(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.TopEnd)
+                    .offset(model.soundOffset),
+                model
+            )
+
             telegramGroup(
                 modifier = Modifier
                     .padding(16.dp)
@@ -199,6 +207,26 @@ fun app(model: Model) {
             hint(model.hint)
         }
     }
+}
+
+@Composable
+fun sound(
+    modifier: Modifier = Modifier,
+    model: Model,
+){
+    val scope = rememberCoroutineScope()
+    Image(
+        painterResource(model.soundImage.value),
+        null,
+        modifier = modifier
+            .size(40.dp)
+            .padding(4.dp)
+            .clickable {
+                scope.launch {
+                    model.changeSound()
+                }
+            }
+    )
 }
 
 @Composable
