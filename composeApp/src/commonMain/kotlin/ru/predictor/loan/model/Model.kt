@@ -3,9 +3,12 @@ package ru.predictor.loan.model
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.BiasAlignment
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.number
 import loaninterest.composeapp.generated.resources.Res
 import loaninterest.composeapp.generated.resources.`sound off`
 import loaninterest.composeapp.generated.resources.`sound on`
@@ -23,7 +26,14 @@ enum class Age(val caption: String) {
     FINISH("Конец")
 }
 
-class Model : CheckMobile() {
+data class WindowsSizeValue(val width: Int, val height: Int)
+
+class Model(
+    size: WindowsSizeValue
+) : CheckMobile() {
+
+    private val _viewport = MutableStateFlow(size)
+    val viewport: StateFlow<WindowsSizeValue> get() = _viewport
 
     private var backgroundSoundPath = "/files/backgroundSnd.mp3" //"files/backgroundSnd.mp3"
     private var backgroundPlayer = AudioPlayer(backgroundSoundPath)
@@ -284,7 +294,7 @@ class Model : CheckMobile() {
 
     private fun LocalDate.incrementMonth(): LocalDate {
         var year = this.year
-        var monthNumber = this.monthNumber
+        var monthNumber = month.number
 
         if (monthNumber == 12) {
             monthNumber = 1
@@ -293,7 +303,7 @@ class Model : CheckMobile() {
             monthNumber++
         }
 
-        return LocalDate(year, monthNumber, this.dayOfMonth)
+        return LocalDate(year, monthNumber, day)
     }
 
     private fun checkLevelUp(): Boolean = people.population >= levelMode.maxLevelPopulation
@@ -434,6 +444,10 @@ class Model : CheckMobile() {
         return manufacture.products > 0
                 && levelMode.canMoveProductsFromManufactureToMarket
                 && !manufacture.hideProductsToMarket
+    }
+
+    fun resize(size: WindowsSizeValue) {
+        _viewport.value = size
     }
 
     companion object {

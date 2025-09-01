@@ -1,7 +1,8 @@
 package ru.predictor.loan.view
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -12,7 +13,7 @@ import androidx.compose.ui.unit.sp
 import ru.predictor.loan.model.Messages
 
 @Composable
-fun messageBox(
+fun MessageBox(
     model: Messages
 ) {
     if (model.lines.isEmpty()) return
@@ -25,13 +26,14 @@ fun messageBox(
         },
         text =
             {
-                Column(
-                    modifier = Modifier.padding(16.dp)
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(16.dp)
                 ) {
-                    model.lines.forEach {
+                    itemsIndexed(model.lines) { _, item ->
                         Text(
                             modifier = Modifier.padding(2.dp),
-                            text = it,
+                            text = item,
                         )
                     }
                 }

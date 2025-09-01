@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.FixedScale
 import androidx.compose.ui.layout.LayoutCoordinates
@@ -31,6 +32,7 @@ import ru.predictor.loan.images.Telegram
 import ru.predictor.loan.model.Hint
 import ru.predictor.loan.model.Model
 import ru.predictor.loan.model.MoveableAnimation
+import ru.predictor.loan.model.WindowsSizeValue
 import ru.predictor.loan.model.modes.BarterMode
 import ru.predictor.loan.model.modes.IndependentMode
 import ru.predictor.loan.model.modes.IndustryMode
@@ -41,8 +43,8 @@ import ru.predictor.loan.view.*
 @Suppress("unused")
 @Composable
 @Preview
-fun previewApp() {
-    val model = Model().apply {
+fun PreviewApp() {
+    val model = Model(WindowsSizeValue(800, 600)).apply {
         messages.clear()
         levelMode = IndependentMode()
         initialization()
@@ -59,11 +61,21 @@ fun previewApp() {
         hintQueue.clear()
     }
 
-    app(model)
+    App(model)
 }
 
 @Composable
-fun app(model: Model) {
+fun App(model: Model) {
+
+    val viewportSize by model.viewport.collectAsState()
+
+    val imgSize = painterResource(Res.drawable.level_all_background).intrinsicSize
+
+    val scaleHeight = viewportSize.height / imgSize.height
+    val scaleWith = viewportSize.width / imgSize.width
+
+    val scale = maxOf(scaleHeight, scaleWith)
+
     MaterialTheme {
         Box(
             Modifier
@@ -71,10 +83,11 @@ fun app(model: Model) {
                 .background(Color.Gray.copy(alpha = 0.6f))
                 .paint(
                     painterResource(Res.drawable.level_all_background),
-                    contentScale = FixedScale(0.8f)
-                ),
+                    contentScale = FixedScale( scale)
+                )
+                .scale(scale),
         ) {
-            messageBox(model.messages)
+            MessageBox(model.messages)
 
             people(
                 model.people,
@@ -128,25 +141,25 @@ fun app(model: Model) {
                             model.bank.size = it
                         },
                 )
-                bankMoney(
+                BankMoney(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .offset(model.bankMoneyOffset),
                     model
                 )
-                marketTakeMoney(
+                MarketTakeMoney(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .offset(model.moneyToMarketOffset),
                     model
                 )
-                peopleTakeMoney(
+                PeopleTakeMoney(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .offset(model.moneyToPeopleOffset),
                     model
                 )
-                manufactureTakeMoney(
+                ManufactureTakeMoney(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .offset(model.moneyToManufactureOffset),
@@ -154,28 +167,28 @@ fun app(model: Model) {
                 )
             }
 
-            movePeopleWork(
+            MovePeopleWork(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .offset(model.movePeopleWorkOffset),
                 model,
             )
 
-            moveProductsFromManufactureToPeople(
+            MoveProductsFromManufactureToPeople(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .offset(model.moveProductsFromManufactureToPeopleOffset),
                 model,
             )
 
-            moveProductsFromManufactureToMarket(
+            MoveProductsFromManufactureToMarket(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .offset(model.moveProductsFromManufactureToMarketOffset),
                 model,
             )
 
-            moveProductsFromMarketToPeople(
+            MoveProductsFromMarketToPeople(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .offset(model.moveProductsFromMarketToPeopleOffset),
@@ -190,7 +203,7 @@ fun app(model: Model) {
                     .fillMaxHeight()
             )
 
-            sound(
+            Sound(
                 modifier = Modifier
                     .padding(16.dp)
                     .align(Alignment.TopEnd)
@@ -198,19 +211,19 @@ fun app(model: Model) {
                 model
             )
 
-            telegramGroup(
+            TelegramGroup(
                 modifier = Modifier
                     .padding(16.dp)
                     .align(Alignment.TopEnd)
             )
 
-            hint(model.hint)
+            Hint(model.hint)
         }
     }
 }
 
 @Composable
-fun sound(
+fun Sound(
     modifier: Modifier = Modifier,
     model: Model,
 ){
@@ -230,7 +243,7 @@ fun sound(
 }
 
 @Composable
-fun telegramGroup(
+fun TelegramGroup(
     modifier: Modifier = Modifier,
 ){
     val scope = rememberCoroutineScope()
@@ -251,12 +264,12 @@ fun telegramGroup(
 }
 
 @Composable
-fun bankMoney(
+fun BankMoney(
     modifier: Modifier = Modifier,
     model: Model
 ) {
     if (model.snowBankMoney()) {
-        move(
+        Move(
             { model.moneyIcon() },
             modifier = modifier
         ) {
@@ -279,7 +292,7 @@ fun bankMoney(
             model.isAnimatedMoveMoney = false
             model.finishedMoneyFromBankToAll()
         }
-        move(
+        Move(
             { model.moneyIcon() },
             modifier = modifier
                 .offset {
@@ -303,7 +316,7 @@ fun bankMoney(
             model.isAnimatedMoveMoney = false
             model.finishedMoneyFromBankToAll()
         }
-        move(
+        Move(
             { model.moneyIcon() },
             modifier = modifier
                 .offset {
@@ -327,7 +340,7 @@ fun bankMoney(
             model.isAnimatedMoveMoney = false
             model.finishedMoneyFromBankToAll()
         }
-        move(
+        Move(
             { model.moneyIcon() },
             modifier = modifier
                 .offset {
@@ -341,18 +354,18 @@ fun bankMoney(
 }
 
 @Composable
-fun marketTakeMoney(
+fun MarketTakeMoney(
     modifier: Modifier = Modifier,
     model: Model
 ) {
-    animatedMove(
+    AnimatedMove(
         modifier,
         model.moneyToMarket,
     )
 }
 
 @Composable
-fun animatedMove(
+fun AnimatedMove(
     modifier: Modifier = Modifier,
     model: MoveableAnimation
 ){
@@ -370,7 +383,7 @@ fun animatedMove(
             }
         }
 
-        move(
+        Move(
             model.icon,
             modifier = modifier
                 .offset {
@@ -386,12 +399,12 @@ fun animatedMove(
 }
 
 @Composable
-fun exchangeWithMoney(
+fun ExchangeWithMoney(
     modifier: Modifier = Modifier,
     model: MoveableAnimation,
     hasMoney: Boolean,
 ){
-    animatedMove(
+    AnimatedMove(
         modifier,
         model
     )
@@ -423,29 +436,29 @@ fun exchangeWithMoney(
 }
 
 @Composable
-fun manufactureTakeMoney(
+fun ManufactureTakeMoney(
     modifier: Modifier = Modifier,
     model: Model
 ) {
-    animatedMove(
+    AnimatedMove(
         modifier,
         model.moneyToManufacture,
     )
 }
 
 @Composable
-fun peopleTakeMoney(
+fun PeopleTakeMoney(
     modifier: Modifier = Modifier,
     model: Model
 ) {
-    animatedMove(
+    AnimatedMove(
         modifier,
         model.moneyToPeople,
     )
 }
 
 @Composable
-fun BoxScope.hint(
+fun BoxScope.Hint(
     model: Hint
 ) {
     if (
@@ -498,11 +511,11 @@ fun BoxScope.hint(
 }
 
 @Composable
-fun movePeopleWork(
+fun MovePeopleWork(
     modifier: Modifier = Modifier,
     model: Model
 ) {
-    exchangeWithMoney(
+    ExchangeWithMoney(
         modifier,
         model.workPeople,
         model.bank.has
@@ -510,11 +523,11 @@ fun movePeopleWork(
 }
 
 @Composable
-fun moveProductsFromMarketToPeople(
+fun MoveProductsFromMarketToPeople(
     modifier: Modifier = Modifier,
     model: Model
 ) {
-    exchangeWithMoney(
+    ExchangeWithMoney(
         modifier,
         model.productsFromMarketToPeople,
         model.bank.has
@@ -522,11 +535,11 @@ fun moveProductsFromMarketToPeople(
 }
 
 @Composable
-fun moveProductsFromManufactureToMarket(
+fun MoveProductsFromManufactureToMarket(
     modifier: Modifier = Modifier,
     model: Model
 ) {
-    exchangeWithMoney(
+    ExchangeWithMoney(
         modifier,
         model.productsToMarket,
         model.bank.has
@@ -534,18 +547,18 @@ fun moveProductsFromManufactureToMarket(
 }
 
 @Composable
-fun moveProductsFromManufactureToPeople(
+fun MoveProductsFromManufactureToPeople(
     modifier: Modifier = Modifier,
     model: Model,
 ) {
-    animatedMove(
+    AnimatedMove(
         modifier,
         model.productsFromManufactureToPeople,
     )
 }
 
 @Composable
-fun move(
+fun Move(
     icon: () -> DrawableResource,
     modifier: Modifier = Modifier,
     onMove: () -> Unit
